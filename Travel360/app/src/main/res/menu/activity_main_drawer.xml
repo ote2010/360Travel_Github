@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--그냥 기존에 있었던 id, icon 그대로 냅두고 item만 추가했습니다 !-->
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_camera"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="메세지"/>
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="스크랩"/>
+        <item
+            android:id="@+id/nav_slideshow"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="내가 쓴 글"/>
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="내가 쓴 댓글"/>
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="설정"/>
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="공지사항"/>
+        <item
+            android:id="@+id/nav_question"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="문의"/>
+        <item
+            android:id="@+id/nav_connectVR"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="VR 연결하기"/>
+    </group>
+</menu>
