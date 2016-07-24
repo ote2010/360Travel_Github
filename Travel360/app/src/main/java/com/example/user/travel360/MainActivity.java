@@ -1,5 +1,6 @@
 package com.example.user.travel360;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,11 +23,20 @@ public class MainActivity extends AppCompatActivity
     // 수정된 파일 : MainActivity.java, content_main.xml, nav_header_main.xml
 
     //oncreate 함수 내에 존재했었던 fab 관련 코드를 삭제했습니다.
+
+    //2016-07-24 AM 10:37
+    // 전성일
+    // 수정사항
+    // 로딩 화면 추가했습니다.
+    // 앱 동작이 세로로만 동작하는 코드를 추가하였습니다.
+    // 수정된 파일 : MainActivity.java, AndroidManifest.xml
+    // 추가된 파일 : splash.xml, Splash.java
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        startActivity(new Intent(this, Splash.class));//앱 시작 시 Splash.java가 동작하도록 구현
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // 툴바
         setSupportActionBar(toolbar);
 
