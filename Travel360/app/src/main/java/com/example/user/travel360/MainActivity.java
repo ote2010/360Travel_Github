@@ -14,23 +14,27 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
+    /*
+    2016-07-23 PM 10:09 오탁은
+    1)기존의 fab로 존재했었던 메시지 버튼을 삭제하고 관련 코드를 삭제했습니다.
+    2)네비게이션 드로어의 xml 파일을 수정했습니다. 기존 네비게이션 드로어의 항목들을 바꾸었습니다.
+    수정된 파일 : MainActivity.java, content_main.xml, nav_header_main.xml
 
-    //2016-07-23 PM 10:09
-    // 오탁은
-    // 수정사항
-    // 1)기존의 fab로 존재했었던 메시지 버튼을 삭제하고 관련 코드를 삭제했습니다.
-    // 2)네비게이션 드로어의 xml 파일을 수정했습니다. 기존 네비게이션 드로어의 항목들을 바꾸었습니다.
-    // 수정된 파일 : MainActivity.java, content_main.xml, nav_header_main.xml
+    2016-07-24 AM 10:37 전성일
+    로딩 화면 추가했습니다.
+    앱 동작이 세로로만 동작하는 코드를 추가하였습니다.
+    수정된 파일 : MainActivity.java, AndroidManifest.xml
+    추가된 파일 : splash.xml, Splash.java
+
+    2016-07-24 AM 12:53 오탁은
+    1)액션바를 바꿨습니다. 방법은 app_bar_main.xml의 toolbar에 RelativeLayout을 집어넣어서 바꿨습니다.
+      ->커스텀 액션바로 바꾸려고 했으나 이미 메니페스트에 NoActionBar로 정의되어있는 탓에 액션바를 커스텀 액션바로 바꾼다고 해도
+      프로젝트에서 똑같은 액션바를 계속 쓰는 것이 아니기 때문에 이 방법이 제일 간단하고 좋은 것 같아서 이렇게 바꿉니다!
+      추후에 다른 액션바가 필요하다면 xml로 정의해서 액티비티 상단에 붙히는 형식으로 진행하면 될 것 같습니다.
+    수정된 파일 : app_bar_main.xml
+    */
 
     //oncreate 함수 내에 존재했었던 fab 관련 코드를 삭제했습니다.
-
-    //2016-07-24 AM 10:37
-    // 전성일
-    // 수정사항
-    // 로딩 화면 추가했습니다.
-    // 앱 동작이 세로로만 동작하는 코드를 추가하였습니다.
-    // 수정된 파일 : MainActivity.java, AndroidManifest.xml
-    // 추가된 파일 : splash.xml, Splash.java
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
