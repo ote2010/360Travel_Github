@@ -1,5 +1,6 @@
 package com.example.user.travel360;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -32,15 +33,22 @@ public class MainActivity extends AppCompatActivity
       프로젝트에서 똑같은 액션바를 계속 쓰는 것이 아니기 때문에 이 방법이 제일 간단하고 좋은 것 같아서 이렇게 바꿉니다!
       추후에 다른 액션바가 필요하다면 xml로 정의해서 액티비티 상단에 붙히는 형식으로 진행하면 될 것 같습니다.
     수정된 파일 : app_bar_main.xml
+
+    2016-07-27 PM 1:49 전성일
+    - 앱 시작 시 인터넷 연결 확인 동작을 추가하였습니다.
+    수정된 파일: AndroidManifest.xml, Splash.java, MainActivity.java
     */
 
     //oncreate 함수 내에 존재했었던 fab 관련 코드를 삭제했습니다.
+
+    public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         startActivity(new Intent(this, Splash.class));//앱 시작 시 Splash.java가 동작하도록 구현
+        AActivity = MainActivity.this;//AActivity를 정의함 이제 AActivity를 Splash에서 사용 가능
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // 툴바
         setSupportActionBar(toolbar);
 
