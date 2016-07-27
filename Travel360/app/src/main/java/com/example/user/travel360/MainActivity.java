@@ -4,7 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +20,8 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
     /*
     2016-07-23 PM 10:09 오탁은
     1)기존의 fab로 존재했었던 메시지 버튼을 삭제하고 관련 코드를 삭제했습니다.
@@ -37,7 +44,15 @@ public class MainActivity extends AppCompatActivity
     2016-07-27 PM 1:49 전성일
     - 앱 시작 시 인터넷 연결 확인 동작을 추가하였습니다.
     수정된 파일: AndroidManifest.xml, Splash.java, MainActivity.java
+
+    2016-07-27 PM 3:39 오탁은
+    - 유정이가 작업한 navi_test 프로젝트를 본 프로젝트에 포팅했습니다.
+    프래그먼트 탭을 추가했습니다.
+    추가된 파일 : layout.fragment로 시작되는 레이아웃, java.Fragment 폴더
+    수정된 파일 : content_main.xml, activity_main.java 등등
     */
+
+
 
     //oncreate 함수 내에 존재했었던 fab 관련 코드를 삭제했습니다.
 
@@ -51,6 +66,17 @@ public class MainActivity extends AppCompatActivity
         AActivity = MainActivity.this;//AActivity를 정의함 이제 AActivity를 Splash에서 사용 가능
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // 툴바
         setSupportActionBar(toolbar);
+
+        //----프레그먼트 추가된 부분----
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+        //----프레그먼트 추가된 부분----
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -138,5 +164,50 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    //--------------------------------------------------------fragment tab 추가
+
+    public class SectionsPagerAdapter extends FragmentPagerAdapter
+    {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+
+            if(position == 0)
+                return new com.example.user.travel360.Fragment.Main_fragment();
+            else if(position == 1)
+                return new com.example.user.travel360.Fragment.Story_fragment();
+            else
+                return new com.example.user.travel360.Fragment.Review_fragment();
+//            // getItem is called to instantiate the fragment for the given page.
+//            // Return a PlaceholderFragment (defined as a static inner class below).
+//            Log.d("@@@", position + "@@");
+//            return PlaceholderFragment.newInstance(position);
+
+        }
+
+        @Override
+        public int getCount() {
+            // Show 3 total pages.
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "메인";
+                case 1:
+                    return "여행기";
+                case 2:
+                    return "리뷰";
+            }
+            return null;
+        }
     }
 }
