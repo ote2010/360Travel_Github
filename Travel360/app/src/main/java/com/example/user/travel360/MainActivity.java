@@ -50,9 +50,12 @@ public class MainActivity extends AppCompatActivity
     프래그먼트 탭을 추가했습니다.
     추가된 파일 : layout.fragment로 시작되는 레이아웃, java.Fragment 폴더
     수정된 파일 : content_main.xml, activity_main.java 등등
-    */
 
-
+    PM 11:35 오탁은
+    - 여행기 메인화면 story_main.xml을 만들었습니다.
+    아직 xml만 작성한 상태이고 java 코드는 아직 작성 못했습니다.
+    추가된 파일 : story_main.xml
+   */
 
     //oncreate 함수 내에 존재했었던 fab 관련 코드를 삭제했습니다.
 
