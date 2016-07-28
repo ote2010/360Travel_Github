@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="필터 적용하기"
-        android:id="@+id/button"
+        android:id="@+id/filterButton"
         android:layout_gravity="center_horizontal"
         android:background="#3498db"
         android:textSize="20dp"
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:text="     2016.07.14"
-        android:id="@+id/textView4"
+        android:id="@+id/dateTextView"
         android:background="#1abc9c"
         android:textColor="#ffffff"
         android:layout_marginTop="5dp"
@@ -38,17 +38,18 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/linearLayout"
+            android:id="@+id/storyItemLayout1"
             android:layout_weight = "1"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="2dp">
 
             <FrameLayout android:layout_width="wrap_content"
-                         android:layout_height="wrap_content">
+                         android:layout_height="wrap_content"
+                         android:id="@+id/storyFrameLayout1">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView2"
+                android:id="@+id/storyImageView1"
                 android:src="@drawable/testimg2"
                 android:baselineAlignBottom="false"
                 android:scaleType="fitStart"
@@ -59,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="+"
-                    android:id="@+id/button2"
+                    android:id="@+id/storyImageButton1"
                     android:layout_gravity="right|bottom"/>
             </FrameLayout>
 
@@ -67,12 +68,13 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#9f9393">
+                android:background="#9f9393"
+                android:id="@+id/storyBackgroundLayout1">
 
                 <ImageButton
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:id="@+id/imageButton"
+                    android:id="@+id/storyUserImage1"
                     android:src="@mipmap/ic_launcher"/>
 
                 <LinearLayout
@@ -85,13 +87,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="오탁은"
-                        android:id="@+id/textView5"/>
+                        android:id="@+id/storyUserName1"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="숭실대 왔습니당"
-                        android:id="@+id/textView6"/>
+                        android:id="@+id/storyTitle1"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -101,7 +103,7 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayout2"
+            android:id="@+id/storyItemLayout2"
             android:layout_weight = "1"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
@@ -109,11 +111,12 @@
             android:layout_marginLeft="2dp">
 
             <FrameLayout android:layout_width="wrap_content"
-                         android:layout_height="wrap_content">
+                         android:layout_height="wrap_content"
+                         android:id="@+id/storyFrameLayout2">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView3"
+                android:id="@+id/storyImageView2"
                 android:src="@drawable/testimg1"
                 android:scaleType="fitStart"
                 android:adjustViewBounds="true"/>
@@ -123,7 +126,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="+"
-                    android:id="@+id/button3"
+                    android:id="@+id/storyImageButton2"
                     android:layout_gravity="right|bottom"/>
             </FrameLayout>
 
@@ -132,12 +135,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#9f9393"
-                android:layout_gravity="center_horizontal">
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/storyBackgroundLayout2">
 
                 <ImageButton
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:id="@+id/imageButton2"
+                    android:id="@+id/storyUserImage2"
                     android:src="@mipmap/ic_launcher"/>
 
                 <LinearLayout
@@ -150,13 +154,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="오탁은"
-                        android:id="@+id/textView7"/>
+                        android:id="@+id/storyUserName2"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="숭실대 왔습니당"
-                        android:id="@+id/textView8"/>
+                        android:id="@+id/storyTitle2"/>
                 </LinearLayout>
             </LinearLayout>
 

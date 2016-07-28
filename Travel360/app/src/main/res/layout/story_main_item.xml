@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/storyItemLayout"
+        android:layout_weight="1"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="2dp">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/storyFrameLayout">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/storyImageView"
+                android:src="@drawable/testimg2"
+                android:baselineAlignBottom="false"
+                android:scaleType="fitStart"
+                android:adjustViewBounds="true"/>
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:id="@+id/storyImageButton"
+                android:layout_gravity="right|bottom"/>
+        </FrameLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#9f9393"
+            android:id="@+id/storyBackgroundLayout">
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/storyUserImage"
+                android:src="@mipmap/ic_launcher"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="#f79797"
+                android:id="@+id/storyUserNameTitleLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="오탁은"
+                    android:id="@+id/storyUserName"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="숭실대 왔습니당"
+                    android:id="@+id/storyTitle"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>

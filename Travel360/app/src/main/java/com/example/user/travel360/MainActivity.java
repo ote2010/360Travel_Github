@@ -55,7 +55,15 @@ public class MainActivity extends AppCompatActivity
     - 여행기 메인화면 story_main.xml을 만들었습니다.
     아직 xml만 작성한 상태이고 java 코드는 아직 작성 못했습니다.
     추가된 파일 : story_main.xml
-   */
+
+    2016-07-29 AM 1:15 오탁은
+    - Story_fragment.java를 수정하고, story_main_item.xml을 작성했습니다.
+    앞서 story_main은 제가 구성을 잡기 위해 xml을 작성해본 것이고, story_main_item.xml은 여행기 게시글 하나하나를
+    서버에서 동적으로 가져온다고 가정하여 만든 xml입니다. (그러니까 story_main.xml은 그냥 참고용, story_main_item.xml을 실제로 사용)
+    아직 다 만든건 아니고 좀 더 작업해야합니다.
+    */
+
+
 
     //oncreate 함수 내에 존재했었던 fab 관련 코드를 삭제했습니다.
 
