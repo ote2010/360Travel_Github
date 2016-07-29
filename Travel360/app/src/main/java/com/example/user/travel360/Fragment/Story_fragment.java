@@ -18,7 +18,7 @@ import com.example.user.travel360.R;
 public class Story_fragment extends Fragment {
     View v;
 
-    int day=0, storyDayTotal=0;
+    int day=0, storyDayTotal=0; // day : 날짜, 0이면 오늘 storyDayTotal : 그 날의 여행기 게시글 개수
     int i=0; // 배열의 인덱스
     ImageView[] storyImageView = new ImageView[100]; // 여행기 대표 이미지
     Button[] storyImageButton = new Button[100]; // 대표 이미지 오른쪽 하단 작은 버튼
