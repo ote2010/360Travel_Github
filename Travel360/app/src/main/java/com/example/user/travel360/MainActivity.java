@@ -16,6 +16,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
@@ -61,6 +64,12 @@ public class MainActivity extends AppCompatActivity
     앞서 story_main은 제가 구성을 잡기 위해 xml을 작성해본 것이고, story_main_item.xml은 여행기 게시글 하나하나를
     서버에서 동적으로 가져온다고 가정하여 만든 xml입니다. (그러니까 story_main.xml은 그냥 참고용, story_main_item.xml을 실제로 사용)
     아직 다 만든건 아니고 좀 더 작업해야합니다.
+
+    2016-07-29 PM 3:11 전성일
+    - UserActivity.java(사용자 프로필 화면)를 추가하였습니다. 아직 구성은 못했습니다.
+    UserActivity를 여는 동작은 R.id.ImageView1을 통해 수행됩니다. 해당 코드가 MainActivity에 있습니다.
+    MainActivity 내 onCreateOptionsMenu에 해당 코드가 존재합니다.(이 곳이 아니라 onCreate에 하면 죽습니다. 참고바람!!)
+    코드 자체는 단순해서 주석넣진 않을게요!^^
     */
 
 
@@ -117,6 +126,13 @@ public class MainActivity extends AppCompatActivity
     {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        ImageView img = (ImageView)findViewById(R.id.imageView);
+        img.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "User Activity 열림", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(AActivity, UserActivity.class));
+            }
+        });
         return true;
     }
 
