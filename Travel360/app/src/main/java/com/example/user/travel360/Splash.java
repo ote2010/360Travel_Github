@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Toast;
 
 public class Splash extends Activity {
@@ -19,7 +18,7 @@ public class Splash extends Activity {
         ConnectivityManager manager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-    //위 세줄은 인터넷 연결 확인 관련 변수들
+        //위 세줄은 인터넷 연결 확인 관련 변수들
         if (wifi.isConnected() || mobile.isConnected()) {
         //연결되있다면 계속 진행한다.
         } else {

@@ -70,11 +70,11 @@ public class MainActivity extends AppCompatActivity
     UserActivity를 여는 동작은 R.id.ImageView1을 통해 수행됩니다. 해당 코드가 MainActivity에 있습니다.
     MainActivity 내 onCreateOptionsMenu에 해당 코드가 존재합니다.(이 곳이 아니라 onCreate에 하면 죽습니다. 참고바람!!)
     코드 자체는 단순해서 주석넣진 않을게요!^^
+    추가된 파일 : UserActivity.java, activity_user.xml
+
+    2016-07-29 PM 7:27 오탁은
+    성일이가 한거 변수명 조금 바꾸고 color.xml 바꿨습니다.
     */
-
-
-
-    //oncreate 함수 내에 존재했었던 fab 관련 코드를 삭제했습니다.
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언
     @Override
@@ -126,8 +126,8 @@ public class MainActivity extends AppCompatActivity
     {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        ImageView img = (ImageView)findViewById(R.id.imageView);
-        img.setOnClickListener(new View.OnClickListener() {
+        ImageView UserProfileImg = (ImageView)findViewById(R.id.UserProfileImageView); // 사용자 프로필 사진 클릭했을 때 동작 설정
+        UserProfileImg.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "User Activity 열림", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(AActivity, UserActivity.class));

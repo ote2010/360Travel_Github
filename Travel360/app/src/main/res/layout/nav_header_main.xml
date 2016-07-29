@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:id="@+id/imageView"
+        android:id="@+id/UserProfileImageView"
         android:src="@mipmap/ic_launcher"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"/>
@@ -19,13 +19,13 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_toEndOf="@+id/imageView">
+        android:layout_toEndOf="@+id/UserProfileImageView">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="오탁은"
-            android:id="@+id/textView"
+            android:id="@+id/UserNameTextView"
             android:textSize="20dp"
             android:layout_marginTop="30dp"/>
 
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ote2010@naver.com"
-            android:id="@+id/textView2"/>
+            android:id="@+id/UserIDTextView"/>
     </LinearLayout>
 
 </RelativeLayout>
