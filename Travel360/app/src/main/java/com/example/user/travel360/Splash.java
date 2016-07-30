@@ -32,7 +32,8 @@ public class Splash extends Activity {
             public void run() {
                 finish();       // 3 초후 이미지를 닫아버림
             }
-        }, 3000);
+        }, 100);
+        //3000 -> 100으로 잠시 바꿈. 원활한 디버깅을 위해
     }
 
 }

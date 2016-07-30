@@ -8,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -25,6 +26,11 @@ public class MainActivity extends AppCompatActivity
 {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+
+    FragmentManager manager; // 프레그먼트를 관리하는 클래스의 참조변수
+    FragmentTransaction tran; // 프레그먼트를 추가/삭제/재배치 하는 클래스의 참조변수
+    Fragment timeLabelFragment; // 프래그먼트 참조 변수
+
     /*
     2016-07-23 PM 10:09 오탁은
     1)기존의 fab로 존재했었던 메시지 버튼을 삭제하고 관련 코드를 삭제했습니다.
@@ -74,6 +80,15 @@ public class MainActivity extends AppCompatActivity
 
     2016-07-29 PM 7:27 오탁은
     성일이가 한거 변수명 조금 바꾸고 color.xml 바꿨습니다.
+
+    2016-07-31 AM 12:51 오탁은
+    여행기 메인 구성 및 코드를 완성했습니다.
+    그 과정에서 content_main.xml의 탭메뉴가 scroll이 되어서.. scroll 속성 없애버렸습니다
+    그리고 Story_fragment.java의 코드를 많이 추가하고 수정했습니다.
+    서버에서 정보를 받아온다는 가정 하에 모든 구성을 동적으로 게시하도록 코드를 짰습니다.
+    그리고 그를 위해서 time_label.xml을 추가했습니다. 자세한 사항은 주석 확인 부탁드리고 다음에 모이게 되면 자세하게 설명드리겠습니다.
+    추가된 파일 : time_label.xml
+    수정된 파일 : Story_fragment.java, fragment_story_fragment.xml, story_main_item.xml
     */
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언
@@ -83,7 +98,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         startActivity(new Intent(this, Splash.class));//앱 시작 시 Splash.java가 동작하도록 구현
+
+        /////////////////////////////로딩화면을 위한 코드///////////////////////////////////////
         AActivity = MainActivity.this;//AActivity를 정의함 이제 AActivity를 Splash에서 사용 가능
+        //////////////////////////////////////////////////////////////////////////////////////
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // 툴바
         setSupportActionBar(toolbar);
 

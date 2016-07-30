@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-              android:orientation="vertical"
+    android:orientation="vertical"
     tools:context=".Fragment.Story_fragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -17,23 +17,18 @@
         android:textSize="20dp"
         android:textColor="#ffffff"/>
 
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="     2016.07.14"
-        android:id="@+id/dayTextView"
-        android:background="#1abc9c"
-        android:textColor="#ffffff"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        android:layout_weight="1">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/mainStoryContainer">
+        </LinearLayout>
+    </ScrollView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:id="@+id/storyContainer">
-
-    </LinearLayout>
 </LinearLayout>
