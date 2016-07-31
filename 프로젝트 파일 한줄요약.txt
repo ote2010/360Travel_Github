@@ -13,4 +13,4 @@ content_main : 액션바 아래에 정의되는 공간.
 nav_header_main : 네비게이션 드로어의 맨 위 프로필?
 을 정의하는 xml
 splash : 로딩화면 xml
-
+dsada
