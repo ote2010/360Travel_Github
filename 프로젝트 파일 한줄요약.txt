@@ -11,6 +11,7 @@ app_bar_main : Toolbar로 정의한 액션바.
 content_main : 액션바 아래에 정의되는 공간.
 여기에 내용물을 채워넣으면 된다.
 nav_header_main : 네비게이션 드로어의 맨 위 프로필?
-을 정의하는 xmlsdada
+을 정의하는 xmls
 splash : 로딩화면 xml
-dsada
+
+dsadsadsadsadsadsadas
