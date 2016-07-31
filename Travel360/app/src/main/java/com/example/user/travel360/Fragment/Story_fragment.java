@@ -55,7 +55,7 @@ public class Story_fragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState)
     {
-        storyDayTotal = 20; // 서버에서 데이터를 가져왔다고 가정. 0은 오늘. storyDayTotal은 오늘 올라갈 여행기 게시글 수. 5개
+        storyDayTotal = 5; // 서버에서 데이터를 가져왔다고 가정. 0은 오늘. storyDayTotal은 오늘 올라갈 여행기 게시글 수. 5개
 
         LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
 
@@ -131,16 +131,14 @@ public class Story_fragment extends Fragment {
             else if(oddCheck && i == storyDayTotal-1) // i가 짝수이고, oddCheck가 true, i가 마지막 index일 경우
             {
                 // i가 짝수이고, 여행기 게시글 개수가 odd(홀수)이고, i의 값이 storyDayTotal-1 인 경우(즉, for문에서 마지막으로 돌때) 경우 입니다.
-                // i+1로 storyItemView를 inflate 해줍니다. 쓸려고 하는건 아니고 그냥 안보이게 하고 자리만 차지하게 하려고 합니다
-                storyItemView[i+1] = inflater.inflate(R.layout.story_main_item, v, false);
-                storyItemView[i+1].setVisibility(View.INVISIBLE); // *안보이게 합니다.* 결국 자리만 차지하게됨
+                View invisibleBlock = new View(getActivity().getApplicationContext());
 
                 // 레이아웃 비율을 맞춰줘야하니까 속성 그대로 맞춰주고
                 LinearLayout.LayoutParams invisibleItemparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-                storyItemView[i+1].setLayoutParams(invisibleItemparams);
+                invisibleBlock.setLayoutParams(invisibleItemparams);
 
                 // addView 해줍니다.
-                storyContainer[j].addView(storyItemView[i+1]);
+                storyContainer[j].addView(invisibleBlock);
                 mainStoryContainer.addView(storyContainer[j]);
                 j++;
             }
