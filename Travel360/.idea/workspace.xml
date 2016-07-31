@@ -4,7 +4,7 @@
     <shared>
       <config />
     </shared>
-    <layouts>aaaaa
+    <layouts>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
         <config>
           <theme>@style/AppTheme</theme>
