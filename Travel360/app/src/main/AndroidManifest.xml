@@ -27,11 +27,11 @@
         <activity
             android:name=".Splash"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".UserActivity"
+        <activity
+            android:name=".UserActivity"
             android:screenOrientation="portrait"
-                  android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Search_Activity"></activity>
     </application>
 
 </manifest>
