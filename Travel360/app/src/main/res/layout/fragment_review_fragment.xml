@@ -15,5 +15,21 @@
         android:layout_gravity="center_horizontal"
         android:background="#3498db"
         android:textSize="20dp"
-        android:textColor="#ffffff"/>
+        android:textColor="#ffffff"
+        android:layout_marginBottom="5dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_weight="1"
+        android:id="@+id/ReviewScrollView">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/mainReviewContainer">
+    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

@@ -26,10 +26,12 @@ public class Splash extends Activity {
             aActivity.finish();
         }//연결이 안됬다면 메인 액티비티를 종료시킨다.
         Handler hd = new Handler();
-        hd.postDelayed(new Runnable() {
+        hd.postDelayed(new Runnable()
+        {
 
             @Override
-            public void run() {
+            public void run()
+            {
                 finish();       // 3 초후 이미지를 닫아버림
             }
         }, 100);
