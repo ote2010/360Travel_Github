@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity
     PM 11:35 오탁은
     - 여행기 메인화면 story_main.xml을 만들었습니다.
     아직 xml만 작성한 상태이고 java 코드는 아직 작성 못했습니다.
-    추가된 파일 : story_main.xml
 
     2016-07-29 AM 1:15 오탁은
     - Story_fragment.java를 수정하고, story_main_item.xml을 작성했습니다.
@@ -89,6 +88,14 @@ public class MainActivity extends AppCompatActivity
     그리고 그를 위해서 time_label.xml을 추가했습니다. 자세한 사항은 주석 확인 부탁드리고 다음에 모이게 되면 자세하게 설명드리겠습니다.
     추가된 파일 : time_label.xml
     수정된 파일 : Story_fragment.java, fragment_story_fragment.xml, story_main_item.xml
+
+    2016-08-03 PM 05:33 오탁은
+    여행지 리뷰 메인 구성 및 코드를 완성했습니다.
+    Review_fragment.java 코드를 수정 및 추가했으며, 그 과정에서 ReviewListItemView.java 라는 클래스를 만들었습니다.
+    리스트 아이템을 위한 클래스입니다. 그리고 review_main_listviewItem.xml과 review_main_rankitem.xml을 추가했습니다.
+    전자는 리스트뷰 아이템을 위한 xml이고 후자는 순위권 여행지 리뷰를 위한 xml입니다.
+    수정된 파일 : Review_fragment.java
+    추가된 파일 : review_main_listviewItem.xml, review_main_rankitem.xml, ReviewListItemView.java
     */
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언

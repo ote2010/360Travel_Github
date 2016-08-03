@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.user.travel360">
+<manifest package="com.example.user.travel360"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- 인터넷 연결 상태 확인을 위해 permission을 추가하였습니다.! -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
 
     <!-- activity에 screenOrientation="portrait"를 추가하여 세로로만 동작하도록 하였습니다.! -->
     <application
@@ -19,19 +19,19 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".Splash"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".UserActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Search_Activity"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Search_Activity"/>
     </application>
 
 </manifest>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_weight="0.22"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="center_horizontal"
+        >
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:id="@+id/button3"
+            android:layout_gravity="right|bottom"/>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/reviewMainImage"
+            android:layout_gravity="center"
+            android:src="@drawable/hwiin"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="false"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/medalIcon"
+            android:layout_gravity="left|top"
+            android:src="@drawable/goldmedal"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:background="#b5000000">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. Paris"
+                android:id="@+id/rankPlaceTextview"
+                android:textColor="#ffffff"
+                android:textSize="30dp"
+                android:textStyle="italic"
+                android:layout_marginLeft="15dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4.8"
+                android:id="@+id/rankEvaluationTextview"
+                android:textColor="#ffffff"
+                android:textSize="20dp"
+                android:layout_alignTop="@+id/rankPlaceTextview"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="60dp"
+                android:layout_marginTop="3dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="&lt;별표이미지>"
+                android:id="@+id/textView14"
+                android:textColor="#ffffff"
+                android:textSize="20dp"
+                android:layout_marginRight="60dp"
+                android:layout_alignTop="@+id/rankPlaceTextview"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+    </FrameLayout>
+</LinearLayout>
