@@ -89,6 +89,12 @@ public class MainActivity extends AppCompatActivity
     그리고 그를 위해서 time_label.xml을 추가했습니다. 자세한 사항은 주석 확인 부탁드리고 다음에 모이게 되면 자세하게 설명드리겠습니다.
     추가된 파일 : time_label.xml
     수정된 파일 : Story_fragment.java, fragment_story_fragment.xml, story_main_item.xml
+
+    2016-08-03 PM 06:02 전성일
+    UserActivity에서 사용자 프로필 화면 상태 바를 없앴습니다.
+    여행기 코드 부분을 그대로 UserActivity에 적용시켰습니다.
+    activity_user.xml 을 완성하였습니다.
+    수정된 파일 : UserActivity.java, activity_user.xml
     */
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언

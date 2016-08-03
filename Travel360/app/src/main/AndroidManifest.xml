@@ -31,7 +31,7 @@
             android:name=".UserActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Search_Activity"></activity>
+        <activity android:name=".Search_Activity" />
     </application>
 
 </manifest>
