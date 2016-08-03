@@ -1,17 +1,36 @@
 <java>
+[Fragment 폴더]
+Main_fragment : 메인 프레그먼트
+Review_fragment : 여행지 리뷰 프레그먼트
+ReviewListItemView : 여행지 리뷰에 쓰이는 리스트 뷰를
+위한 클래스
+Story_fragment : 여행기 프레그먼트
 
 MainActivity : 메인액티비티. 이하 생략
+Search_Activity : 검색 화면
 Splash : 로딩화면 구현 코드
+UserActivity : 사용자 프로필 화면
 
 <layout>
 activity_main : 네비게이션 드로어가 열려진 상태.
 이 상태가 메인이다.
+activity_search :
+activity_user : 사용자 프로필 화면
 app_bar_main : Toolbar로 정의한 액션바.
 원래 메니페스트에는 NoActionBar로 정의되어있다.
 content_main : 액션바 아래에 정의되는 공간.
 여기에 내용물을 채워넣으면 된다.
+fragment_main : 안쓰는 xml인데??
+fragment_main_fragment : 메인 프레그먼트
+fragment_story_fragment : 여행기 프레그먼트
+fragment_review_fragment : 여행지 리뷰 프레그먼트
+nav_header_main : 네비게이션 드로어의 상단 부분
+review_main_listviewitem : 여행지 리뷰의 리스트뷰 
+review_main_rankitem : 여행지 리뷰의 순위권 뷰
+story_main_item : 여행기 게시글 한개에 해당하는 뷰
+time_label : 여행기에서 쓰이는 타임라벨
+
+
 nav_header_main : 네비게이션 드로어의 맨 위 프로필?
 을 정의하는 xml
 splash : 로딩화면 xml
-
-asdasdasdad
