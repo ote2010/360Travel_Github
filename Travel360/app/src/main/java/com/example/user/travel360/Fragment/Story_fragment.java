@@ -1,5 +1,6 @@
 package com.example.user.travel360.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,8 +11,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.user.travel360.R;
+import com.example.user.travel360.Splash;
+import com.example.user.travel360.StoryWriteActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -48,7 +52,13 @@ public class Story_fragment extends Fragment {
     {
         v = (ViewGroup) inflater.inflate(R.layout.fragment_story_fragment, container, false);
         mainStoryContainer = (LinearLayout)v.findViewById(R.id.mainStoryContainer);
-
+        Button writeButton = (Button)v.findViewById(R.id.writeButton);
+        writeButton.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),"ㅎㅇ",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getActivity(), StoryWriteActivity.class));
+            }
+        });
         return v;
     }
 
@@ -151,7 +161,6 @@ public class Story_fragment extends Fragment {
 
 
     }
-
 
 
 }

@@ -102,6 +102,11 @@ public class MainActivity extends AppCompatActivity
     여행기 코드 부분을 그대로 UserActivity에 적용시켰습니다.
     activity_user.xml 을 완성하였습니다.
     수정된 파일 : UserActivity.java, activity_user.xml
+
+    2016-08-04 PM 03:05 전성일
+    글쓰기 화면 구성하였습니다.
+    res/menu/story_write.xml 파일과 StoryWriteActivity.java 파일 참고 바랍니다.
+    추가된 파일 : StoryWriteActivity.java, story_write.xml
     */
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언
