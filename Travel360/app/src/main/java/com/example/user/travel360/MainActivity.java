@@ -107,6 +107,16 @@ public class MainActivity extends AppCompatActivity
     글쓰기 화면 구성하였습니다.
     res/menu/story_write.xml 파일과 StoryWriteActivity.java 파일 참고 바랍니다.
     추가된 파일 : StoryWriteActivity.java, story_write.xml
+
+    2016-8-2 김유정
+    메인 액션바에 서치버튼을 추가하여 search_Activity를 인텐트로 실행되도록 했습니다.
+
+    2016-08-05 PM 06:53 김유정
+    메인화면 구현.
+    fragment_main_fragment.xml 레이아웃 구현
+    Main_fragment() 코드상 서버구축시 읽어올수 있도록하는 함수 readText(), reacImg() 함수 선언만 해놓음
+    그리고 setmaxline() 함수를 통해 텍스트뷰에 써질 내용 라인 제한가능 ex) a.setMaxLine(5)하면 setText할 텍스트의 길이가 아무리 길어도 딱 5줄만 출력!!!!!!!!!!!!!!
+
     */
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언
