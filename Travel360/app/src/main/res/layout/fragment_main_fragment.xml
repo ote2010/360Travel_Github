@@ -62,13 +62,14 @@
                         android:text="New Text"
                         android:id="@+id/reco_storytext1"
                         android:layout_gravity="left|top" />
-
                     <Button
+                        style="?android:attr/buttonStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+"
                         android:id="@+id/reco_storybtn1"
-                        android:layout_gravity="right|bottom" />
+                        android:layout_gravity="right|bottom"/>
+                   />
                 </FrameLayout>
 
                 <FrameLayout
@@ -89,6 +90,7 @@
                         android:layout_gravity="left|top" />
 
                     <Button
+                        style="?android:attr/buttonStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+"
@@ -213,13 +215,14 @@
                         android:text="New Text"
                         android:id="@+id/reco_placeText1"
                         android:layout_gravity="left|top" />
-
                     <Button
+                        style="?android:attr/buttonStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+"
                         android:id="@+id/reco_placebtn1"
-                        android:layout_gravity="right|bottom" />
+                        android:layout_gravity="right|bottom"
+                   />
                 </FrameLayout>
 
                 <FrameLayout
@@ -240,6 +243,7 @@
                         android:layout_gravity="left|top" />
 
                     <Button
+                        style="?android:attr/buttonStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+"
