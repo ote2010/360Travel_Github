@@ -1,40 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+
 
 <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_weight="100"
+
     android:orientation="vertical"
-   >
-    <LinearLayout
-        android:layout_weight="30"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    >
 
-        android:background="@color/colorPrimary"
-        android:layout_gravity="center_horizontal">
+    <ScrollView
+        android:fillViewport="true"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView"
+        >
 
-    </LinearLayout>
+        <LinearLayout
 
-    <LinearLayout
-        android:layout_weight="30"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:layout_gravity="center_horizontal"></LinearLayout>
+            android:background="#fff6d4"
+            android:weightSum="100"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-    <LinearLayout
-        android:layout_weight="40"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:layout_gravity="right"></LinearLayout>
+            <TextView
+                android:background="#1abc9c"
+                android:textColor="#ffffff"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="2.5dp"
+                android:layout_weight="1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="오늘의 추천 여행기"
+                android:id="@+id/textView7" />
+
+            <LinearLayout
+                android:weightSum="100"
+                android:layout_weight="29"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_gravity="center_horizontal">
+
+                <FrameLayout
+                    android:background="#dedede"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginBottom="2.5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="50"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="New Text"
+                        android:id="@+id/reco_storytext1"
+                        android:layout_gravity="left|top" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        android:id="@+id/reco_storybtn1"
+                        android:layout_gravity="right|bottom" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:background="#dedede"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginBottom="2.5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="50"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="New Text"
+                        android:id="@+id/reco_storytext2"
+                        android:layout_gravity="left|top" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        android:id="@+id/reco_storybtn2"
+                        android:layout_gravity="right|bottom" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <TextView
+                android:background="#1abc9c"
+                android:textColor="#ffffff"
+                android:layout_marginTop="2.5dp"
+                android:layout_marginBottom="2.5dp"
+                android:layout_weight="1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="추천 여행가"
+                android:id="@+id/textView11" />
+
+            <LinearLayout
+
+                android:weightSum="100"
+                android:layout_weight="29"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+
+                android:layout_gravity="center_horizontal">
+
+                <FrameLayout
+                    android:background="#dedede"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginBottom="2.5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+
+                    android:layout_weight="50"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+
+                    <ImageView
+                        android:scaleType="fitStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/reco_travelerImg1"
+                        android:src="@drawable/img1"
+                        android:layout_gravity="left|center_vertical" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New Text"
+                        android:id="@+id/reco_travelertext1"
+                        android:layout_gravity="center_horizontal|top" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:background="#dedede"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginBottom="2.5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="50"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New Text"
+                        android:id="@+id/reco_travelertext2"
+                        android:layout_gravity="center_horizontal" />
+
+                    <ImageView
+                        android:scaleType="fitStart"
+                        android:src="@drawable/img1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/reco_travelerImg2"
+                        android:layout_gravity="left|center_vertical" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:background="#1abc9c"
+                android:textColor="#ffffff"
+                android:layout_marginTop="2.5dp"
+                android:layout_marginBottom="2.5dp"
+                android:layout_weight="1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="추천 여행지"
+                android:id="@+id/textView9" />
+
+            <LinearLayout
+                android:layout_weight="39"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_gravity="right">
+
+                <FrameLayout
+                    android:background="#dedede"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginBottom="2.5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="50"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="New Text"
+                        android:id="@+id/reco_placeText1"
+                        android:layout_gravity="left|top" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        android:id="@+id/reco_placebtn1"
+                        android:layout_gravity="right|bottom" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:background="#dedede"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginBottom="2.5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="50"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="New Text"
+                        android:id="@+id/reco_placeText2"
+                        android:layout_gravity="left|top" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        android:id="@+id/reco_placebtn2"
+                        android:layout_gravity="right|bottom" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
-</ScrollView>
