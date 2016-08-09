@@ -12,14 +12,6 @@
         android:layout_gravity="center_horizontal"
         >
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:id="@+id/button3"
-            android:layout_gravity="right|bottom"/>
-
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -76,6 +68,16 @@
                 android:layout_marginRight="60dp"
                 android:layout_alignTop="@+id/rankPlaceTextview"
                 android:layout_centerHorizontal="true"/>
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:id="@+id/reviewImageButton"
+                android:layout_gravity="right|bottom"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"/>
         </RelativeLayout>
     </FrameLayout>
 </LinearLayout>

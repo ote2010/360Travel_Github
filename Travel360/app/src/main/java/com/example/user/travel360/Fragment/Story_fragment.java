@@ -11,10 +11,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.user.travel360.R;
-import com.example.user.travel360.Splash;
+import com.example.user.travel360.StoryReadActivity;
 import com.example.user.travel360.StoryWriteActivity;
 
 import java.text.SimpleDateFormat;
@@ -55,7 +54,7 @@ public class Story_fragment extends Fragment {
         Button writeButton = (Button)v.findViewById(R.id.writeButton);
         writeButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"ㅎㅇ",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(),"ㅎㅇ",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(getActivity(), StoryWriteActivity.class));
             }
         });
@@ -92,11 +91,11 @@ public class Story_fragment extends Fragment {
             // 올릴 여행기 아이템 하나를 inflate합니다.
             storyItemView[i] = inflater.inflate(R.layout.story_main_item, v, false);
 
-            // Id를 받아옵니다.
-            storyImageView[i] = (ImageView)storyItemView[i].findViewById(R.id.storyImageView);
-            storyImageButton[i] = (Button) storyItemView[i].findViewById(R.id.storyImageButton);
+            // Id를 받아옵니다. 버튼으로 사용하는 것들 1)storyImageView 2)storyImageButton 3)storyUserImage
+            storyImageView[i] = (ImageView)storyItemView[i].findViewById(R.id.storyImageView); // 클릭시 여행기 본문
+            storyImageButton[i] = (Button) storyItemView[i].findViewById(R.id.storyImageButton); // 클릭시 간략화된 여행기 정보
             storyBackgroundLayout[i] = (LinearLayout) storyItemView[i].findViewById(R.id.storyBackgroundLayout);
-            storyUserImage[i] = (ImageButton) storyItemView[i].findViewById(R.id.storyUserImage);
+            storyUserImage[i] = (ImageButton) storyItemView[i].findViewById(R.id.storyUserImage); // 클릭시 트레블러 프로필
             storyUserNameTitleLayout[i] = (LinearLayout) storyItemView[i].findViewById(R.id.storyUserNameTitleLayout);
             storyUserName[i] = (TextView) storyItemView[i].findViewById(R.id.storyUserName);
             storyTitle[i] = (TextView) storyItemView[i].findViewById(R.id.storyTitle);
@@ -106,6 +105,16 @@ public class Story_fragment extends Fragment {
             storyImageView[i].setImageResource(R.drawable.testimg1);
             storyUserName[i].setText("전성일");
             storyTitle[i].setText("파오후쿰척쿰척");
+
+            storyImageView[i].setOnClickListener(new ImageView.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    //***서버에서 정보를 받아오는 코드를 작성하고, StoryReadActivity로 전달한다.***
+                    startActivity(new Intent(getActivity(), StoryReadActivity.class));
+                }
+            });
             //******************************************************************************************************
 
             // 여행기 아이템 하나의 레이아웃 속성을 지정합니다. 1번째 para : width 2번재 para : height 3번째 para : layout_weight

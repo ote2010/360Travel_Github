@@ -1,23 +1,29 @@
 package com.example.user.travel360.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.user.travel360.R;
+import com.example.user.travel360.ReviewMainReadActivity;
 
 
 public class Review_fragment extends Fragment {
     ViewGroup v;
 
     LinearLayout mainReviewContainer; // 추가할 리뷰 프레그먼트 레이아웃
+    ImageView[] reviewMainImage = new ImageView[10]; // 리뷰 순위권 메인 이미지 뷰 - 버튼 동작 설정해야함
+    Button[] reviewImageButton = new Button[10]; // 리뷰의 간략화 정보 버튼 - 버튼 동작 설정해야함
     ImageView[] medalIcon = new ImageView[10]; // 메달 아이콘 이미지뷰
     TextView[] rankPlaceTextView = new TextView[10]; // 순위권 여행지 리뷰의 장소 텍스트뷰
     TextView[] rankEvaluationTextView = new TextView[10]; // 순위권 장소의 별점 텍스트뷰
@@ -59,6 +65,8 @@ public class Review_fragment extends Fragment {
             medalIcon[i] = (ImageView) rankItem[i].findViewById(R.id.medalIcon);
             rankPlaceTextView[i] = (TextView) rankItem[i].findViewById(R.id.rankPlaceTextview);
             rankEvaluationTextView[i] = (TextView) rankItem[i].findViewById(R.id.rankEvaluationTextview);
+            reviewMainImage[i] = (ImageView) rankItem[i].findViewById(R.id.reviewMainImage);
+            reviewImageButton[i] = (Button) rankItem[i].findViewById(R.id.reviewImageButton);
 
             // i가 0이면 1등, 1이면 2등, 2이면 3등
             if(i==0)
@@ -75,8 +83,19 @@ public class Review_fragment extends Fragment {
             }
 
             //***********이 부분에서 서버에서 받아와서 바꿔주면 된다!!!!!***********
+            reviewMainImage[i].setImageResource(R.drawable.testimg1);
             rankPlaceTextView[i].setText("Sangdodong");
             rankEvaluationTextView[i].setText("4.8");
+
+            reviewMainImage[i].setOnClickListener(new ImageView.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    // ***이 부분에서 서버에게 정보를 요청하는 코드가 필요함***
+                    startActivity(new Intent(getActivity(), ReviewMainReadActivity.class));
+                }
+            });
             //*******************************************************************
 
             mainReviewContainer.addView(rankItem[i]); // 추가해주기
@@ -91,6 +110,16 @@ public class Review_fragment extends Fragment {
 
         adapter= new ReviewAdapter();
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                // ***이 부분에서 서버에게 정보를 요청하는 코드가 필요함***
+                startActivity(new Intent(getActivity(), ReviewMainReadActivity.class));
+            }
+        });
 
         mainReviewContainer.addView(listView);
 
@@ -130,5 +159,7 @@ public class Review_fragment extends Fragment {
             view.setEvaluation(ages[position]);
             return view;
         }
+
+
     }
 }

@@ -117,6 +117,10 @@ public class MainActivity extends AppCompatActivity
     Main_fragment() 코드상 서버구축시 읽어올수 있도록하는 함수 readText(), reacImg() 함수 선언만 해놓음
     그리고 setmaxline() 함수를 통해 텍스트뷰에 써질 내용 라인 제한가능 ex) a.setMaxLine(5)하면 setText할 텍스트의 길이가 아무리 길어도 딱 5줄만 출력!!!!!!!!!!!!!!
 
+    2016-08-10 AM 12:45 오탁은
+    여행기, 리뷰 클릭시 본문 액티비티를 띄우는 코드 작성.
+    세부 사항들은 아직 구현X. 코드는 성일이의 여행기 글쓰기를 많이 참고하여 따로 주석은 달지 않음.
+    추가된 파일 : ReviewMainReadAcitivity.java, StoryReadActivity,java, activity_review_main_read.xml, activity_story_read.xml
     */
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언
