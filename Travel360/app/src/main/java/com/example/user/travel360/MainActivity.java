@@ -121,6 +121,11 @@ public class MainActivity extends AppCompatActivity
     여행기, 리뷰 클릭시 본문 액티비티를 띄우는 코드 작성.
     세부 사항들은 아직 구현X. 코드는 성일이의 여행기 글쓰기를 많이 참고하여 따로 주석은 달지 않음.
     추가된 파일 : ReviewMainReadAcitivity.java, StoryReadActivity,java, activity_review_main_read.xml, activity_story_read.xml
+
+    2016-08-11 PM 02:54 오탁은
+    여행기 본문에 사진 추가. (사진이 올라온 여행기라고 가정. 뷰어 코드 작성중)
+    사진 개수에 따른 레이아웃을 결정함. 각각 업로드된 사진이 2개일때, 3개일때, 4개일때, 4개 이상일때의 경우들.
+    그에 따라 추가된 xml : story_2pic.xml, story_3pic.xml, story_4pic.xml, story_morethan4pic.xml
     */
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언
