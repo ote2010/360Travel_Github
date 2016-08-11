@@ -126,6 +126,11 @@ public class MainActivity extends AppCompatActivity
     여행기 본문에 사진 추가. (사진이 올라온 여행기라고 가정. 뷰어 코드 작성중)
     사진 개수에 따른 레이아웃을 결정함. 각각 업로드된 사진이 2개일때, 3개일때, 4개일때, 4개 이상일때의 경우들.
     그에 따라 추가된 xml : story_2pic.xml, story_3pic.xml, story_4pic.xml, story_morethan4pic.xml
+
+    2016-08-12 AM 12:04 오탁은
+    PhotoView 라이브러리를 추가했습니다. (uk.co.senab.photoView)
+    activity_imageViewer.xml로 뷰어 액티비티를 추가했으며, 포토뷰 라이브러리를 성공적으로 포팅해서
+    이미지가 줌도 되고 더블 탭하면 줌도 됩니다!!!끼야호
     */
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언

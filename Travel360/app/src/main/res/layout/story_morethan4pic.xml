@@ -14,26 +14,28 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/imageView6"
+            android:id="@+id/morepic4Viewer1"
             android:layout_gravity="right"
             android:src="@drawable/testimg1"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:layout_weight="1"
             android:layout_marginBottom="2dp"
-            android:layout_marginRight="2dp"/>
+            android:layout_marginRight="2dp"
+            android:onClick="morepic4Viewer1Click"/>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/imageView7"
+            android:id="@+id/morepic4Viewer3"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:src="@drawable/hwiin"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:layout_marginTop="2dp"
-            android:layout_marginRight="2dp"/>
+            android:layout_marginRight="2dp"
+            android:onClick="morepic4Viewer3Click"/>
     </LinearLayout>
 
     <LinearLayout
@@ -46,20 +48,22 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/imageView8"
+            android:id="@+id/morepic4Viewer2"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:src="@drawable/testimg2"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:layout_marginBottom="2dp"
-            android:layout_marginLeft="2dp"/>
+            android:layout_marginLeft="2dp"
+            android:onClick="morepic4Viewer2Click"/>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            >
 
             <ImageView
                 android:layout_width="match_parent"
@@ -79,13 +83,15 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="2dp"
                 android:layout_marginTop="2dp"
-                android:background="#ba000000">
+                android:background="#ba000000"
+                android:id="@+id/otherimg"
+                android:onClick="otherimgClick">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="+5"
-                    android:id="@+id/textView4"
+                    android:id="@+id/otherimgCount"
                     android:layout_gravity="center"
                     android:textColor="#ffffff"
                     android:textSize="40dp"/>

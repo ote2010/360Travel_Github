@@ -41,6 +41,10 @@
         <activity android:name=".ReviewMainReadActivity"
                   android:label="리뷰 본문">
         </activity>
+
+        <activity android:name=".ImageViewer"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
