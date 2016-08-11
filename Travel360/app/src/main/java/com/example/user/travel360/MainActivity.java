@@ -129,8 +129,11 @@ public class MainActivity extends AppCompatActivity
 
     2016-08-12 AM 12:04 오탁은
     PhotoView 라이브러리를 추가했습니다. (uk.co.senab.photoView)
-    activity_imageViewer.xml로 뷰어 액티비티를 추가했으며, 포토뷰 라이브러리를 성공적으로 포팅해서
+    ImageViewer.class랑 activity_imageViewer.xml로 뷰어 액티비티를 추가했으며, 포토뷰 라이브러리를 성공적으로 포팅해서
     이미지가 줌도 되고 더블 탭하면 줌도 됩니다!!!끼야호
+
+    2016-08-13 AM 01:25 오탁은
+    PhotoView 라이브러리를 이용해서 이미지 뷰어 완성했습니다. 쓸기(스와이프?)도 됩니다 끼야호
     */
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언
