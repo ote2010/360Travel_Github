@@ -5,6 +5,7 @@
     <!-- 인터넷 연결 상태 확인을 위해 permission을 추가하였습니다.! -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <!-- activity에 screenOrientation="portrait"를 추가하여 세로로만 동작하도록 하였습니다.! -->
     <application

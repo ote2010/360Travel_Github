@@ -1,6 +1,9 @@
 package com.example.user.travel360;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -13,17 +16,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 /**
  * Created by user on 2016-08-09.
  */
 public class StoryReadActivity extends AppCompatActivity
 {
-    // 이미지 업로드는 최대 10개까지 가능하도록 설정하자.
-    ImageView[] ImageViewer = new ImageView[10]; // 뷰어 이미지뷰. 최대 10개.
-
     ImageView morepic4Viewer1; // 첫번째 사진
     ImageView morepic4Viewer2; // 두번째 사진
     ImageView morepic4Viewer3; // 세번째 사진
+    ImageView morepic4Viewer4; // 네번째 사진
     FrameLayout otherimg; // +5 라고 표시되있는 프레임 레이아웃
     TextView otherimgCount; // +5 표시 텍스트뷰
 
@@ -33,7 +39,11 @@ public class StoryReadActivity extends AppCompatActivity
     LinearLayout morethanpic4container;
 
     int imgCount;
-    boolean imgUploadCheck = false;
+    Intent imgCountIntent;
+
+    //쓰레드 작업을 위한 변수
+    Bitmap[] bitmapImg = new Bitmap[10];
+    ImageLoadingTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +56,7 @@ public class StoryReadActivity extends AppCompatActivity
         morepic4Viewer1 = (ImageView) findViewById(R.id.morepic4Viewer1);
         morepic4Viewer2 = (ImageView) findViewById(R.id.morepic4Viewer2);
         morepic4Viewer3 = (ImageView) findViewById(R.id.morepic4Viewer3);
+        morepic4Viewer4 = (ImageView) findViewById(R.id.morepic4Viewer4);
         otherimg = (FrameLayout) findViewById(R.id.otherimg);
         // 서버에서 받아온 이미지 개수에 따라서 바꿔줘야 하는 이미지 개수 텍스트 뷰
         otherimgCount = (TextView) findViewById(R.id.otherimgCount);
@@ -74,7 +85,118 @@ public class StoryReadActivity extends AppCompatActivity
 
         imgCount = 7; // 서버에서 불러올 이미지가 총 7개라고 가정.
 
+        // +숫자 텍스트 알맞게 고치기
         otherimgCount.setText("+" + String.valueOf(imgCount - 3));
+
+        // 쓰레드 작업을 위한 코드
+        task = new ImageLoadingTask();
+        //이미지 URL : 1 파리 2 서울 3 프라하 4 리우데자네이루
+        task.execute("http://www.gaviota.kr/xe/files/attach/images/163/900/003/PARIS_111001_14.jpg"
+        , "http://cfd.tourtips.com/@cms_600/2015081735/gjexj7/%EC%84%9C%EC%9A%B8_%EA%B4%91%ED%99%94%EB%AC%B8%EC%9D%B4%EC%88%9C%EC%8B%A0%EB%8F%99%EC%83%81_MT(2).JPG"
+        , "http://cfile28.uf.tistory.com/image/161C0E484D996432071D6C"
+        , "http://cfile215.uf.daum.net/image/2278674F539FAD9C24F377");
+
+        imgCountIntent = new Intent(getApplicationContext(), ImageViewer.class);
+
+        // 사진을 클릭했을때 인텐트와 함께 액티비티에 전달
+        morepic4Viewer1.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                imgCountIntent.putExtra("imgCountIntent", imgCount); // 로드해야할 이미지 개수
+                imgCountIntent.putExtra("imgIndex", 1); // 로드 요청한 이미지 인덱스
+                startActivity(imgCountIntent);
+            }
+        });
+
+        morepic4Viewer2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                imgCountIntent.putExtra("imgCountIntent", imgCount); // 로드해야할 이미지 개수
+                imgCountIntent.putExtra("imgIndex", 1); // 로드 요청한 이미지 인덱스
+                startActivity(imgCountIntent);
+            }
+        });
+
+        morepic4Viewer3.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                imgCountIntent.putExtra("imgCountIntent", imgCount); // 로드해야할 이미지 개수
+                imgCountIntent.putExtra("imgIndex", 1); // 로드 요청한 이미지 인덱스
+                startActivity(imgCountIntent);
+            }
+        });
+
+        otherimg.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                imgCountIntent.putExtra("imgCountIntent", imgCount); // 로드해야할 이미지 개수
+                imgCountIntent.putExtra("imgIndex", 1); // 로드 요청한 이미지 인덱스
+                startActivity(imgCountIntent);
+            }
+        });
+    }
+
+    // 이미지 웹 상에서 불러오기 위한 AsyncTask 쓰레드 클래스
+    private class ImageLoadingTask extends AsyncTask <String, Integer, Long>
+    {
+        //실제 스레드 작업을 작성하는 곳이며 execute에서 전달한 params 인수를 사용할 수 있다.
+        @Override
+        protected Long doInBackground(String... params)
+        {
+            try
+            {
+                for(int i = 0; i < 4; i++)
+                {
+                    URL ImageUrl = new URL(params[i]);
+                    HttpURLConnection conn = (HttpURLConnection) ImageUrl.openConnection();
+                    conn.setDoInput(true);
+                    conn.connect();
+
+                    InputStream is = conn.getInputStream();
+
+                    bitmapImg[i] = BitmapFactory.decodeStream(is);
+                }
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        //doInBackground 작업의 리턴값을 파라미터로 받으며 작업이 끝났음을 알리는 작업을 작성한다.
+        @Override
+        protected void onPostExecute(Long aLong)
+        {
+            //super.onPostExecute(aLong);
+            morepic4Viewer1.setImageBitmap(bitmapImg[0]);
+            morepic4Viewer2.setImageBitmap(bitmapImg[1]);
+            morepic4Viewer3.setImageBitmap(bitmapImg[2]);
+            morepic4Viewer4.setImageBitmap(bitmapImg[3]);
+        }
+
+        //doInBackground 시작 전에 호출되어 UI 스레드에서 실행된다. 주로 로딩바나 Progress 같은 동작 중임을 알리는 작업을 작성한다.
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+        }
+
+        //publishProgress()를 통해 호출되며 UI 스레드에서 실행된다. 파일 내려받는다고 치면 그때 퍼센티지 표시 작업 같은 걸 작성한다.
+        @Override
+        protected void onProgressUpdate(Integer... values)
+        {
+            super.onProgressUpdate(values);
+        }
     }
 
     @Override
@@ -82,7 +204,6 @@ public class StoryReadActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if(id == android.R.id.home){
-            //Toast.makeText(this, "홈 아이콘 이벤트", Toast.LENGTH_SHORT).show();
             finish();
             return true;
         }
@@ -98,71 +219,5 @@ public class StoryReadActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.story_read, menu);
         return true;
-    }
-
-    public void morepic4Viewer1Click(View v)
-    {
-        if(!imgUploadCheck)
-        {
-            ImageUpload();
-            imgUploadCheck = true;
-        }
-        startActivity(new Intent(getApplicationContext(), ImageViewer.class));
-    }
-
-    public void morepic4Viewer2Click(View v)
-    {
-        if(!imgUploadCheck)
-        {
-            ImageUpload();
-            imgUploadCheck = true;
-        }
-    }
-
-    public void morepic4Viewer3Click(View v)
-    {
-        if(!imgUploadCheck)
-        {
-            ImageUpload();
-            imgUploadCheck = true;
-        }
-    }
-
-    public void otherimgClick(View v)
-    {
-        if(!imgUploadCheck)
-        {
-            ImageUpload();
-            imgUploadCheck = true;
-        }
-    }
-
-    public void ImageUpload()
-    {
-        /* 서버 개발이 완료되면 활용할 코드. 현재는 그냥 가정해서 일일히 ImageViewer에 할당해주는 것으로 한다.
-        for(int i = 0; i < imgCount; i++)
-        {
-            ImageViewer[i] = new ImageView(getApplicationContext());
-
-            // *** 서버에서 순차적으로 이미지를 받아오는 코드를 이 부분에서 작성하여 ImageViewer[i]에 할당해준다. ***
-            ImageViewer[i].setImageResource(R.drawable.testimg1);
-            // ***********************************************************************************************
-        }
-        */
-
-        // !!!!! 가정해서 작성하는 코드 (실제로는 이렇게 안하고 위에서 처럼 할거임 !!!!!
-        for(int i = 0; i < imgCount; i++)
-        {
-            ImageViewer[i] = new ImageView(getApplicationContext());
-        }
-
-        ImageViewer[0].setImageResource(R.drawable.testimg1);
-        ImageViewer[1].setImageResource(R.drawable.testimg2);
-        ImageViewer[2].setImageResource(R.drawable.hwiin);
-        ImageViewer[3].setImageResource(R.drawable.testimg1);
-        ImageViewer[4].setImageResource(R.drawable.testimg2);
-        ImageViewer[5].setImageResource(R.drawable.hwiin);
-        ImageViewer[6].setImageResource(R.drawable.testimg1);
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
 }

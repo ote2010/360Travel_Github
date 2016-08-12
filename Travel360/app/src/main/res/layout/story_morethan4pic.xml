@@ -16,13 +16,12 @@
             android:layout_height="match_parent"
             android:id="@+id/morepic4Viewer1"
             android:layout_gravity="right"
-            android:src="@drawable/testimg1"
+            android:src="@drawable/defaultimg"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:layout_weight="1"
             android:layout_marginBottom="2dp"
-            android:layout_marginRight="2dp"
-            android:onClick="morepic4Viewer1Click"/>
+            android:layout_marginRight="2dp"/>
 
         <ImageView
             android:layout_width="match_parent"
@@ -30,12 +29,11 @@
             android:id="@+id/morepic4Viewer3"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
-            android:src="@drawable/hwiin"
+            android:src="@drawable/defaultimg"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:layout_marginTop="2dp"
-            android:layout_marginRight="2dp"
-            android:onClick="morepic4Viewer3Click"/>
+            android:layout_marginRight="2dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -51,12 +49,11 @@
             android:id="@+id/morepic4Viewer2"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
-            android:src="@drawable/testimg2"
+            android:src="@drawable/defaultimg"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:layout_marginBottom="2dp"
-            android:layout_marginLeft="2dp"
-            android:onClick="morepic4Viewer2Click"/>
+            android:layout_marginLeft="2dp"/>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -68,9 +65,9 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/imageView13"
+                android:id="@+id/morepic4Viewer4"
                 android:layout_gravity="center"
-                android:src="@drawable/testimg1"
+                android:src="@drawable/defaultimg"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
                 android:layout_weight="1"
@@ -84,8 +81,7 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginTop="2dp"
                 android:background="#ba000000"
-                android:id="@+id/otherimg"
-                android:onClick="otherimgClick">
+                android:id="@+id/otherimg">
 
                 <TextView
                     android:layout_width="wrap_content"
