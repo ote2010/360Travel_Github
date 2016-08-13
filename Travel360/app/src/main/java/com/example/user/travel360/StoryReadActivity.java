@@ -2,14 +2,23 @@ package com.example.user.travel360;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by user on 2016-08-09.
@@ -23,16 +32,22 @@ public class StoryReadActivity extends AppCompatActivity
     3) 받아온게 사진인지 그림인지. 판단해서 순차적으로 보여줘야한다.
     */
 
-    int [] sequence = {1, 0, 0, 1, 0}; // 불러올 본문의 순서. 1 : 글 0 : 사진이라고 가정. 그러니까 글 사진 사진 글 사진과 같은 순서임.
-    LinearLayout container;
-    String storyText = "메밀꽃 필 무렵\n마지막 잎새가 어쩌구저쩌구 쏼라쏼라 끼야호 으아아앙ㄴ마ㅐ아ㅐㅏㅐ바재압ㅈ";
+    int [] sequence = {1, 0, 0, 1, 0}; // 불러올 본문의 순서. 1 : 글 0 : 사진이라고 임의로 가정. 그러니까 글 사진 사진 글 사진과 같은 순서임.
+    LinearLayout container; // container에 모든 뷰들이 담긴다. 전체 틀.
+    String storyText;
 
-    LinearLayout [] textLayout = new LinearLayout[10];
-    int textLayoutCount = 0;
+    LinearLayout [] textLayout = new LinearLayout[50]; // 여행기에 추가하는 글 레이아웃 배열.
+    LinearLayout [] imageLayout = new LinearLayout[50]; // 여행기에 추가하는 사진 레이아웃 배열.
+    int textLayoutTotal = 0; // 글 레이아웃 전체 개수 변수(처음은 0. for문 돌면서 센다)
+    int imageLayoutTotal = 0; // 이미지 레이아웃 전체 개수 변수(처음은 0. for문 돌면서 센다)
 
-    int imgCount;
-    Intent imgCountIntent;
+    int stringLayoutCount, imgLayoutCount; // 여행기에서 글이 몇 개인지. 이미지가 몇 개인지 받아옴.
+    int imgCount; // 이미지 레이아웃에서 포함되는 총 이미지 개수 변수. 임의로 일단 단일변수로 가정.
+    Intent imgCountIntent; // 버튼 동작을 위한 인텐트
 
+    //쓰레드 작업을 위한 변수 (이미지를 웹에서 받아오는 작업은 백그라운드에서 진행해야해서)
+    Bitmap[] bitmapImg = new Bitmap[10]; // 웹 URL -> 비트맵 으로 저장하기 위한 비트맵 배열
+    ImageLoadingTask task; // 백그라운드 쓰레드 동작을 위한 Asynctask 클래스 객체
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -43,8 +58,22 @@ public class StoryReadActivity extends AppCompatActivity
         setContentView(R.layout.activity_story_read);
 
         container = (LinearLayout) findViewById(R.id.container);
+        task = new ImageLoadingTask();
 
-        storyUpload();
+        // 여행기 사진, 이미지가 몇개인지 받아오는 코드 필요!!! 일단 사진은 총 7개라고 가정.
+        imgCount = 7; stringLayoutCount = 2; imgLayoutCount = 3;
+
+        //*****여기서 서버에서 이미지 URL, 텍스트를 받아오는 코드를 작성***************
+        storyText = "메밀꽃 필 무렵\n마지막 잎새가 어쩌구저쩌구 쏼라쏼라 끼야호 으아아앙ㄴ마ㅐ아ㅐㅏㅐ바재압ㅈ";
+
+        storyLoad(); // 여행기 틀을 로드하는 메소드
+
+        //이미지 URL : 1 파리 2 서울 3 프라하 4 리우데자네이루
+        task.execute("http://www.gaviota.kr/xe/files/attach/images/163/900/003/PARIS_111001_14.jpg"
+                , "http://cfd.tourtips.com/@cms_600/2015081735/gjexj7/%EC%84%9C%EC%9A%B8_%EA%B4%91%ED%99%94%EB%AC%B8%EC%9D%B4%EC%88%9C%EC%8B%A0%EB%8F%99%EC%83%81_MT(2).JPG"
+                , "http://cfile28.uf.tistory.com/image/161C0E484D996432071D6C"
+                , "http://cfile215.uf.daum.net/image/2278674F539FAD9C24F377");
+        //*************************************************************************
     }
 
     @Override
@@ -69,37 +98,182 @@ public class StoryReadActivity extends AppCompatActivity
         return true;
     }
 
-
-
-    public void storyUpload()
+    // 여행기 로드 메소드 : 글인지 사진인지에 따라서 storyTextLoad, storyImageLoad 메소드로 갈림
+    public void storyLoad()
     {
-        LayoutInflater textLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         for (int i = 0; i < sequence.length; i++)
         {
             if(sequence[i] == 1) // 글
             {
-                textLayout[textLayoutCount] = (LinearLayout) textLayoutInflater.inflate(R.layout.story_textview, null);
-                TextView textLayoutTextView = (TextView) textLayout[textLayoutCount].findViewById(R.id.storyTextView);
-                textLayoutTextView.setText(storyText);
-
-                storyTextUpload(textLayout[textLayoutCount]);
-                textLayoutCount++;
+                storyTextLoad();
             }
             else // 사진
             {
-                storyImageUpload();
+                storyImageLoad();
             }
         }
     }
 
-    public void storyTextUpload(LinearLayout textLayout)
+    // 여행기 글 로드 메소드
+    public void storyTextLoad()
     {
-        container.addView(textLayout);
+        LayoutInflater textLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        textLayout[textLayoutTotal] = (LinearLayout) textLayoutInflater.inflate(R.layout.story_textview, null);
+        TextView textLayoutTextView = (TextView) textLayout[textLayoutTotal].findViewById(R.id.storyTextView);
+        textLayoutTextView.setText(storyText);
+
+        container.addView(textLayout[textLayoutTotal]);
+
+        textLayoutTotal++;
     }
 
-    public void storyImageUpload()
+    // 여행기 사진 메소드
+    public void storyImageLoad()
     {
+        LayoutInflater imageLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        if(imgCount > 4)
+        {
+            imageLayout[imageLayoutTotal] = (LinearLayout) imageLayoutInflater.inflate(R.layout.story_morethan4pic, null);
+            TextView otherimgCount = (TextView) imageLayout[imageLayoutTotal].findViewById(R.id.otherimgCount);
+            otherimgCount.setText("+" + String.valueOf(imgCount - 3));
+        }
+        else if(imgCount == 4)
+        {
+            imageLayout[imageLayoutTotal] = (LinearLayout) imageLayoutInflater.inflate(R.layout.story_4pic, null);
+        }
+        else if(imgCount == 3)
+        {
+            imageLayout[imageLayoutTotal] = (LinearLayout) imageLayoutInflater.inflate(R.layout.story_3pic, null);
+        }
+        else if(imgCount == 2)
+        {
+            imageLayout[imageLayoutTotal] = (LinearLayout) imageLayoutInflater.inflate(R.layout.story_2pic, null);
+        }
+        else if(imgCount == 1)
+        {
+            imageLayout[imageLayoutTotal] = (LinearLayout) imageLayoutInflater.inflate(R.layout.story_1pic, null);
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "Image Loading Error", Toast.LENGTH_LONG).show();
+            return;
+        }
+        container.addView(imageLayout[imageLayoutTotal]);
+        imageLayoutTotal++;
+    }
+
+    // 이미지 웹 상에서 불러오기 위한 AsyncTask 쓰레드 클래스
+    private class ImageLoadingTask extends AsyncTask<String, Integer, Long>
+    {
+        //실제 스레드 작업을 작성하는 곳이며 execute에서 전달한 params 인수를 사용할 수 있다.
+        //백그라운드에서 파라미터로 URL을 받아서 비트맵으로 이미지를 저장한다.
+        @Override
+        protected Long doInBackground(String... params)
+        {
+            try
+            {
+                // 지금은 그냥 모든 이미지 레이아웃의 이미지 개수 imgCount=7로 가정하고 짠 코드. 나중에 imgCount가 계속 바뀌면 그때 코드 바꿔야함
+                int temp;
+                if(imgCount >= 4) // 이미지가 4개 이상이면 그냥 4개만 이미지 표현해주면 됨!
+                {
+                    temp = 4;
+                }
+                else
+                {
+                    temp = imgCount;
+                }
+
+                for(int i = 0; i < temp; i++)
+                {
+                    URL ImageUrl = new URL(params[i]);
+                    HttpURLConnection conn = (HttpURLConnection) ImageUrl.openConnection();
+                    conn.setDoInput(true);
+                    conn.connect();
+
+                    InputStream is = conn.getInputStream();
+
+                    bitmapImg[i] = BitmapFactory.decodeStream(is);
+                }
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        //doInBackground 작업의 리턴값을 파라미터로 받으며 작업이 끝났음을 알리는 작업을 작성한다.
+        @Override
+        protected void onPostExecute(Long aLong)
+        {
+            for(int i = 0; i<imgLayoutCount; i++)
+            {
+                if (imgCount > 4)
+                {
+                    ImageView morepic4Viewer1 = (ImageView) imageLayout[i].findViewById(R.id.morepic4Viewer1);
+                    ImageView morepic4Viewer2 = (ImageView) imageLayout[i].findViewById(R.id.morepic4Viewer2);
+                    ImageView morepic4Viewer3 = (ImageView) imageLayout[i].findViewById(R.id.morepic4Viewer3);
+                    ImageView morepic4Viewer4 = (ImageView) imageLayout[i].findViewById(R.id.morepic4Viewer4);
+
+                    morepic4Viewer1.setImageBitmap(bitmapImg[0]);
+                    morepic4Viewer2.setImageBitmap(bitmapImg[1]);
+                    morepic4Viewer3.setImageBitmap(bitmapImg[2]);
+                    morepic4Viewer4.setImageBitmap(bitmapImg[3]);
+                }
+                else if (imgCount == 4)
+                {
+                    ImageView pic4Viewer1 = (ImageView) imageLayout[i].findViewById(R.id.pic4Viewer1);
+                    ImageView pic4Viewer2 = (ImageView) imageLayout[i].findViewById(R.id.pic4Viewer2);
+                    ImageView pic4Viewer3 = (ImageView) imageLayout[i].findViewById(R.id.pic4Viewer3);
+                    ImageView pic4Viewer4 = (ImageView) imageLayout[i].findViewById(R.id.pic4Viewer4);
+
+                    pic4Viewer1.setImageBitmap(bitmapImg[0]);
+                    pic4Viewer2.setImageBitmap(bitmapImg[1]);
+                    pic4Viewer3.setImageBitmap(bitmapImg[2]);
+                    pic4Viewer4.setImageBitmap(bitmapImg[3]);
+                }
+                else if (imgCount == 3)
+                {
+                    ImageView pic3Viewer1 = (ImageView) imageLayout[i].findViewById(R.id.pic3Viewer1);
+                    ImageView pic3Viewer2 = (ImageView) imageLayout[i].findViewById(R.id.pic3Viewer2);
+                    ImageView pic3Viewer3 = (ImageView) imageLayout[i].findViewById(R.id.pic3Viewer3);
+
+                    pic3Viewer1.setImageBitmap(bitmapImg[0]);
+                    pic3Viewer2.setImageBitmap(bitmapImg[1]);
+                    pic3Viewer3.setImageBitmap(bitmapImg[2]);
+                }
+                else if (imgCount == 2)
+                {
+                    ImageView pic2Viewer1 = (ImageView) imageLayout[i].findViewById(R.id.pic2Viewer1);
+                    ImageView pic2Viewer2 = (ImageView) imageLayout[i].findViewById(R.id.pic2Viewer2);
+
+                    pic2Viewer1.setImageBitmap(bitmapImg[0]);
+                    pic2Viewer2.setImageBitmap(bitmapImg[1]);
+                }
+                else if (imgCount == 1)
+                {
+                    ImageView pic1Viewer1 = (ImageView) imageLayout[i].findViewById(R.id.pic1Viewer1);
+
+                    pic1Viewer1.setImageBitmap(bitmapImg[0]);
+                }
+            }
+        }
+
+        //doInBackground 시작 전에 호출되어 UI 스레드에서 실행된다. 주로 로딩바나 Progress 같은 동작 중임을 알리는 작업을 작성한다.
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+        }
+
+        //publishProgress()를 통해 호출되며 UI 스레드에서 실행된다. 파일 내려받는다고 치면 그때 퍼센티지 표시 작업 같은 걸 작성한다.
+        @Override
+        protected void onProgressUpdate(Integer... values)
+        {
+            super.onProgressUpdate(values);
+        }
     }
 }

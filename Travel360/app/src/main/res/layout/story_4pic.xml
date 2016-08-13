@@ -9,14 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginBottom="4dp">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/pic4Viewer1"
             android:layout_gravity="right"
-            android:src="@drawable/testimg1"
+            android:src="@drawable/defaultimg"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:layout_weight="1"
@@ -29,7 +30,7 @@
             android:id="@+id/pic4Viewer3"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
-            android:src="@drawable/hwiin"
+            android:src="@drawable/defaultimg"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:layout_marginTop="2dp"
@@ -41,7 +42,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginBottom="4dp">
 
         <ImageView
             android:layout_width="match_parent"
@@ -49,7 +51,7 @@
             android:id="@+id/pic4Viewer2"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
-            android:src="@drawable/testimg2"
+            android:src="@drawable/defaultimg"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:layout_marginBottom="2dp"
@@ -60,7 +62,7 @@
             android:layout_height="match_parent"
             android:id="@+id/pic4Viewer4"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/testimg1"
+            android:src="@drawable/defaultimg"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:layout_weight="1"

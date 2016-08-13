@@ -142,6 +142,10 @@ public class MainActivity extends AppCompatActivity
 
 	2016-08-13 PM 06:41 오탁은
 	여행기 본문 본격적으로 작업중. 현재 글 불러오기 코드 완성.
+
+	2016-08-14 AM 05:25 오탁은
+	여행기 본문 일단 완성. 보다 세부적인건 서버 구축이 어느정도 진행되면 다시 수정하겠음.
+
     */
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언

@@ -12,18 +12,20 @@
         android:layout_height="match_parent"
         android:id="@+id/pic3Viewer1"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/testimg1"
+        android:src="@drawable/defaultimg"
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         android:layout_weight="1"
-        android:layout_marginRight="2dp"/>
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="4dp"/>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginBottom="4dp">
 
         <ImageView
             android:layout_width="match_parent"
@@ -31,7 +33,7 @@
             android:id="@+id/pic3Viewer2"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
-            android:src="@drawable/hwiin"
+            android:src="@drawable/defaultimg"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:layout_marginLeft="2dp"
@@ -43,7 +45,7 @@
             android:id="@+id/pic3Viewer3"
             android:layout_gravity="right"
             android:layout_weight="1"
-            android:src="@drawable/testimg2"
+            android:src="@drawable/defaultimg"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:layout_marginLeft="2dp"

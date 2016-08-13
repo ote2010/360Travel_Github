@@ -6,6 +6,8 @@
               android:layout_height="match_parent"
               tools:context="com.example.user.travel360.StoryReadActivity">
 
+    <ScrollView android:layout_width="match_parent"
+                android:layout_height="match_parent">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -13,5 +15,6 @@
             android:layout_gravity="center_horizontal"
             android:id="@+id/container">
         </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

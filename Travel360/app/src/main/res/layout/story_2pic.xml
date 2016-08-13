@@ -11,7 +11,7 @@
         android:id="@+id/pic2Viewer1"
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
-        android:src="@drawable/testimg2"
+        android:src="@drawable/defaultimg"
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         android:layout_marginBottom="2dp"/>
@@ -21,9 +21,10 @@
         android:layout_height="match_parent"
         android:id="@+id/pic2Viewer2"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/testimg1"
+        android:src="@drawable/defaultimg"
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         android:layout_weight="1"
-        android:layout_marginTop="2dp"/>
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="4dp"/>
 </LinearLayout>
