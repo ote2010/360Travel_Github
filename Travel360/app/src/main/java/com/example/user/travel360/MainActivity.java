@@ -139,6 +139,9 @@ public class MainActivity extends AppCompatActivity
     여행기 본문에서 사진을 웹 상에서 불러오는 코드로 수정 및 추가했습니다.
     AsyncTask를 이용해서 백그라운드에서 쓰레드로 이미지를 로드합니다.
     StoryReadActivity, ImageViewer.java 수정중
+
+	2016-08-13 PM 06:41 오탁은
+	여행기 본문 본격적으로 작업중. 현재 글 불러오기 코드 완성.
     */
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언
