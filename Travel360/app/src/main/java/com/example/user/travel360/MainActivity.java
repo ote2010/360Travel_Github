@@ -128,6 +128,31 @@ public class MainActivity extends AppCompatActivity
     여행기, 리뷰 클릭시 본문 액티비티를 띄우는 코드 작성.
     세부 사항들은 아직 구현X. 코드는 성일이의 여행기 글쓰기를 많이 참고하여 따로 주석은 달지 않음.
     추가된 파일 : ReviewMainReadAcitivity.java, StoryReadActivity,java, activity_review_main_read.xml, activity_story_read.xml
+
+    2016-08-11 PM 02:54 오탁은
+    여행기 본문에 사진 추가. (사진이 올라온 여행기라고 가정. 뷰어 코드 작성중)
+    사진 개수에 따른 레이아웃을 결정함. 각각 업로드된 사진이 2개일때, 3개일때, 4개일때, 4개 이상일때의 경우들.
+    그에 따라 추가된 xml : story_2pic.xml, story_3pic.xml, story_4pic.xml, story_morethan4pic.xml
+
+    2016-08-12 AM 12:04 오탁은
+    PhotoView 라이브러리를 추가했습니다. (uk.co.senab.photoView)
+    ImageViewer.class랑 activity_imageViewer.xml로 뷰어 액티비티를 추가했으며, 포토뷰 라이브러리를 성공적으로 포팅해서
+    이미지가 줌도 되고 더블 탭하면 줌도 됩니다!!!끼야호
+
+    2016-08-12 AM 01:25 오탁은
+    PhotoView 라이브러리를 이용해서 이미지 뷰어 완성했습니다. 쓸기(스와이프?)도 됩니다 끼야호
+
+    2016-08-13 AM 04:25 오탁은
+    여행기 본문에서 사진을 웹 상에서 불러오는 코드로 수정 및 추가했습니다.
+    AsyncTask를 이용해서 백그라운드에서 쓰레드로 이미지를 로드합니다.
+    StoryReadActivity, ImageViewer.java 수정중
+
+	2016-08-13 PM 06:41 오탁은
+	여행기 본문 본격적으로 작업중. 현재 글 불러오기 코드 완성.
+
+	2016-08-14 AM 05:25 오탁은
+	여행기 본문 일단 완성. 보다 세부적인건 서버 구축이 어느정도 진행되면 다시 수정하겠음.
+
     */
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언

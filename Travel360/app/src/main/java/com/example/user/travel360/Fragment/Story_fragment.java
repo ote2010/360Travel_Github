@@ -24,7 +24,6 @@ public class Story_fragment extends Fragment {
     ViewGroup v;
 
     int storyDayTotal=0; // storyDayTotal : 그 날의 여행기 게시글 개수
-    //static int i=0; // 여행기 item 배열의 인덱스
     static int j=0; // 여행기 컨테이너 배열의 인덱스. item이 한번에 두개 들어감
     View[] storyItemView = new View[100];
     ImageView[] storyImageView = new ImageView[100]; // 여행기 대표 이미지
@@ -51,9 +50,12 @@ public class Story_fragment extends Fragment {
     {
         v = (ViewGroup) inflater.inflate(R.layout.fragment_story_fragment, container, false);
         mainStoryContainer = (LinearLayout)v.findViewById(R.id.mainStoryContainer);
+
+        //글쓰기 버튼 동작 코드
         Button writeButton = (Button)v.findViewById(R.id.writeButton);
         writeButton.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 //Toast.makeText(getActivity(),"ㅎㅇ",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(getActivity(), StoryWriteActivity.class));
             }

@@ -5,6 +5,7 @@
     <!-- 인터넷 연결 상태 확인을 위해 permission을 추가하였습니다.! -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <!-- activity에 screenOrientation="portrait"를 추가하여 세로로만 동작하도록 하였습니다.! -->
     <application
@@ -35,6 +36,7 @@
         <activity
             android:name=".UserActivity"
             android:screenOrientation="portrait"
+<<<<<<< HEAD
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".Search_Activity"
@@ -57,6 +59,23 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
+=======
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Search_Activity" />
+        <activity android:name=".StoryWriteActivity"
+                    android:label="글쓰기">
+        </activity>
+        <activity android:name=".StoryReadActivity"
+                    android:label="여행기 본문">
+        </activity>
+        <activity android:name=".ReviewMainReadActivity"
+                  android:label="리뷰 본문">
+        </activity>
+
+        <activity android:name=".ImageViewer"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+>>>>>>> 06691c6a771c117f1d6d910cb62384afa3cd5e38
     </application>
 
 </manifest>
