@@ -3,6 +3,23 @@
 
     <!--그냥 기존에 있었던 id, icon 그대로 냅두고 item만 추가했습니다 !-->
     <group android:checkableBehavior="single">
+       <item
+
+
+           android:title=" "
+           />
+        <item
+
+
+            android:title=" "
+            />
+        <item
+
+
+            android:title=" "
+            />
+
+
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"

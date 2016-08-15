@@ -63,6 +63,7 @@
                         android:id="@+id/reco_storytext1"
                         android:layout_gravity="left|top" />
                     <Button
+
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -90,6 +91,7 @@
                         android:layout_gravity="left|top" />
 
                     <Button
+
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -135,6 +137,7 @@
                     android:layout_gravity="center_horizontal">
 
                     <ImageView
+
                         android:scaleType="fitStart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -170,6 +173,7 @@
                         android:layout_gravity="center_horizontal" />
 
                     <ImageView
+
                         android:scaleType="fitStart"
                         android:src="@drawable/img1"
                         android:layout_width="wrap_content"
@@ -216,6 +220,7 @@
                         android:id="@+id/reco_placeText1"
                         android:layout_gravity="left|top" />
                     <Button
+
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -243,6 +248,7 @@
                         android:layout_gravity="left|top" />
 
                     <Button
+
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
