@@ -81,12 +81,9 @@ public class StoryReadActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if(id == android.R.id.home){
-<<<<<<< HEAD
-            onBackPressed();
-            Toast.makeText(this, "홈 아이콘 이벤트", Toast.LENGTH_SHORT).show();
-=======
+            //onBackPressed();
+            //Toast.makeText(this, "홈 아이콘 이벤트", Toast.LENGTH_SHORT).show();
             finish();
->>>>>>> 06691c6a771c117f1d6d910cb62384afa3cd5e38
             return true;
         }
 

@@ -36,7 +36,6 @@
         <activity
             android:name=".UserActivity"
             android:screenOrientation="portrait"
-<<<<<<< HEAD
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".Search_Activity"
@@ -59,23 +58,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
-=======
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Search_Activity" />
-        <activity android:name=".StoryWriteActivity"
-                    android:label="글쓰기">
-        </activity>
-        <activity android:name=".StoryReadActivity"
-                    android:label="여행기 본문">
-        </activity>
-        <activity android:name=".ReviewMainReadActivity"
-                  android:label="리뷰 본문">
-        </activity>
-
-        <activity android:name=".ImageViewer"
+        <activity
+            android:name=".ImageViewer"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
->>>>>>> 06691c6a771c117f1d6d910cb62384afa3cd5e38
     </application>
 
 </manifest>
