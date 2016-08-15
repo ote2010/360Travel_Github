@@ -10,11 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -150,6 +150,9 @@ public class StoryReadActivity extends AppCompatActivity
         else if(imgCount == 2)
         {
             imageLayout[imageLayoutTotal] = (LinearLayout) imageLayoutInflater.inflate(R.layout.story_2pic, null);
+            //ViewGroup.LayoutParams par = imageLayout[imageLayoutTotal].getLayoutParams();
+            //par.width = getResources().getDisplayMetrics().widthPixels;
+            //par.height = par.width;
         }
         else if(imgCount == 1)
         {
@@ -222,6 +225,15 @@ public class StoryReadActivity extends AppCompatActivity
                     morepic4Viewer2.setImageBitmap(bitmapImg[1]);
                     morepic4Viewer3.setImageBitmap(bitmapImg[2]);
                     morepic4Viewer4.setImageBitmap(bitmapImg[3]);
+
+                    morepic4Viewer1.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            startActivity(new Intent(getApplicationContext(), ImageViewer.class));
+                        }
+                    });
                 }
                 else if (imgCount == 4)
                 {

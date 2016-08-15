@@ -145,7 +145,6 @@ public class MainActivity extends AppCompatActivity
 
 	2016-08-14 AM 05:25 오탁은
 	여행기 본문 일단 완성. 보다 세부적인건 서버 구축이 어느정도 진행되면 다시 수정하겠음.
-
     */
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언
@@ -202,8 +201,10 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         ImageView UserProfileImg = (ImageView)findViewById(R.id.UserProfileImageView); // 사용자 프로필 사진 클릭했을 때 동작 설정
-        UserProfileImg.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+        UserProfileImg.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
                 Toast.makeText(getApplicationContext(), "User Activity 열림", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(AActivity, UserActivity.class));
             }

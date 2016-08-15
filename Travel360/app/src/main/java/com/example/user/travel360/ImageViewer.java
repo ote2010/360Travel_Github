@@ -50,7 +50,8 @@ public class ImageViewer extends AppCompatActivity
 
     class SamplePagerAdapter extends PagerAdapter
     {
-        int[] sDrawables = new int[imgCount];
+        //int[] sDrawables = new int[imgCount];
+        int[] sDrawables = new int [] {R.drawable.testimg1, R.drawable.testimg2};
 
         @Override
         public int getCount() {
@@ -62,7 +63,6 @@ public class ImageViewer extends AppCompatActivity
             for(int i = 0; i < imgCount; i++)
             {
                 // 추후 서버 구축이 완료되면 Url을 통해서 Drawable을 얻어올 계획.
-
             }
 
             PhotoView photoView = new PhotoView(container.getContext());
