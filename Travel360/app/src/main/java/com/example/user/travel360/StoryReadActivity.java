@@ -11,10 +11,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -45,6 +47,8 @@ public class StoryReadActivity extends AppCompatActivity
     int imgCount; // 이미지 레이아웃에서 포함되는 총 이미지 개수 변수. 임의로 일단 단일변수로 가정.
     Intent imgCountIntent; // 버튼 동작을 위한 인텐트
 
+    String [] imgUriArray;
+
     //쓰레드 작업을 위한 변수 (이미지를 웹에서 받아오는 작업은 백그라운드에서 진행해야해서)
     Bitmap[] bitmapImg = new Bitmap[10]; // 웹 URL -> 비트맵 으로 저장하기 위한 비트맵 배열
     ImageLoadingTask task; // 백그라운드 쓰레드 동작을 위한 Asynctask 클래스 객체
@@ -68,12 +72,19 @@ public class StoryReadActivity extends AppCompatActivity
 
         storyLoad(); // 여행기 틀을 로드하는 메소드
 
-        //이미지 URL : 1 파리 2 서울 3 프라하 4 리우데자네이루
-        task.execute("http://www.gaviota.kr/xe/files/attach/images/163/900/003/PARIS_111001_14.jpg"
-                , "http://cfd.tourtips.com/@cms_600/2015081735/gjexj7/%EC%84%9C%EC%9A%B8_%EA%B4%91%ED%99%94%EB%AC%B8%EC%9D%B4%EC%88%9C%EC%8B%A0%EB%8F%99%EC%83%81_MT(2).JPG"
-                , "http://cfile28.uf.tistory.com/image/161C0E484D996432071D6C"
-                , "http://cfile215.uf.daum.net/image/2278674F539FAD9C24F377");
+        //이미지 URL : 1 파리 2 서울 3 프라하 4 리우데자네이루 5 뉴욕 6 만리장성 7 런던
+        imgUriArray = new String [] {"http://www.gaviota.kr/xe/files/attach/images/163/900/003/PARIS_111001_14.jpg"
+        , "http://cfd.tourtips.com/@cms_600/2015081735/gjexj7/%EC%84%9C%EC%9A%B8_%EA%B4%91%ED%99%94%EB%AC%B8%EC%9D%B4%EC%88%9C%EC%8B%A0%EB%8F%99%EC%83%81_MT(2).JPG"
+        , "http://cfile28.uf.tistory.com/image/161C0E484D996432071D6C"
+        , "http://cfile215.uf.daum.net/image/2278674F539FAD9C24F377"
+        , "http://www.languagebookings.com/uploads/img/up/new_york_1.jpg"
+        , "http://cfile214.uf.daum.net/image/2422054951ADACDD34188E"
+        , "http://www.glion.co.kr/wp-content/themes/glion2/images/img_sub_top/banner-glion-life-in-london-page1280.jpg"};
+
+        task.execute(imgUriArray);
         //*************************************************************************
+
+        imgCountIntent = new Intent(getApplicationContext(), ImageViewer.class);
     }
 
     @Override
@@ -152,9 +163,10 @@ public class StoryReadActivity extends AppCompatActivity
         else if(imgCount == 2)
         {
             imageLayout[imageLayoutTotal] = (LinearLayout) imageLayoutInflater.inflate(R.layout.story_2pic, null);
-            //ViewGroup.LayoutParams par = imageLayout[imageLayoutTotal].getLayoutParams();
-            //par.width = getResources().getDisplayMetrics().widthPixels;
-            //par.height = par.width;
+            ViewGroup.LayoutParams par = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            par.width = getResources().getDisplayMetrics().widthPixels;
+            par.height = par.width;
+            imageLayout[imageLayoutTotal].setLayoutParams(par);
         }
         else if(imgCount == 1)
         {
@@ -233,7 +245,43 @@ public class StoryReadActivity extends AppCompatActivity
                         @Override
                         public void onClick(View v)
                         {
-                            startActivity(new Intent(getApplicationContext(), ImageViewer.class));
+                            imgCountIntent.putExtra("imgCountIntent", imgCount);
+                            imgCountIntent.putExtra("imgIndex", 1);
+                            imgCountIntent.putExtra("imgUri", imgUriArray);
+                            startActivity(imgCountIntent);
+                        }
+                    });
+                    morepic4Viewer2.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            imgCountIntent.putExtra("imgCountIntent", imgCount);
+                            imgCountIntent.putExtra("imgIndex", 2);
+                            imgCountIntent.putExtra("imgUri", imgUriArray);
+                            startActivity(imgCountIntent);
+                        }
+                    });
+                    morepic4Viewer3.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            imgCountIntent.putExtra("imgCountIntent", imgCount);
+                            imgCountIntent.putExtra("imgIndex", 3);
+                            imgCountIntent.putExtra("imgUri", imgUriArray);
+                            startActivity(imgCountIntent);
+                        }
+                    });
+                    morepic4Viewer4.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            imgCountIntent.putExtra("imgCountIntent", imgCount);
+                            imgCountIntent.putExtra("imgIndex", 4);
+                            imgCountIntent.putExtra("imgUri", imgUriArray);
+                            startActivity(imgCountIntent);
                         }
                     });
                 }

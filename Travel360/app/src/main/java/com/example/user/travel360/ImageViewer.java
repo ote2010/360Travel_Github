@@ -1,8 +1,11 @@
 package com.example.user.travel360;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.example.user.travel360.uk.co.senab.photoview.PhotoView;
+
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * Created by user on 2016-08-11.
@@ -19,6 +25,11 @@ public class ImageViewer extends AppCompatActivity
     ImageView[] ViewerImg = new ImageView[10];
     Intent getIntent;
     int imgCount, imgIndex; // 로드할 이미지 개수, 이미지 인덱스
+    String [] imgUriStringArray;
+    Drawable [] imgDrawable;
+
+    SamplePagerAdapter adapter;
+    ViewerImgLoading task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,34 +53,57 @@ public class ImageViewer extends AppCompatActivity
         getIntent = new Intent(this.getIntent());
         imgCount = getIntent.getIntExtra("imgCountIntent", -1);
         imgIndex = getIntent.getIntExtra("imgIndex", -1);
+        imgUriStringArray = getIntent.getStringArrayExtra("imgUri");
+        imgDrawable = new Drawable[imgCount];
 
-        //ViewPager mViewPager = (ViewPager) findViewById(R.id.view_pager);
-        //SamplePagerAdapter adapter = new SamplePagerAdapter();
-        //mViewPager.setAdapter(adapter);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        adapter = new SamplePagerAdapter();
+        mViewPager.setAdapter(adapter);
+        mViewPager.setOffscreenPageLimit(10);
+
+        /*
+        Thread imgLoading = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                for(int i = 0; i<imgUriStringArray.length; i++)
+                {
+                    imgDrawable[i] = LoadImageFromWeb(imgUriStringArray[i]);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        };
+        */
+
+        ViewerImgLoading task = new ViewerImgLoading();
+        task.execute();
+        //imgLoading.start();
+
+
+
     }
 
     class SamplePagerAdapter extends PagerAdapter
     {
-        //int[] sDrawables = new int[imgCount];
-        int[] sDrawables = new int [] {R.drawable.testimg1, R.drawable.testimg2};
-
         @Override
         public int getCount() {
-            return sDrawables.length;
+            return imgDrawable.length;
+        }
+
+        @Override
+        public int getItemPosition(Object object)
+        {
+            return POSITION_NONE;
         }
 
         @Override
         public View instantiateItem(ViewGroup container, int position) {
-            for(int i = 0; i < imgCount; i++)
-            {
-                // 추후 서버 구축이 완료되면 Url을 통해서 Drawable을 얻어올 계획.
-            }
-
             PhotoView photoView = new PhotoView(container.getContext());
-            photoView.setImageResource(sDrawables[position]);
+            //photoView.setImageResource(sDrawables[position]);
+            photoView.setImageDrawable(imgDrawable[position]);
 
             container.addView(photoView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
             return photoView;
         }
 
@@ -82,38 +116,70 @@ public class ImageViewer extends AppCompatActivity
         public boolean isViewFromObject(View view, Object object) {
             return view.equals(object);
         }
-
     }
 
-    /*
-    public void ImageUpload()
+    private Drawable LoadImageFromWeb(String url) {
+        try {
+            InputStream is = (InputStream) new URL(url).getContent();
+            Drawable d = Drawable.createFromStream(is, "src name");
+            return d;
+        } catch (Exception e) {
+            System.out.println("Exc=" + e);
+            return null;
+        }
+    }
+
+    private class ViewerImgLoading extends AsyncTask<String, Integer, Long>
     {
-        /* 서버 개발이 완료되면 활용할 코드. 현재는 그냥 가정해서 일일히 ImageViewer에 할당해주는 것으로 한다.
-        for(int i = 0; i < imgCount; i++)
+        @Override
+        protected Long doInBackground(String... params)
         {
-            ImageViewer[i] = new ImageView(getApplicationContext());
-
-            // *** 서버에서 순차적으로 이미지를 받아오는 코드를 이 부분에서 작성하여 ImageViewer[i]에 할당해준다. ***
-            ImageViewer[i].setImageResource(R.drawable.testimg1);
-            // ***********************************************************************************************
-        }
-        */
-
-    /*
-        // !!!!! 가정해서 작성하는 코드 (실제로는 이렇게 안하고 위에서 처럼 할거임 !!!!!
-        for(int i = 0; i < imgCount; i++)
-        {
-            ViewerImg[i] = new ImageView(getApplicationContext());
+            for(int i = 0; i<imgUriStringArray.length; i++)
+            {
+                imgDrawable[i] = LoadImageFromWeb(imgUriStringArray[i]);
+                publishProgress();
+            }
+             return null;
         }
 
-        ViewerImg[0].setImageResource(R.drawable.testimg1);
-        ViewerImg[1].setImageResource(R.drawable.testimg2);
-        ViewerImg[2].setImageResource(R.drawable.hwiin);
-        ViewerImg[3].setImageResource(R.drawable.testimg1);
-        ViewerImg[4].setImageResource(R.drawable.testimg2);
-        ViewerImg[5].setImageResource(R.drawable.hwiin);
-        ViewerImg[6].setImageResource(R.drawable.testimg1);
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        @Override
+        protected void onProgressUpdate(Integer... values)
+        {
+            super.onProgressUpdate(values);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+
+    /*async http 라이브러리 사용법
+    public void onButtonClicked(View v)
+    {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://kibox327.cafe24.com/login.do?id=a&password=1234", new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                // called before request is started
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody)
+            {
+                String byteToString = new String(responseBody,0,responseBody.length);
+                test.setText(byteToString);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+            }
+
+
+            @Override
+            public void onRetry(int retryNo) {
+                // called when request is retried
+            }
+        });
     }
     */
 }
