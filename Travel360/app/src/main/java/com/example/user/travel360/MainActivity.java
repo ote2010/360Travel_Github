@@ -150,8 +150,11 @@ public class MainActivity extends AppCompatActivity
 	2016-08-14 AM 05:25 오탁은
 	여행기 본문 일단 완성. 보다 세부적인건 서버 구축이 어느정도 진행되면 다시 수정하겠음.
 
-	2016-08-16 PM 07:00
+	2016-08-16 PM 07:00 오탁은
 	이미지 뷰어 완성. 뷰페이저 때문에 으아 내 멘탈
+
+	2016-08-19 PM 05:14 오탁은
+	글쓰기 라이브러리 포팅
 	*/
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언

@@ -40,16 +40,6 @@ public class ImageViewer extends AppCompatActivity
 
         setContentView(R.layout.activity_imageviewer);
 
-        /* 테스트 코드. 이미지 뷰를 사용했을 때
-        ImageView mImageView = (ImageView) findViewById(R.id.ViewerImage);
-
-        Drawable bitmap = getResources().getDrawable(R.drawable.testimg1);
-        mImageView.setImageDrawable(bitmap);
-
-        PhotoViewAttacher mAttacher = new PhotoViewAttacher(mImageView);
-
-        mAttacher.update();
-        */
         getIntent = new Intent(this.getIntent());
         imgCount = getIntent.getIntExtra("imgCountIntent", -1);
         imgIndex = getIntent.getIntExtra("imgIndex", -1);
@@ -60,28 +50,10 @@ public class ImageViewer extends AppCompatActivity
         adapter = new SamplePagerAdapter();
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(10);
-
-        /*
-        Thread imgLoading = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                for(int i = 0; i<imgUriStringArray.length; i++)
-                {
-                    imgDrawable[i] = LoadImageFromWeb(imgUriStringArray[i]);
-                    adapter.notifyDataSetChanged();
-                }
-            }
-        };
-        */
+        mViewPager.setCurrentItem(imgIndex-1);
 
         ViewerImgLoading task = new ViewerImgLoading();
         task.execute();
-        //imgLoading.start();
-
-
-
     }
 
     class SamplePagerAdapter extends PagerAdapter
