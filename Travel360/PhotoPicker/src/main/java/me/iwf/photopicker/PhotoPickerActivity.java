@@ -58,7 +58,7 @@ public class PhotoPickerActivity extends AppCompatActivity {
 
     Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(mToolbar);
-    setTitle(R.string.__picker_title);
+    setTitle(R.string.__picker_title); // 툴바 이름 지정
 
     ActionBar actionBar = getSupportActionBar();
 

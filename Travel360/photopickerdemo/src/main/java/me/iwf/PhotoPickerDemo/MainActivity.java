@@ -156,23 +156,27 @@ public class MainActivity extends AppCompatActivity {
     boolean readStoragePermissionGranted = readStoragePermissionState != PackageManager.PERMISSION_GRANTED;
     boolean cameraPermissionGranted = cameraPermissionState != PackageManager.PERMISSION_GRANTED;
 
-    if (readStoragePermissionGranted || cameraPermissionGranted) {
-
+    if (readStoragePermissionGranted || cameraPermissionGranted)
+    {
       // Should we show an explanation?
-      if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-          Manifest.permission.READ_EXTERNAL_STORAGE)
-          || ActivityCompat.shouldShowRequestPermissionRationale(this,
-          Manifest.permission.CAMERA)) {
+      if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+          || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA))
+      {
 
         // Show an expanation to the user *asynchronously* -- don't block
         // this thread waiting for the user's response! After the user
         // sees the explanation, try again to request the permission.
 
-      } else {
+      }
+      else
+      {
         String[] permissions;
-        if (readStoragePermissionGranted && cameraPermissionGranted) {
+        if (readStoragePermissionGranted && cameraPermissionGranted)
+        {
           permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA };
-        } else {
+        }
+        else
+        {
           permissions = new String[] {
               readStoragePermissionGranted ? Manifest.permission.READ_EXTERNAL_STORAGE
                   : Manifest.permission.CAMERA
@@ -183,7 +187,9 @@ public class MainActivity extends AppCompatActivity {
                 requestCode.ordinal());
       }
 
-    } else {
+    }
+    else
+    {
       // Permission granted
       onClick(requestCode.mViewId);
     }
@@ -199,8 +205,8 @@ public class MainActivity extends AppCompatActivity {
         //PhotoPickerIntent.setColumn(intent, 4);
         //startActivityForResult(intent, REQUEST_CODE);
         PhotoPicker.builder()
-            .setPhotoCount(9)
-            .setGridColumnCount(4)
+            .setPhotoCount(9) // 최대 몇개까지 고를 수 있는지
+            .setGridColumnCount(4) // 4개가 한 줄
             .start(this);
         break;
       }

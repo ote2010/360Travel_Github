@@ -1,20 +1,44 @@
 package com.example.user.travel360;
 
-import android.graphics.Color;
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
+import com.example.user.travel360.RecyclerItemClickListener.OnItemClickListener;
+import java.util.ArrayList;
+import java.util.List;
 
-import jp.wasabeef.richeditor.RichEditor;
+import me.iwf.photopicker.PhotoPicker;
+import me.iwf.photopicker.PhotoPreview;
 
 public class StoryWriteActivity extends AppCompatActivity {
 
-    private RichEditor mEditor;
-    private TextView mPreview;
+    enum RequestCode {
+        pickphotoButton(R.id.pickphotoButton);
+
+        @IdRes
+        final int mViewId;
+        RequestCode(@IdRes int viewId) {
+            mViewId = viewId;
+        }
+    }
+
+    RecyclerView recyclerView;
+    PhotoAdapter photoAdapter;
+
+    ArrayList<String> selectedPhotos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,179 +46,146 @@ public class StoryWriteActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_story_write);
 
-        mEditor = (RichEditor) findViewById(R.id.editor);
-        mEditor.setEditorHeight(200);
-        mEditor.setEditorFontSize(22);
-        mEditor.setEditorFontColor(Color.RED);
-        //mEditor.setEditorBackgroundColor(Color.BLUE);
-        //mEditor.setBackgroundColor(Color.BLUE);
-        //mEditor.setBackgroundResource(R.drawable.bg);
-        mEditor.setPadding(10, 10, 10, 10);
-        //mEditor.setBackground("https://raw.githubusercontent.com/wasabeef/art/master/chip.jpg");
-        mEditor.setPlaceholder("Insert text here...");
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        photoAdapter = new PhotoAdapter(this, selectedPhotos);
 
-        mPreview = (TextView) findViewById(R.id.preview);
-        mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
-            @Override public void onTextChange(String text) {
-                mPreview.setText(text);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
+        recyclerView.setAdapter(photoAdapter);
+
+        findViewById(R.id.pickphotoButton).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                checkPermission(RequestCode.pickphotoButton);
             }
         });
 
-        findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.undo();
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(View view, int position)
+            {
+                PhotoPreview.builder()
+                        .setPhotos(selectedPhotos)
+                        .setCurrentItem(position)
+                        .start(StoryWriteActivity.this);
             }
-        });
+        }));
+    }
 
-        findViewById(R.id.action_redo).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.redo();
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK &&
+                (requestCode == PhotoPicker.REQUEST_CODE || requestCode == PhotoPreview.REQUEST_CODE)) {
+
+            List<String> photos = null;
+            if (data != null) {
+                photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
             }
-        });
+            selectedPhotos.clear();
 
-        findViewById(R.id.action_bold).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setBold();
+            if (photos != null) {
+
+                selectedPhotos.addAll(photos);
             }
-        });
+            photoAdapter.notifyDataSetChanged();
+        }
+    }
 
-        findViewById(R.id.action_italic).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setItalic();
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        // If request is cancelled, the result arrays are empty.
+        if (grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            // permission was granted, yay!
+            onClick(RequestCode.values()[requestCode].mViewId);
+
+        } else {
+            // permission denied, boo! Disable the
+            // functionality that depends on this permission.
+            Toast.makeText(this, "No read storage permission! Cannot perform the action.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public boolean shouldShowRequestPermissionRationale(@NonNull String permission) {
+        switch (permission) {
+            case Manifest.permission.READ_EXTERNAL_STORAGE:
+            case Manifest.permission.CAMERA:
+                // No need to explain to user as it is obvious
+                return false;
+            default:
+                return true;
+        }
+    }
+
+    private void checkPermission(@NonNull RequestCode requestCode) {
+
+        int readStoragePermissionState = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int cameraPermissionState = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+
+        boolean readStoragePermissionGranted = readStoragePermissionState != PackageManager.PERMISSION_GRANTED;
+        boolean cameraPermissionGranted = cameraPermissionState != PackageManager.PERMISSION_GRANTED;
+
+        if (readStoragePermissionGranted || cameraPermissionGranted)
+        {
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA))
+            {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
             }
-        });
-
-        findViewById(R.id.action_subscript).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setSubscript();
+            else
+            {
+                String[] permissions;
+                if (readStoragePermissionGranted && cameraPermissionGranted)
+                {
+                    permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA };
+                }
+                else
+                {
+                    permissions = new String[] {
+                            readStoragePermissionGranted ? Manifest.permission.READ_EXTERNAL_STORAGE
+                                    : Manifest.permission.CAMERA
+                    };
+                }
+                ActivityCompat.requestPermissions(this,
+                        permissions,
+                        requestCode.ordinal());
             }
-        });
 
-        findViewById(R.id.action_superscript).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setSuperscript();
+        }
+        else
+        {
+            // Permission granted
+            onClick(requestCode.mViewId);
+        }
+    }
+
+    private void onClick(@IdRes int viewId) {
+
+        switch (viewId) {
+            case R.id.pickphotoButton: {
+                //Intent intent = new Intent(MainActivity.this, PhotoPickerActivity.class);
+                //PhotoPickerIntent.setPhotoCount(intent, 9);
+                //PhotoPickerIntent.setColumn(intent, 4);
+                //startActivityForResult(intent, REQUEST_CODE);
+                PhotoPicker.builder()
+                        .setPhotoCount(9) // 최대 몇개까지 고를 수 있는지
+                        .setGridColumnCount(4) // 4개가 한 줄
+                        .start(this);
+                break;
             }
-        });
-
-        findViewById(R.id.action_strikethrough).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setStrikeThrough();
-            }
-        });
-
-        findViewById(R.id.action_underline).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setUnderline();
-            }
-        });
-
-        findViewById(R.id.action_heading1).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setHeading(1);
-            }
-        });
-
-        findViewById(R.id.action_heading2).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setHeading(2);
-            }
-        });
-
-        findViewById(R.id.action_heading3).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setHeading(3);
-            }
-        });
-
-        findViewById(R.id.action_heading4).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setHeading(4);
-            }
-        });
-
-        findViewById(R.id.action_heading5).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setHeading(5);
-            }
-        });
-
-        findViewById(R.id.action_heading6).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setHeading(6);
-            }
-        });
-
-        findViewById(R.id.action_txt_color).setOnClickListener(new View.OnClickListener() {
-            private boolean isChanged;
-
-            @Override public void onClick(View v) {
-                mEditor.setTextColor(isChanged ? Color.BLACK : Color.RED);
-                isChanged = !isChanged;
-            }
-        });
-
-        findViewById(R.id.action_bg_color).setOnClickListener(new View.OnClickListener() {
-            private boolean isChanged;
-
-            @Override public void onClick(View v) {
-                mEditor.setTextBackgroundColor(isChanged ? Color.TRANSPARENT : Color.YELLOW);
-                isChanged = !isChanged;
-            }
-        });
-
-        findViewById(R.id.action_indent).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setIndent();
-            }
-        });
-
-        findViewById(R.id.action_outdent).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setOutdent();
-            }
-        });
-
-        findViewById(R.id.action_align_left).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setAlignLeft();
-            }
-        });
-
-        findViewById(R.id.action_align_center).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setAlignCenter();
-            }
-        });
-
-        findViewById(R.id.action_align_right).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setAlignRight();
-            }
-        });
-
-        findViewById(R.id.action_blockquote).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setBlockquote();
-            }
-        });
-
-        findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.insertImage("http://www.1honeywan.com/dachshund/image/7.21/7.21_3_thumb.JPG",
-                        "dachshund");
-            }
-        });
-
-        findViewById(R.id.action_insert_link).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.insertLink("https://github.com/wasabeef", "wasabeef");
-            }
-        });
-        findViewById(R.id.action_insert_checkbox).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.insertTodo();
-            }
-        });
+        }
     }
 
     @Override
@@ -220,7 +211,7 @@ public class StoryWriteActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.story_write,menu);
+        getMenuInflater().inflate(R.menu.story_write, menu);
         return true;
     }
 }

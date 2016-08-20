@@ -155,6 +155,10 @@ public class MainActivity extends AppCompatActivity
 
 	2016-08-19 PM 05:14 오탁은
 	글쓰기 라이브러리 포팅
+
+	2016-08-21 AM 03:25 오탁은
+	글쓰기에서 필요한 사진 업로드 기능 라이브러리 포팅. StoryWriteActivity, activity_story_write 참조
+	RecyclerItemClickListener, PhotoAdapter 추가, 그 외 자잘하게 메니페스트, style.xml, dimen.xml 수정 및 추가함
 	*/
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언
