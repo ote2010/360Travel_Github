@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="__picker_title">Images</string>
+  <string name="__picker_title">이미지 업로드</string>
   <string name="__picker_delete">Delete</string>
   <string name="__picker_done">Done</string>
   <string name="__picker_done_with_count">Done(%1$d/%2$d)</string>

@@ -43,6 +43,7 @@ public class StoryWriteActivity extends AppCompatActivity {
 
     //RecyclerView recyclerView;
     RecyclerView[] recyclerView = new RecyclerView[50];
+    int mRecyclerIndex;
     PhotoAdapter photoAdapter;
     LinearLayout container;
     Button textinsertButton;
@@ -67,6 +68,7 @@ public class StoryWriteActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 recyclerView[recyclerViewCount] = new RecyclerView(getApplicationContext());
+                recyclerView[recyclerViewCount].setTag(recyclerViewCount);
                 selectedPhotos.add(new ArrayList<String>());
                 photoAdapter = new PhotoAdapter(getApplicationContext(), selectedPhotos.get(recyclerViewCount));
 
@@ -75,10 +77,18 @@ public class StoryWriteActivity extends AppCompatActivity {
                 recyclerView[recyclerViewCount].addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new OnItemClickListener()
                 {
                     @Override
+                    public void getRecyclerView(RecyclerView view)
+                    {
+                        RecyclerView mRecyclerView = new RecyclerView(getApplicationContext());
+                        mRecyclerView = view;
+                        mRecyclerIndex = (int) mRecyclerView.getTag();
+                    }
+
+                    @Override
                     public void onItemClick(View view, int position)
                     {
                         PhotoPreview.builder()
-                                .setPhotos(selectedPhotos.get(recyclerViewCount))
+                                .setPhotos(selectedPhotos.get(mRecyclerIndex))
                                 .setCurrentItem(position)
                                 .start(StoryWriteActivity.this);
                     }
@@ -87,7 +97,6 @@ public class StoryWriteActivity extends AppCompatActivity {
                 checkPermission(RequestCode.pickphotoButton);
                 recyclerView[recyclerViewCount].setBackgroundColor(Color.rgb(255, 164, 78));
                 container.addView(recyclerView[recyclerViewCount]);
-                //recyclerViewCount++;
             }
         });
 
@@ -107,21 +116,22 @@ public class StoryWriteActivity extends AppCompatActivity {
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //if (resultCode == RESULT_OK &&
+        //        (requestCode == PhotoPicker.REQUEST_CODE || requestCode == PhotoPreview.REQUEST_CODE)) {
         if (resultCode == RESULT_OK &&
-                (requestCode == PhotoPicker.REQUEST_CODE || requestCode == PhotoPreview.REQUEST_CODE)) {
-
+                (requestCode == PhotoPicker.REQUEST_CODE)) {
             List<String> photos = null;
-            if (data != null) {
+            if (data != null)
+            {
                 photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
             }
             selectedPhotos.get(recyclerViewCount).clear();
-
-            if (photos != null) {
-
+            if (photos != null) // 업로드를 성공적으로 추가하고 돌아온 경우
+            {
                 selectedPhotos.get(recyclerViewCount).addAll(photos);
+                recyclerViewCount++;
             }
             photoAdapter.notifyDataSetChanged();
-            recyclerViewCount++;
         }
     }
 

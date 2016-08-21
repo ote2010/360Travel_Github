@@ -162,6 +162,8 @@ public class MainActivity extends AppCompatActivity
 
 	2016-08-22 AM 01:49 오탁은
 	대강의 글쓰기 구성 완료
+	AM 04:34
+	잡다한 버그들 수정
 	*/
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언
