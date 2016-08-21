@@ -3,6 +3,7 @@ package com.example.user.travel360;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -15,8 +16,13 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import com.example.user.travel360.RecyclerItemClickListener.OnItemClickListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,10 +41,16 @@ public class StoryWriteActivity extends AppCompatActivity {
         }
     }
 
-    RecyclerView recyclerView;
+    //RecyclerView recyclerView;
+    RecyclerView[] recyclerView = new RecyclerView[50];
     PhotoAdapter photoAdapter;
+    LinearLayout container;
+    Button textinsertButton;
+    EditText[] editText = new EditText[50];
+    int editTextCount = 0;
+    int recyclerViewCount = 0;
 
-    ArrayList<String> selectedPhotos = new ArrayList<>();
+    ArrayList<ArrayList <String>> selectedPhotos = new ArrayList <ArrayList<String>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,32 +58,50 @@ public class StoryWriteActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_story_write);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        photoAdapter = new PhotoAdapter(this, selectedPhotos);
-
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
-        recyclerView.setAdapter(photoAdapter);
+        container = (LinearLayout) findViewById(R.id.container);
+        textinsertButton = (Button) findViewById(R.id.textinsertButton);
 
         findViewById(R.id.pickphotoButton).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
+                recyclerView[recyclerViewCount] = new RecyclerView(getApplicationContext());
+                selectedPhotos.add(new ArrayList<String>());
+                photoAdapter = new PhotoAdapter(getApplicationContext(), selectedPhotos.get(recyclerViewCount));
+
+                recyclerView[recyclerViewCount].setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
+                recyclerView[recyclerViewCount].setAdapter(photoAdapter);
+                recyclerView[recyclerViewCount].addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new OnItemClickListener()
+                {
+                    @Override
+                    public void onItemClick(View view, int position)
+                    {
+                        PhotoPreview.builder()
+                                .setPhotos(selectedPhotos.get(recyclerViewCount))
+                                .setCurrentItem(position)
+                                .start(StoryWriteActivity.this);
+                    }
+                }));
+
                 checkPermission(RequestCode.pickphotoButton);
+                recyclerView[recyclerViewCount].setBackgroundColor(Color.rgb(255, 164, 78));
+                container.addView(recyclerView[recyclerViewCount]);
+                //recyclerViewCount++;
             }
         });
 
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new OnItemClickListener()
+        textinsertButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onItemClick(View view, int position)
+            public void onClick(View v)
             {
-                PhotoPreview.builder()
-                        .setPhotos(selectedPhotos)
-                        .setCurrentItem(position)
-                        .start(StoryWriteActivity.this);
+                editText[editTextCount] = new EditText(getApplicationContext());
+                editText[editTextCount].setBackgroundColor(Color.rgb(182, 252, 154));
+                container.addView(editText[editTextCount]);
+                editTextCount++;
             }
-        }));
+        });
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -84,13 +114,14 @@ public class StoryWriteActivity extends AppCompatActivity {
             if (data != null) {
                 photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
             }
-            selectedPhotos.clear();
+            selectedPhotos.get(recyclerViewCount).clear();
 
             if (photos != null) {
 
-                selectedPhotos.addAll(photos);
+                selectedPhotos.get(recyclerViewCount).addAll(photos);
             }
             photoAdapter.notifyDataSetChanged();
+            recyclerViewCount++;
         }
     }
 
