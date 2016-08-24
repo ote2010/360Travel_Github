@@ -174,10 +174,12 @@ public class MainActivity extends AppCompatActivity
 	AM 04:34
 	잡다한 버그들 수정
 
-
 	2016-08-23 김유정
 	자동로그인 완성 -> sharedpreperence를 이용하여 Join에서 아이디를 저장후 저장된 아이디와 확인한다음 로그인
 	그다음 어플이 실행 될때마다 자동로그인
+
+	2016-08-25 오탁은
+	여행기쓰기 롱클릭하면 다이얼로그 창 구현.
 	*/
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언

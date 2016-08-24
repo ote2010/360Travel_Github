@@ -1,6 +1,8 @@
 package com.example.user.travel360;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -47,6 +49,7 @@ public class StoryWriteActivity extends AppCompatActivity {
     PhotoAdapter photoAdapter;
     LinearLayout container;
     Button textinsertButton;
+    Button imageinsertButton;
     EditText[] editText = new EditText[50];
     int editTextCount = 0;
     int recyclerViewCount = 0;
@@ -69,7 +72,9 @@ public class StoryWriteActivity extends AppCompatActivity {
         storystring = new String();
         contentsSequence = new int [50];
 
-        findViewById(R.id.pickphotoButton).setOnClickListener(new View.OnClickListener()
+        imageinsertButton = (Button)findViewById(R.id.pickphotoButton);
+
+        imageinsertButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -84,7 +89,7 @@ public class StoryWriteActivity extends AppCompatActivity {
                 recyclerView[recyclerViewCount].addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new OnItemClickListener()
                 {
                     @Override
-                    public void getRecyclerView(RecyclerView view)
+                    public void getRecyclerView(RecyclerView view) // 리사이클러뷰의 Index 알아내기
                     {
                         RecyclerView mRecyclerView = new RecyclerView(getApplicationContext());
                         mRecyclerView = view;
@@ -98,6 +103,34 @@ public class StoryWriteActivity extends AppCompatActivity {
                                 .setPhotos(selectedPhotos.get(mRecyclerIndex))
                                 .setCurrentItem(position)
                                 .start(StoryWriteActivity.this);
+                    }
+
+                    @Override
+                    public void onItemLongClick()
+                    {
+                        AlertDialog.Builder alt_recycler = new AlertDialog.Builder(StoryWriteActivity.this);
+                        alt_recycler.setMessage("선택한 이미지 레이아웃을 삭제하시겠습니까?").setCancelable(
+                                false).setPositiveButton("네", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+
+                            }
+                        }).setNegativeButton("아니오", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+
+                            }
+                        });
+
+                        AlertDialog alert = alt_recycler.create();
+                        alert.setTitle("삭제하기");
+                        alert.setIcon(R.drawable.__picker_ic_delete_black_24dp);
+                        alert.show();
+                        //mRecyclerIndex를 알아냈으니 이걸로 지우는 작업을 해보자.
                     }
                 }));
 
@@ -118,6 +151,38 @@ public class StoryWriteActivity extends AppCompatActivity {
                 editText[editTextCount].setBackgroundColor(Color.rgb(182, 252, 154));
                 editText[editTextCount].setTextColor(Color.BLACK);
                 container.addView(editText[editTextCount]);
+
+                editText[editTextCount].setOnLongClickListener(new View.OnLongClickListener()
+                {
+                    @Override
+                    public boolean onLongClick(View v)
+                    {
+                        AlertDialog.Builder alt_recycler = new AlertDialog.Builder(StoryWriteActivity.this);
+                        alt_recycler.setMessage("선택한 텍스트 레이아웃을 삭제하시겠습니까?").setCancelable(
+                                false).setPositiveButton("네", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+
+                            }
+                        }).setNegativeButton("아니오", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+
+                            }
+                        });
+
+                        AlertDialog alert = alt_recycler.create();
+                        alert.setTitle("삭제하기");
+                        alert.setIcon(R.drawable.__picker_ic_delete_black_24dp);
+                        alert.show();
+                        return false;
+                    }
+                });
+
                 contentsSequence[contentsSeqIndex] = 1;
                 contentsSeqIndex++;
 

@@ -25,7 +25,6 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
   private Context mContext;
 
-
   public PhotoAdapter(Context mContext, ArrayList<String> photoPaths) {
     this.photoPaths = photoPaths;
     this.mContext = mContext;
