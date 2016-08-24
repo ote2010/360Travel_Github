@@ -1,5 +1,6 @@
 package com.example.user.travel360;
 
+import android.app.Application;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -56,10 +57,16 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = EditEmail.getText().toString();
                 String pw = EditPW.getText().toString();
-Toast.makeText(getApplicationContext(),ApplicationController.getInstance().getEmail()+"/"+ApplicationController.getInstance().getPw(),Toast.LENGTH_SHORT).show();
-                if(ApplicationController.getInstance().getEmail().equals(email) && ApplicationController.getInstance().getPw().equals(pw)){
-                    Toast.makeText(getApplicationContext(),"끼야야야!!!!!!!!!!",Toast.LENGTH_SHORT).show();
+
+
+
+                if (ApplicationController.getInstance().getEmail().equals(email) && ApplicationController.getInstance().getPw().equals(pw)) {
+                    ApplicationController.getInstance().setLoginFlag(true);
+                    finish();
+                }else{
+                    Toast.makeText(getApplicationContext(), "아이디나 패스워드가 옳지 않습니다.", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 

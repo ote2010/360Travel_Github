@@ -23,11 +23,7 @@ public class Search_Activity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-     //   requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-     //   requestWindowFeature(Window.FEATURE_CONTEXT_MENU);
-     //이게 최선   requestWindowFeature(Window.FEATURE_ACTION_BAR);
-     //   requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-       // requestWindowFeature(Window.);
+
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         //팝업 외부 뿌연 효과
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
@@ -38,6 +34,8 @@ public class Search_Activity extends Activity {
 
 
         setContentView(R.layout.activity_search_);
+
+        init();
     }
 
     public void init() {
@@ -68,7 +66,7 @@ public class Search_Activity extends Activity {
         });
     }
 
-    public void onClick(View v) {
+  /*  public void onClick(View v) {
         if (v.getId() == R.id.Tstory || v.getId() == R.id.Review || v.getId() == R.id.Tag) {
             chk1 = true;
         } else if (v.getId() == R.id.New_turn || v.getId() == R.id.Detail_date || v.getId() == R.id.Reco_turn) {
@@ -81,5 +79,5 @@ public class Search_Activity extends Activity {
             Btn_List2.setVisibility(View.VISIBLE);
         }
 
-    }
+    }*/
 }

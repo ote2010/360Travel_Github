@@ -1,5 +1,6 @@
 package com.example.user.travel360;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,17 +23,22 @@ import java.util.regex.Pattern;
 //import retrofit.Response;
 //import retrofit.Retrofit;
 
-public class JoinActivity extends AppCompatActivity {
+public class JoinActivity extends Activity {
     String gender, email, pw, name;
     Button BtnSumit;
     EditText EditEmail, EditPW, EditName, EditBirth;
     RadioGroup radioGroup;
+    SharedPreferences pref;
+    SharedPreferences.Editor edit;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
         init();
+        initSharedPre();
+
         onClickBtn();
 
     }
@@ -50,30 +56,36 @@ public class JoinActivity extends AppCompatActivity {
 
     public void onClickBtn() {
 
-        gender = checkRadioBtn();
-        email = EditBirth.getText().toString();
-        pw = EditPW.getText().toString();
-        name = EditName.getText().toString();
+
+
+
 
         BtnSumit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  if (email.equals("") || pw.equals("")
-                        ||name.equals("") || EditBirth.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(), "정보를 다 입력해주세요.", Toast.LENGTH_SHORT).show();
 
-                } else {
 
-                    ApplicationController.getInstance().setEmail(email);
-                    ApplicationController.getInstance().setPw(pw);
-                    ApplicationController.getInstance().setGender(gender);
-                    finish();
+                gender = checkRadioBtn();
+                email = EditEmail.getText().toString();
+                pw = EditPW.getText().toString();
+                name = EditName.getText().toString();
 
-                }*/
-                ApplicationController.getInstance().setEmail(email);
-                ApplicationController.getInstance().setPw(pw);
-                ApplicationController.getInstance().setGender(gender);
-                finish();
+                if (!checkEditBoxInput()) {
+                    return;
+                }
+                SharedPreferences.Editor editor = pref.edit();
+                editor.clear();
+                editor.commit();
+
+                edit.putString("email", email);
+                edit.putString("pw", pw);
+                edit.putString("gender", gender);
+                edit.commit();
+                ApplicationController.getInstance().initSharedPreference();
+                //    Toast.makeText(getApplicationContext(), ApplicationController.getInstance().getEmail() + "/" +ApplicationController.getInstance().getGender() + "/" + ApplicationController.getInstance().getPw(), Toast.LENGTH_SHORT).show();
+
+
+
             }
         });
 
@@ -95,5 +107,28 @@ public class JoinActivity extends AppCompatActivity {
         }
         */
     }
+    private void initSharedPre() {
+        //SharedPreferences 초기화
+        pref = getSharedPreferences("login", 0);
+        edit = pref.edit();
+    }
+    private boolean checkEditBoxInput() {
+        if (TextUtils.isEmpty(EditEmail.getText().toString())) {
+            Toast.makeText(getApplicationContext(), "이메일을 입력하세요.", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (TextUtils.isEmpty(EditName.getText().toString())) {
+            Toast.makeText(getApplicationContext(), "이름을 입력하세요.", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (TextUtils.isEmpty(EditPW.getText().toString())) {
+            Toast.makeText(getApplicationContext(), "비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (TextUtils.isEmpty(EditBirth.getText().toString())) {
+            Toast.makeText(getApplicationContext(), "생일을 입력하세요.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
+
 
 }

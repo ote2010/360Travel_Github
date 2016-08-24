@@ -18,9 +18,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,7 +33,8 @@ public class MainActivity extends AppCompatActivity
     LinearLayout LayoutNoLogin;
     ImageView UserProfileImg;
     NavigationView navigationView;
-
+    TextView UserNameTextView, UserIDTextView;
+    Button Logoutbtn;
     FragmentManager manager; // 프레그먼트를 관리하는 클래스의 참조변수
     FragmentTransaction tran; // 프레그먼트를 추가/삭제/재배치 하는 클래스의 참조변수
     Fragment timeLabelFragment; // 프래그먼트 참조 변수
@@ -164,6 +168,11 @@ public class MainActivity extends AppCompatActivity
 	대강의 글쓰기 구성 완료
 	AM 04:34
 	잡다한 버그들 수정
+
+
+	2016-08-23 김유정
+	자동로그인 완성 -> sharedpreperence를 이용하여 Join에서 아이디를 저장후 저장된 아이디와 확인한다음 로그인
+	그다음 어플이 실행 될때마다 자동로그인
 	*/
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언
@@ -201,7 +210,7 @@ public class MainActivity extends AppCompatActivity
         init();
 
         onClickBtn();
-
+        isLoginned();
     }
 
 
@@ -212,7 +221,9 @@ public class MainActivity extends AppCompatActivity
         LayoutLogin = (RelativeLayout) findViewById(R.id.LayoutLogin);
         LayoutNoLogin = (LinearLayout) findViewById(R.id.LayoutNoLogin);
         UserProfileImg = (ImageView) findViewById(R.id.UserProfileImageView);
-
+        UserNameTextView = (TextView) findViewById(R.id.UserNameTextView);
+        UserIDTextView = (TextView) findViewById(R.id.UserIDTextView);
+        Logoutbtn = (Button) findViewById(R.id.Logoutbtn);
     }
 
     @Override
@@ -243,6 +254,38 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        Logoutbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutNoLogin.setVisibility(View.VISIBLE);
+                LayoutLogin.setVisibility(View.INVISIBLE);
+                ApplicationController.getInstance().setLoginFlag(false);
+            }
+        });
+        UserProfileImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),UserActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+//로그인 됐는지 확인 -> 로그인 돼있으면 ApplicationController에 있는 LoginFlag가 true로 바뀜
+
+    public void isLoginned() {
+        Boolean LoginFlag = ApplicationController.getInstance().getLoginFlag();
+        if (LoginFlag == true) {
+            Toast.makeText(getApplicationContext(),
+                    "" + ApplicationController.getInstance().getLoginFlag(),
+                    Toast.LENGTH_SHORT).show();
+
+            UserIDTextView.setText(ApplicationController.getInstance().getEmail());
+
+            LayoutNoLogin.setVisibility(View.INVISIBLE);
+            LayoutLogin.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
@@ -338,5 +381,18 @@ public class MainActivity extends AppCompatActivity
             }
             return null;
         }
+    }
+
+    //자동 로그인을 위해 엑티비티가 다시 시작될때 로그인 돼있었는지 확인(start인지 resume인지 확인후 하나는 지워야함..)
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isLoginned();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isLoginned();
     }
 }

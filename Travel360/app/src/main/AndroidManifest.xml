@@ -52,7 +52,7 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".Search_Activity"
-            android:theme="@android:style/Theme.Translucent" />
+            android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".StoryWriteActivity"
             android:label="글쓰기"></activity>

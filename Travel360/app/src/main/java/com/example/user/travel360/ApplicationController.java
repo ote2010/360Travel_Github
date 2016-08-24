@@ -4,6 +4,7 @@ package com.example.user.travel360;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 public class ApplicationController extends Application {
     // 사용자 속성 저장
@@ -11,10 +12,8 @@ public class ApplicationController extends Application {
     String pw;
     String gender;
     int point;
-    Boolean description;
-    String search_res = "111"; // NFC로 찾고자 하는 매장 이름
+    Boolean LoginFlag = false;
 
-    double latitude, longitude;
 
     // SharedPreference
     SharedPreferences pref;
@@ -32,36 +31,28 @@ public class ApplicationController extends Application {
         return instance;
     }
 
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPw(String Pw) {
-        this.pw = Pw;
+    public void setLoginFlag(boolean a) {
+        this.LoginFlag = a;
 
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-
+    public Boolean getLoginFlag() {
+        return LoginFlag;
     }
 
     public String getEmail() {
-        return email;
+
+        return this.email;
     }
 
     public String getPw() {
-        return pw;
+        return this.pw;
     }
 
     public String getGender() {
         return gender;
     }
 
-    public Boolean getDescription() {
-        return description;
-    }
 
     public int getPoint() {
         return point;
@@ -87,10 +78,10 @@ public class ApplicationController extends Application {
         pref = getSharedPreferences("login", 0);
         edit = pref.edit();
 
-        email = pref.getString("email", null);              // 이메일 가져옴
-        pw = pref.getString("pw", null);                      // 비밀번호 가져옴
-        gender = pref.getString("gender", null);           // 성별 가져옴
-
+        this.email = pref.getString("email", email);              // 이메일 가져옴
+        this.pw = pref.getString("pw", pw);                      // 비밀번호 가져옴
+        this.gender = pref.getString("gender", null);           // 성별 가져옴
+        // Toast.makeText(getApplicationContext(), pw + "/" + gender + "/" + email, Toast.LENGTH_SHORT).show();
 
         pref = getSharedPreferences("option", 0);
         edit = pref.edit();
