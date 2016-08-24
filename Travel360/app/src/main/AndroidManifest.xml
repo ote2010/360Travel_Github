@@ -55,7 +55,10 @@
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".StoryWriteActivity"
-            android:label="글쓰기"></activity>
+            android:label="여행기 쓰기"></activity>
+        <activity
+            android:name=".StoryWrite2Activity"
+            android:label="여행기 쓰기"></activity>
         <activity
             android:name=".StoryReadActivity"
             android:label="여행기 본문"></activity>
@@ -84,6 +87,7 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:name="me.iwf.photopicker.PhotoPagerActivity"
             />
+
 
     </application>
 

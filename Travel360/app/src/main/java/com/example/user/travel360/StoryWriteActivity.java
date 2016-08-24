@@ -31,7 +31,8 @@ import me.iwf.photopicker.PhotoPreview;
 
 public class StoryWriteActivity extends AppCompatActivity {
 
-    enum RequestCode {
+    enum RequestCode
+    {
         pickphotoButton(R.id.pickphotoButton);
 
         @IdRes
@@ -41,7 +42,6 @@ public class StoryWriteActivity extends AppCompatActivity {
         }
     }
 
-    //RecyclerView recyclerView;
     RecyclerView[] recyclerView = new RecyclerView[50];
     int mRecyclerIndex;
     PhotoAdapter photoAdapter;
@@ -53,6 +53,10 @@ public class StoryWriteActivity extends AppCompatActivity {
 
     ArrayList<ArrayList <String>> selectedPhotos = new ArrayList <ArrayList<String>>();
 
+    String storystring;
+    int [] contentsSequence; // 이미지는 0, 텍스트는 1
+    int contentsSeqIndex = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +65,9 @@ public class StoryWriteActivity extends AppCompatActivity {
 
         container = (LinearLayout) findViewById(R.id.container);
         textinsertButton = (Button) findViewById(R.id.textinsertButton);
+
+        storystring = new String();
+        contentsSequence = new int [50];
 
         findViewById(R.id.pickphotoButton).setOnClickListener(new View.OnClickListener()
         {
@@ -97,6 +104,8 @@ public class StoryWriteActivity extends AppCompatActivity {
                 checkPermission(RequestCode.pickphotoButton);
                 recyclerView[recyclerViewCount].setBackgroundColor(Color.rgb(255, 164, 78));
                 container.addView(recyclerView[recyclerViewCount]);
+                contentsSequence[contentsSeqIndex] = 0;
+                contentsSeqIndex++;
             }
         });
 
@@ -107,19 +116,25 @@ public class StoryWriteActivity extends AppCompatActivity {
             {
                 editText[editTextCount] = new EditText(getApplicationContext());
                 editText[editTextCount].setBackgroundColor(Color.rgb(182, 252, 154));
+                editText[editTextCount].setTextColor(Color.BLACK);
                 container.addView(editText[editTextCount]);
+                contentsSequence[contentsSeqIndex] = 1;
+                contentsSeqIndex++;
+
+                editText[editTextCount].requestFocus();
+
                 editTextCount++;
             }
         });
     }
 
-    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
-
         //if (resultCode == RESULT_OK &&
         //        (requestCode == PhotoPicker.REQUEST_CODE || requestCode == PhotoPreview.REQUEST_CODE)) {
-        if (resultCode == RESULT_OK &&
-                (requestCode == PhotoPicker.REQUEST_CODE)) {
+        if (resultCode == RESULT_OK && (requestCode == PhotoPicker.REQUEST_CODE))
+        {
             List<String> photos = null;
             if (data != null)
             {
@@ -129,16 +144,72 @@ public class StoryWriteActivity extends AppCompatActivity {
             if (photos != null) // 업로드를 성공적으로 추가하고 돌아온 경우
             {
                 selectedPhotos.get(recyclerViewCount).addAll(photos);
+                /*
+                // **********업로드 코드 ************** 여러개 연속 보낼땐 for문으로 감싸기
+                String path = new String();
+                path = selectedPhotos.get(recyclerViewCount).get(0);
+
+                File myFile = new File(path);
+                RequestParams params = new RequestParams();
+                try
+                {
+                    params.put("image", myFile);
+                }
+                catch (FileNotFoundException e)
+                {
+
+                }
+
+                params.put("seq", 1);
+
+                AsyncHttpClient client = new AsyncHttpClient();
+                client.post("http://kibox327.cafe24.com/uploadImage.do", params, new AsyncHttpResponseHandler()
+                {
+                    @Override
+                    public void onStart()
+                    {
+                        // called before request is started
+                        //Toast.makeText(getApplicationContext(), "START!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] response)
+                    {
+                        // called when response HTTP status is "200 OK"
+                        //Toast.makeText(getApplicationContext(), new String(response), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "업로드 성공!", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e)
+                    {
+                        // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                        //Toast.makeText(getApplicationContext(), new String(errorResponse), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "업로드가 실패했습니다! 다시 시도해주세요!", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onRetry(int retryNo)
+                    {
+                        // called when request is retried
+                    }
+                });
+
+                // ****************************************
+                */
                 recyclerViewCount++;
             }
             photoAdapter.notifyDataSetChanged();
         }
+
+        if (resultCode == RESULT_CANCELED && (requestCode == PhotoPicker.REQUEST_CODE))
+        {
+            container.removeView(recyclerView[recyclerViewCount]);
+        }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         // If request is cancelled, the result arrays are empty.
         if (grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -199,9 +270,7 @@ public class StoryWriteActivity extends AppCompatActivity {
                                     : Manifest.permission.CAMERA
                     };
                 }
-                ActivityCompat.requestPermissions(this,
-                        permissions,
-                        requestCode.ordinal());
+                ActivityCompat.requestPermissions(this, permissions, requestCode.ordinal());
             }
 
         }
@@ -229,22 +298,46 @@ public class StoryWriteActivity extends AppCompatActivity {
         }
     }
 
+    public void storyLoadToString()
+    {
+        int imgTemp = 0;
+        int textTemp = 0;
+        for (int i = 0; i < contentsSeqIndex; i++)
+        {
+            switch(contentsSequence[i])
+            {
+                // 이미지
+                case 0 :
+                    storystring = storystring + "ImgGroup" + imgTemp + "\n";
+                    for(int j = 0; j < selectedPhotos.get(imgTemp).size(); j++)
+                    {
+                        storystring = storystring + selectedPhotos.get(imgTemp).get(j) + "\n";
+                    }
+                    imgTemp++;
+                    break;
+                // 텍스트
+                case 1 :
+                    storystring = storystring + "TxtGroup" + textTemp + "\n";
+                    storystring = storystring + editText[textTemp].getText() + "\n";
+                    textTemp++;
+                    break;
+            }
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if(id == android.R.id.home){
-            //Toast.makeText(this,"홈 아이콘 이벤트",Toast.LENGTH_SHORT).show();
             finish();
             return true;
         }
-
-        if(id == R.id.saveButton){
-            Toast.makeText(this,"임시 저장 이벤트", Toast.LENGTH_SHORT).show();
-            return true;
-        }
         if(id == R.id.nextPage){
-            Toast.makeText(this,"다음 글쓰기 이벤트", Toast.LENGTH_SHORT).show();
+            storyLoadToString();
+            Intent intent = new Intent(getApplicationContext(), StoryWrite2Activity.class);
+            intent.putExtra("write2", storystring);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
