@@ -82,7 +82,7 @@ public class ApplicationController extends Application {
         this.pw = pref.getString("pw", pw);                      // 비밀번호 가져옴
         this.gender = pref.getString("gender", null);           // 성별 가져옴
         // Toast.makeText(getApplicationContext(), pw + "/" + gender + "/" + email, Toast.LENGTH_SHORT).show();
-
+        this.LoginFlag = pref.getBoolean("LoginFlag", true);
         pref = getSharedPreferences("option", 0);
         edit = pref.edit();
 

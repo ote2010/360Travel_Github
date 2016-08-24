@@ -2,6 +2,7 @@ package com.example.user.travel360;
 
 import android.app.Application;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,6 +23,8 @@ import android.widget.Toast;
 public class LoginActivity extends AppCompatActivity {
     Button BtnJoin, BtnLogin;
     EditText EditEmail, EditPW;
+    SharedPreferences pref;
+    SharedPreferences.Editor edit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +64,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 if (ApplicationController.getInstance().getEmail().equals(email) && ApplicationController.getInstance().getPw().equals(pw)) {
-                    ApplicationController.getInstance().setLoginFlag(true);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.clear();
+                    editor.commit();
+
+                    edit.putBoolean("LoginFlag", true);
+                    //ApplicationController.getInstance().setLoginFlag(true);
                     finish();
                 }else{
                     Toast.makeText(getApplicationContext(), "아이디나 패스워드가 옳지 않습니다.", Toast.LENGTH_SHORT).show();

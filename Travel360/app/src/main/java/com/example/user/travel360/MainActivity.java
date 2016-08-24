@@ -2,6 +2,7 @@ package com.example.user.travel360;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -27,6 +28,10 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    SharedPreferences pref;
+    SharedPreferences.Editor edit;
+
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     RelativeLayout LayoutLogin;
@@ -207,6 +212,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+
+
         init();
 
         onClickBtn();
@@ -260,7 +267,12 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 LayoutNoLogin.setVisibility(View.VISIBLE);
                 LayoutLogin.setVisibility(View.INVISIBLE);
-                ApplicationController.getInstance().setLoginFlag(false);
+             //   SharedPreferences.Editor editor = pref.edit();
+               // editor.clear();
+                //editor.commit();
+
+               // edit.putBoolean("LoginFlag", false);
+               ApplicationController.getInstance().setLoginFlag(false);
             }
         });
         UserProfileImg.setOnClickListener(new View.OnClickListener() {
