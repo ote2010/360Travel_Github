@@ -44,21 +44,22 @@ public class StoryWriteActivity extends AppCompatActivity {
         }
     }
 
-    RecyclerView[] recyclerView = new RecyclerView[50];
+    ArrayList <RecyclerView> recyclerView = new ArrayList <RecyclerView> ();
+    //RecyclerView[] recyclerView = new RecyclerView[50];
     int mRecyclerIndex;
     PhotoAdapter photoAdapter;
     LinearLayout container;
     Button textinsertButton;
     Button imageinsertButton;
-    EditText[] editText = new EditText[50];
-    int editTextCount = 0;
-    int recyclerViewCount = 0;
+    ArrayList <EditText> editText = new ArrayList <EditText> ();
+    //EditText[] editText = new EditText[50];
+    //int editTextCount = 0;
+    //int recyclerViewCount = 0;
 
     ArrayList<ArrayList <String>> selectedPhotos = new ArrayList <ArrayList<String>>();
 
     String storystring;
-    int [] contentsSequence; // 이미지는 0, 텍스트는 1
-    int contentsSeqIndex = 0;
+    ArrayList <Integer> contentsSequence; // 이미지는 0, 텍스트는 1
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,7 @@ public class StoryWriteActivity extends AppCompatActivity {
         textinsertButton = (Button) findViewById(R.id.textinsertButton);
 
         storystring = new String();
-        contentsSequence = new int [50];
+        contentsSequence = new ArrayList <Integer> ();
 
         imageinsertButton = (Button)findViewById(R.id.pickphotoButton);
 
@@ -79,28 +80,27 @@ public class StoryWriteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                recyclerView[recyclerViewCount] = new RecyclerView(getApplicationContext());
-                recyclerView[recyclerViewCount].setTag(recyclerViewCount);
+                final RecyclerView listItem = new RecyclerView (getApplicationContext());
+                //recyclerView[recyclerViewCount] = new RecyclerView(getApplicationContext());
+                //listItem.setTag(recyclerView.size());
+                //recyclerView[recyclerViewCount].setTag(recyclerViewCount);
+
                 selectedPhotos.add(new ArrayList<String>());
-                photoAdapter = new PhotoAdapter(getApplicationContext(), selectedPhotos.get(recyclerViewCount));
+                photoAdapter = new PhotoAdapter(getApplicationContext(), selectedPhotos.get(recyclerView.size()));
 
-                recyclerView[recyclerViewCount].setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
-                recyclerView[recyclerViewCount].setAdapter(photoAdapter);
-                recyclerView[recyclerViewCount].addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new OnItemClickListener()
+                listItem.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
+                //recyclerView[recyclerViewCount].setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
+                listItem.setAdapter(photoAdapter);
+                //recyclerView[recyclerViewCount].setAdapter(photoAdapter);
+
+                listItem.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new OnItemClickListener()
+                        //recyclerView[recyclerViewCount].addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new OnItemClickListener()
                 {
-                    @Override
-                    public void getRecyclerView(RecyclerView view) // 리사이클러뷰의 Index 알아내기
-                    {
-                        RecyclerView mRecyclerView = new RecyclerView(getApplicationContext());
-                        mRecyclerView = view;
-                        mRecyclerIndex = (int) mRecyclerView.getTag();
-                    }
-
                     @Override
                     public void onItemClick(View view, int position)
                     {
                         PhotoPreview.builder()
-                                .setPhotos(selectedPhotos.get(mRecyclerIndex))
+                                .setPhotos(selectedPhotos.get(recyclerView.indexOf(listItem)))
                                 .setCurrentItem(position)
                                 .start(StoryWriteActivity.this);
                     }
@@ -110,14 +110,32 @@ public class StoryWriteActivity extends AppCompatActivity {
                     {
                         AlertDialog.Builder alt_recycler = new AlertDialog.Builder(StoryWriteActivity.this);
                         alt_recycler.setMessage("선택한 이미지 레이아웃을 삭제하시겠습니까?").setCancelable(
-                                false).setPositiveButton("네", new DialogInterface.OnClickListener()
+                                false).setNegativeButton("네", new DialogInterface.OnClickListener() // 위치를 바꾸기 위해 서로 반대로
                         {
                             @Override
                             public void onClick(DialogInterface dialog, int which)
                             {
+                                container.removeView(listItem);
+                                selectedPhotos.remove(recyclerView.indexOf(listItem));
 
+                                int temp = 0;
+                                for(int i=0; i<contentsSequence.size(); i++)
+                                {
+                                    if(contentsSequence.get(i) == 0)
+                                    {
+                                        if(temp == recyclerView.indexOf(listItem))
+                                        {
+                                            contentsSequence.remove(i);
+                                            break;
+                                        }
+                                        else
+                                            temp++;
+                                    }
+                                }
+
+                                recyclerView.remove(recyclerView.indexOf(listItem));
                             }
-                        }).setNegativeButton("아니오", new DialogInterface.OnClickListener()
+                        }).setPositiveButton("아니오", new DialogInterface.OnClickListener()
                         {
                             @Override
                             public void onClick(DialogInterface dialog, int which)
@@ -135,10 +153,11 @@ public class StoryWriteActivity extends AppCompatActivity {
                 }));
 
                 checkPermission(RequestCode.pickphotoButton);
-                recyclerView[recyclerViewCount].setBackgroundColor(Color.rgb(255, 164, 78));
-                container.addView(recyclerView[recyclerViewCount]);
-                contentsSequence[contentsSeqIndex] = 0;
-                contentsSeqIndex++;
+                listItem.setBackgroundColor(Color.rgb(255, 164, 78));
+                //recyclerView[recyclerViewCount].setBackgroundColor(Color.rgb(255, 164, 78));
+                container.addView(listItem);
+                recyclerView.add(listItem);
+                contentsSequence.add(0);
             }
         });
 
@@ -147,31 +166,49 @@ public class StoryWriteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                editText[editTextCount] = new EditText(getApplicationContext());
-                editText[editTextCount].setBackgroundColor(Color.rgb(182, 252, 154));
-                editText[editTextCount].setTextColor(Color.BLACK);
-                container.addView(editText[editTextCount]);
+                final EditText listItem = new EditText(getApplicationContext());
+                listItem.setBackgroundColor(Color.rgb(182, 252, 154));
+                listItem.setTextColor(Color.BLACK);
+                //listItem.setTag(editText.size());
+                container.addView(listItem);
 
-                editText[editTextCount].setOnLongClickListener(new View.OnLongClickListener()
+                listItem.setOnLongClickListener(new View.OnLongClickListener()
                 {
                     @Override
-                    public boolean onLongClick(View v)
+                    public boolean onLongClick(final View v)
                     {
                         AlertDialog.Builder alt_recycler = new AlertDialog.Builder(StoryWriteActivity.this);
                         alt_recycler.setMessage("선택한 텍스트 레이아웃을 삭제하시겠습니까?").setCancelable(
-                                false).setPositiveButton("네", new DialogInterface.OnClickListener()
+                                false).setPositiveButton("아니오", new DialogInterface.OnClickListener()
                         {
                             @Override
                             public void onClick(DialogInterface dialog, int which)
                             {
 
                             }
-                        }).setNegativeButton("아니오", new DialogInterface.OnClickListener()
+                        }).setNegativeButton("네", new DialogInterface.OnClickListener()
                         {
                             @Override
                             public void onClick(DialogInterface dialog, int which)
                             {
+                                container.removeView(listItem);
 
+                                int temp = 0;
+                                for(int i=0; i<contentsSequence.size(); i++)
+                                {
+                                    if(contentsSequence.get(i) == 1)
+                                    {
+                                        if(temp == recyclerView.indexOf(listItem))
+                                        {
+                                            contentsSequence.remove(i);
+                                            break;
+                                        }
+                                        else
+                                            temp++;
+                                    }
+                                }
+
+                                editText.remove(editText.indexOf(listItem));
                             }
                         });
 
@@ -183,12 +220,10 @@ public class StoryWriteActivity extends AppCompatActivity {
                     }
                 });
 
-                contentsSequence[contentsSeqIndex] = 1;
-                contentsSeqIndex++;
-
-                editText[editTextCount].requestFocus();
-
-                editTextCount++;
+                contentsSequence.add(1);
+                listItem.requestFocus();
+                editText.add(listItem);
+                //editTextCount++;
             }
         });
     }
@@ -196,8 +231,6 @@ public class StoryWriteActivity extends AppCompatActivity {
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        //if (resultCode == RESULT_OK &&
-        //        (requestCode == PhotoPicker.REQUEST_CODE || requestCode == PhotoPreview.REQUEST_CODE)) {
         if (resultCode == RESULT_OK && (requestCode == PhotoPicker.REQUEST_CODE))
         {
             List<String> photos = null;
@@ -205,14 +238,14 @@ public class StoryWriteActivity extends AppCompatActivity {
             {
                 photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
             }
-            selectedPhotos.get(recyclerViewCount).clear();
+            selectedPhotos.get(recyclerView.size()-1).clear();
             if (photos != null) // 업로드를 성공적으로 추가하고 돌아온 경우
             {
-                selectedPhotos.get(recyclerViewCount).addAll(photos);
+                selectedPhotos.get(recyclerView.size()-1).addAll(photos);
                 /*
                 // **********업로드 코드 ************** 여러개 연속 보낼땐 for문으로 감싸기
                 String path = new String();
-                path = selectedPhotos.get(recyclerViewCount).get(0);
+                path = selectedPhotos.get(viewInfo.getRecyclerViewCount()).get(0);
 
                 File myFile = new File(path);
                 RequestParams params = new RequestParams();
@@ -262,14 +295,14 @@ public class StoryWriteActivity extends AppCompatActivity {
 
                 // ****************************************
                 */
-                recyclerViewCount++;
+                //recyclerViewCount++;
             }
             photoAdapter.notifyDataSetChanged();
         }
 
         if (resultCode == RESULT_CANCELED && (requestCode == PhotoPicker.REQUEST_CODE))
         {
-            container.removeView(recyclerView[recyclerViewCount]);
+            container.removeView(recyclerView.get(recyclerView.size()-1));
         }
     }
 
@@ -367,9 +400,9 @@ public class StoryWriteActivity extends AppCompatActivity {
     {
         int imgTemp = 0;
         int textTemp = 0;
-        for (int i = 0; i < contentsSeqIndex; i++)
+        for (int i = 0; i < contentsSequence.size(); i++)
         {
-            switch(contentsSequence[i])
+            switch(contentsSequence.get(i))
             {
                 // 이미지
                 case 0 :
@@ -383,7 +416,7 @@ public class StoryWriteActivity extends AppCompatActivity {
                 // 텍스트
                 case 1 :
                     storystring = storystring + "TxtGroup" + textTemp + "\n";
-                    storystring = storystring + editText[textTemp].getText() + "\n";
+                    storystring = storystring + editText.get(textTemp).getText() + "\n";
                     textTemp++;
                     break;
             }
@@ -402,6 +435,7 @@ public class StoryWriteActivity extends AppCompatActivity {
             storyLoadToString();
             Intent intent = new Intent(getApplicationContext(), StoryWrite2Activity.class);
             intent.putExtra("write2", storystring);
+            storystring = "";
             startActivity(intent);
             return true;
         }

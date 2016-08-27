@@ -180,6 +180,9 @@ public class MainActivity extends AppCompatActivity
 
 	2016-08-25 오탁은
 	여행기쓰기 롱클릭하면 다이얼로그 창 구현.
+
+	2016-08-27 오탁은
+	여행기 쓰기 끝... 남은거 지우기 서버연동
 	*/
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언
