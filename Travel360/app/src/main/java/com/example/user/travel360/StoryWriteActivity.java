@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,10 +25,16 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.user.travel360.RecyclerItemClickListener.OnItemClickListener;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
 
@@ -81,20 +88,14 @@ public class StoryWriteActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 final RecyclerView listItem = new RecyclerView (getApplicationContext());
-                //recyclerView[recyclerViewCount] = new RecyclerView(getApplicationContext());
-                //listItem.setTag(recyclerView.size());
-                //recyclerView[recyclerViewCount].setTag(recyclerViewCount);
 
                 selectedPhotos.add(new ArrayList<String>());
                 photoAdapter = new PhotoAdapter(getApplicationContext(), selectedPhotos.get(recyclerView.size()));
 
                 listItem.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
-                //recyclerView[recyclerViewCount].setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
                 listItem.setAdapter(photoAdapter);
-                //recyclerView[recyclerViewCount].setAdapter(photoAdapter);
 
                 listItem.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new OnItemClickListener()
-                        //recyclerView[recyclerViewCount].addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new OnItemClickListener()
                 {
                     @Override
                     public void onItemClick(View view, int position)
@@ -198,7 +199,7 @@ public class StoryWriteActivity extends AppCompatActivity {
                                 {
                                     if(contentsSequence.get(i) == 1)
                                     {
-                                        if(temp == recyclerView.indexOf(listItem))
+                                        if(temp == editText.indexOf(listItem))
                                         {
                                             contentsSequence.remove(i);
                                             break;
@@ -228,6 +229,107 @@ public class StoryWriteActivity extends AppCompatActivity {
         });
     }
 
+    void ImageUpload()
+    {
+        // **********업로드 코드 ************** 여러개 연속 보낼땐 for문으로 감싸기
+        for(int i=0; i<selectedPhotos.get(recyclerView.size()-1).size(); i++)
+        {
+            String path = new String();
+            path = selectedPhotos.get(recyclerView.size() - 1).get(i);
+
+            File myFile = new File(path);
+            RequestParams params = new RequestParams();
+            try
+            {
+                params.put("image", myFile);
+            } catch (FileNotFoundException e)
+            {
+
+            }
+
+            params.put("seq", 1);
+
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.post("http://kibox327.cafe24.com/uploadImage.do", params, new AsyncHttpResponseHandler()
+            {
+                @Override
+                public void onStart()
+                {
+                    // called before request is started
+                    //Toast.makeText(getApplicationContext(), "START!", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] response)
+                {
+                    // called when response HTTP status is "200 OK"
+                    //Toast.makeText(getApplicationContext(), new String(response), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "업로드 성공!", Toast.LENGTH_LONG).show();
+                    Log.d("ImageUpload", "이미지 업로드 성공!");
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e)
+                {
+                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                    //Toast.makeText(getApplicationContext(), new String(errorResponse), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "업로드가 실패했습니다! 다시 시도해주세요!", Toast.LENGTH_LONG).show();
+                    Log.d("ImageUpload", "이미지 업로드 실패!");
+                }
+
+                @Override
+                public void onRetry(int retryNo)
+                {
+                    // called when request is retried
+                }
+            });
+        }
+        // ****************************************
+    }
+
+    void StoryStringUpload()
+    {
+
+        RequestParams params = new RequestParams();
+        params.put("storystring", storystring);
+        params.put("seq", 1);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post("http://kibox327.cafe24.com/writeComplete.do", params, new AsyncHttpResponseHandler()
+        {
+            @Override
+            public void onStart()
+            {
+                // called before request is started
+                //Toast.makeText(getApplicationContext(), "START!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response)
+            {
+                // called when response HTTP status is "200 OK"
+                //Toast.makeText(getApplicationContext(), new String(response), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "업로드 성공!", Toast.LENGTH_LONG).show();
+                Log.d("StoryStringUpload", "텍스트 업로드 성공!");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e)
+            {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                //Toast.makeText(getApplicationContext(), new String(errorResponse), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "업로드가 실패했습니다! 다시 시도해주세요!", Toast.LENGTH_LONG).show();
+                Log.d("StoryStringUpload", "텍스트 업로드 실패!");
+            }
+
+            @Override
+            public void onRetry(int retryNo)
+            {
+                // called when request is retried
+            }
+        });
+    }
+
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
@@ -242,60 +344,7 @@ public class StoryWriteActivity extends AppCompatActivity {
             if (photos != null) // 업로드를 성공적으로 추가하고 돌아온 경우
             {
                 selectedPhotos.get(recyclerView.size()-1).addAll(photos);
-                /*
-                // **********업로드 코드 ************** 여러개 연속 보낼땐 for문으로 감싸기
-                String path = new String();
-                path = selectedPhotos.get(viewInfo.getRecyclerViewCount()).get(0);
-
-                File myFile = new File(path);
-                RequestParams params = new RequestParams();
-                try
-                {
-                    params.put("image", myFile);
-                }
-                catch (FileNotFoundException e)
-                {
-
-                }
-
-                params.put("seq", 1);
-
-                AsyncHttpClient client = new AsyncHttpClient();
-                client.post("http://kibox327.cafe24.com/uploadImage.do", params, new AsyncHttpResponseHandler()
-                {
-                    @Override
-                    public void onStart()
-                    {
-                        // called before request is started
-                        //Toast.makeText(getApplicationContext(), "START!", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] response)
-                    {
-                        // called when response HTTP status is "200 OK"
-                        //Toast.makeText(getApplicationContext(), new String(response), Toast.LENGTH_LONG).show();
-                        Toast.makeText(getApplicationContext(), "업로드 성공!", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e)
-                    {
-                        // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                        //Toast.makeText(getApplicationContext(), new String(errorResponse), Toast.LENGTH_LONG).show();
-                        Toast.makeText(getApplicationContext(), "업로드가 실패했습니다! 다시 시도해주세요!", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onRetry(int retryNo)
-                    {
-                        // called when request is retried
-                    }
-                });
-
-                // ****************************************
-                */
-                //recyclerViewCount++;
+                ImageUpload();
             }
             photoAdapter.notifyDataSetChanged();
         }
@@ -435,6 +484,7 @@ public class StoryWriteActivity extends AppCompatActivity {
             storyLoadToString();
             Intent intent = new Intent(getApplicationContext(), StoryWrite2Activity.class);
             intent.putExtra("write2", storystring);
+            StoryStringUpload();
             storystring = "";
             startActivity(intent);
             return true;

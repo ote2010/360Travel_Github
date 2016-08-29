@@ -1,13 +1,10 @@
 package com.example.user.travel360;
 
-import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,8 +38,6 @@ public class LoginActivity extends AppCompatActivity {
         BtnLogin = (Button) findViewById(R.id.btnLogin);
         EditEmail = (EditText) findViewById(R.id.editEmail);
         EditPW = (EditText) findViewById(R.id.editPw);
-
-
     }
 
     public void onClickBtn() {
@@ -60,8 +55,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = EditEmail.getText().toString();
                 String pw = EditPW.getText().toString();
-
-
 
                 if (ApplicationController.getInstance().getEmail().equals(email) && ApplicationController.getInstance().getPw().equals(pw)) {
                     SharedPreferences.Editor editor = pref.edit();
