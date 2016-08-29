@@ -45,6 +45,15 @@ public class ApplicationController extends Application {
         return this.email;
     }
 
+    public void setEmail(String email) {
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+        edit.putString("email", email);
+        editor.commit();
+
+    }
+
     public String getPw() {
         return this.pw;
     }
