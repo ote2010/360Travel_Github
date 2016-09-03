@@ -250,7 +250,9 @@ public class StoryWriteActivity extends AppCompatActivity {
 
             }
 
-            params.put("seq", 1);
+            params.put("travelSeq", 1);
+            params.put("userSeq", 1);
+            params.put("groupSeq", 1);
 
             AsyncHttpClient client = new AsyncHttpClient();
             client.post("http://kibox327.cafe24.com/uploadImage.do", params, new AsyncHttpResponseHandler()
