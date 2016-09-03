@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 /**
  * Created by user on 2016-08-24.
@@ -21,8 +22,8 @@ public class StoryWrite2Activity extends AppCompatActivity
         Intent intent = getIntent();
         String storystring = new String(intent.getExtras().getString("write2"));
 
-        //TextView textView = (TextView) findViewById(R.id.textView8);
-        //textView.setText(storystring);
+        TextView textView = (TextView) findViewById(R.id.textView8);
+        textView.setText(storystring);
     }
 
     @Override

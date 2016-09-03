@@ -3,6 +3,7 @@ package com.example.user.travel360.Fragment;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,14 +17,12 @@ public class ReviewListItemView extends RelativeLayout // 리스트 뷰 아이�
     TextView placeTextView;
     TextView evaluationTextView;
 
-    public ReviewListItemView(Context context)
-    {
+    public ReviewListItemView(Context context) {
         super(context);
         init(context);
     }
 
-    public ReviewListItemView(Context context, AttributeSet attrs)
-    {
+    public ReviewListItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

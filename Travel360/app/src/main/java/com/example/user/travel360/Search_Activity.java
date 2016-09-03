@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -15,6 +16,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -28,12 +30,15 @@ import android.widget.RelativeLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.user.travel360.uk.co.senab.photoview.TFDatePickerDialog;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class Search_Activity extends Activity implements View.OnClickListener {
 
-
+    TFDatePickerDialog tfDatePickerDialog;
     EditText SearchText;
     Button FilterButton, Tstory, Review, Tag, New_turn, Detail_date, Reco_turn, User_near, Internal, external, Total, City, Total2, agic, Search_btn;
     RelativeLayout Btn_List1;
@@ -41,8 +46,12 @@ public class Search_Activity extends Activity implements View.OnClickListener {
     int chk = 0;
     boolean Lo_Tag = true;
     LocationManager l_manager;
+    //사용자 위치 좌표
     public double latitude, longitude;
     int Year, Month, Day;
+    // 버튼이 선택 됐는지 확인 하는 배열
+    int[] checkList = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +71,7 @@ public class Search_Activity extends Activity implements View.OnClickListener {
         init();
 
     }
+
 
     public void init() {
         FilterButton = (Button) findViewById(R.id.FilterButton);
@@ -87,6 +97,7 @@ public class Search_Activity extends Activity implements View.OnClickListener {
         Search_btn = (Button) findViewById(R.id.search_btn);
         SearchText = (EditText) findViewById(R.id.edit_search);
 
+
     }
 
 
@@ -111,28 +122,85 @@ public class Search_Activity extends Activity implements View.OnClickListener {
                     Btn_List3.setVisibility(View.INVISIBLE);
                 }
                 break;
+            //index 0
             case R.id.Tstory:
                 Btn_List2.setVisibility(View.VISIBLE);
-                Tstory.setText("선택됌");
+                checkList[0]++;
+                if (checkList[0] % 2 == 1) {
+                    // TODO 버튼 이미지 바뀌게
+                    Tstory.setText("선택됌");
+                } else {
+                    // TODO 버튼 이미지 바뀌게
+                    Tstory.setText("여행기");
+                }
+
                 break;
+            //index 1
             case R.id.Review:
                 Btn_List2.setVisibility(View.VISIBLE);
-                Review.setText("선택됌");
+                checkList[1]++;
+                if (checkList[1] % 2 == 1) {
+                    // TODO 버튼 이미지 바뀌게
+                    Review.setText("선택됌");
+                } else {
+                    // TODO 버튼 이미지 바뀌게
+                    Review.setText("리뷰");
+                }
                 break;
+            //index 2
             case R.id.Tag:
                 Btn_List2.setVisibility(View.VISIBLE);
+                checkList[2]++;
+                if (checkList[2] % 2 == 1) {
+                    // TODO 버튼 이미지 바뀌게
+                    Tag.setText("선택됌");
+                } else {
+                    // TODO 버튼 이미지 바뀌게
+                    Tag.setText("태크");
+                }
                 break;
+            //index 3
             case R.id.New_turn:
                 Btn_List2.setVisibility(View.VISIBLE);
+                checkList[3]++;
+                if (checkList[3] % 2 == 1) {
+                    // TODO 버튼 이미지 바뀌게
+                    New_turn.setText("선택됌");
+                } else {
+                    // TODO 버튼 이미지 바뀌게
+                    New_turn.setText("최신순");
+                }
                 break;
+            //index 4
             case R.id.Detail_date:
-                Dialog_DatePicker();
+                //Dialog_DatePicker();
+                tfDatePickerDialog = new TFDatePickerDialog(this);
+                tfDatePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        //TODO >>시작 날짜 끝날짜 받아오는거 했음 이걸 가지고 서버에 연동해서 해야함!
+                        String ToD = tfDatePickerDialog.getToDate();
+                        String FromD = tfDatePickerDialog.getFromDate();
+                        Toast.makeText(getApplicationContext(), FromD + "\n" + ToD, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                tfDatePickerDialog.show();
 
                 Btn_List2.setVisibility(View.VISIBLE);
                 break;
+            //index 5
             case R.id.Reco_turn:
                 Btn_List2.setVisibility(View.VISIBLE);
+                checkList[5]++;
+                if (checkList[5] % 2 == 1) {
+                    // TODO 버튼 이미지 바뀌게
+                    Reco_turn.setText("선택됌");
+                } else {
+                    // TODO 버튼 이미지 바뀌게
+                    Reco_turn.setText("추천순");
+                }
                 break;
+            //index 6
             case R.id.User_near:
                 String provider = null;
                 l_manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -154,28 +222,104 @@ public class Search_Activity extends Activity implements View.OnClickListener {
 
                 Btn_List2.setVisibility(View.VISIBLE);
                 break;
+            //index 7
             case R.id.Internal:
                 Btn_List2.setVisibility(View.VISIBLE);
+                checkList[7]++;
+
+                Log.d("@@@", checkList[7] + "/" + checkList[8]);
+                if (checkList[7] % 2 == 1) {
+                    // TODO 버튼 이미지 바뀌게
+                    external.setText("해외");
+                    Internal.setText("선택됌");
+                    if (checkList[8] != 0) {
+                        checkList[8]++;
+                    }
+                } else {
+                    // TODO 버튼 이미지 바뀌게
+                    Internal.setText("국내");
+                }
                 break;
+            //index 8
             case R.id.external:
                 Btn_List2.setVisibility(View.VISIBLE);
+                checkList[8]++;
+
+                Log.d("@@@", checkList[7] + "/" + checkList[8]);
+                if (checkList[8] % 2 == 1) {
+                    // TODO 버튼 이미지 바뀌게
+                    Internal.setText("국내");
+                    external.setText("선택됌");
+                    if (checkList[7] != 0) {
+                        checkList[7]++;
+                    }
+                } else {
+                    // TODO 버튼 이미지 바뀌게
+                    external.setText("해외");
+                }
                 break;
+            //index 9
             case R.id.Total:
                 Btn_List3.setVisibility(View.VISIBLE);
+                checkList[9]++;
+                if (checkList[9] % 2 == 1) {
+                    // TODO 버튼 이미지 바뀌게
+                    Total.setText("선택됌");
+                } else {
+                    // TODO 버튼 이미지 바뀌게
+                    Total.setText("전체");
+                }
                 break;
+            //index 10
             case R.id.City:
                 Btn_List3.setVisibility(View.VISIBLE);
+                checkList[10]++;
+
+                // TODO 버튼 이미지 바뀌게
+                City.setText("선택됌");
+                Total.setText("전체");
+                final SelectCityDialog selectCityDialog = new SelectCityDialog(this);
+                selectCityDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        String city = selectCityDialog.getCity();
+                        Toast.makeText(getApplicationContext(), city, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                selectCityDialog.show();
+
+
                 break;
+            //index 11
             case R.id.Total2:
+                checkList[11]++;
+                if (checkList[11] % 2 == 1) {
+                    // TODO 버튼 이미지 바뀌게
+                    Total2.setText("선택됌");
+                } else {
+                    // TODO 버튼 이미지 바뀌게
+                    Total2.setText("전체");
+                }
                 break;
+            //index 12
             case R.id.agic:
+                checkList[12]++;
+                if (checkList[12] % 2 == 1) {
+                    // TODO 버튼 이미지 바뀌게
+                    agic.setText("선택됌");
+                    Total2.setText("전체");
+                } else {
+                    // TODO 버튼 이미지 바뀌게
+                    agic.setText("동/구/읍/면 선택");
+                }
                 break;
-
-
+            case R.id.search_btn:
+                //TODO 앞에서 클릭했던 조건들 그리고 edittext로 받아온 string값을 이용해서 검색해야함 (서버필요 ㅠㅡㅠ)
+                break;
         }
     }
 
-
+//사용자 좌표값 받아오기
     LocationListener l_listener = new LocationListener() {
 
         @Override
@@ -214,27 +358,16 @@ public class Search_Activity extends Activity implements View.OnClickListener {
 
                 if (location != null) {
                     Log.d("GPS@", "222");
-                    User_near.setText(String.valueOf(latitude)+"/"+String.valueOf(longitude));
+                    User_near.setText(String.valueOf(latitude) + "/" + String.valueOf(longitude));
                 } else {
                     //  Toast.makeText(getApplicationContext(), "onLocationChanged() : location is null", Toast.LENGTH_SHORT).show();
                 }
-
-
 
 
             }
             Lo_Tag = false;
         }
     };
-
-
-
-
-
-
-
-
-
 
 
     private void Dialog_DatePicker() {
@@ -254,9 +387,9 @@ public class Search_Activity extends Activity implements View.OnClickListener {
             }
         };
         DatePickerDialog alert = new DatePickerDialog(this, mDateSetListener, year, month, day);
+
         alert.show();
     }
-
 
 
 }

@@ -189,6 +189,10 @@ public class MainActivity extends AppCompatActivity
 	GPS를 이용한 내위치 정보 가져오기 완성(내위치 버튼 누른뒤 약 2초정도 기다리면 좌표 뜬다)
 	네트워크를 이용한 로그인(아이디 비번이 맞는지 확인 해줌) & 자동로그인을 네트워크 기반으로 할 수 있게 수정
 
+	2016-09-01 김유정
+	리뷰 본문 완성
+	필터 완성
+
 	*/
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언
