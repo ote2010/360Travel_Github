@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ import android.widget.Toast;
  */
 public class ReviewMainReadActivity extends AppCompatActivity {
 
+    ScrollView mScroll;
     ImageLoadingTask task; // 백그라운드 쓰레드 동작을 위한 Asynctask 클래스 객체
     ViewGroup v;
     LinearLayout BestReview, NormalReview;
@@ -57,10 +60,12 @@ public class ReviewMainReadActivity extends AppCompatActivity {
         NormalReview = (LinearLayout) findViewById(R.id.normal_review);
         WriteReview = (FloatingActionButton)findViewById(R.id.write_review_btn);
         Up = (FloatingActionButton)findViewById(R.id.up);
+        mScroll = (ScrollView)findViewById(R.id.read_review_scroll);
 
 
         Bestinit();
         Normalinit();
+        onClickEvent();
 
     }
 public void onClickEvent(){
@@ -73,7 +78,8 @@ public void onClickEvent(){
     Up.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            Toast.makeText(getApplication(),"we",Toast.LENGTH_SHORT).show();
+            scrollToEnd();
 
         }
     });
@@ -160,6 +166,22 @@ public void onClickEvent(){
         getMenuInflater().inflate(R.menu.review_main_read, menu);
         return true;
     }
+    public void scrollToEnd(){
+        Log.d("@@@","in");
+        mScroll.post(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("@@@","in2");
+                mScroll.fullScroll(View.FOCUS_UP);
+            }
+
+        });
+
+    }
+
+
+
+
 }
 
 //나중에 서버 연동을 위해 그냥 써둠

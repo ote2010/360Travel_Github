@@ -18,7 +18,7 @@
 
 
             <ScrollView
-                android:id="@+id/scrollView"
+                android:id="@+id/read_review_scroll"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
