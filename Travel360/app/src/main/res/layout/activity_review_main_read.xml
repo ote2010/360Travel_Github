@@ -1,8 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="com.example.user.travel360.ReviewMainReadActivity">
-</RelativeLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.user.travel360.ReviewMainReadActivity">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:fillViewport="true">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:weightSum="100">
+
+                    <LinearLayout
+                        android:id="@+id/place_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+
+                        android:orientation="horizontal"
+                        android:weightSum="100">
+
+                        <ImageView
+                            android:id="@+id/place_img"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="40"
+                            android:scaleType="fitStart"
+                            android:src="@drawable/hwiin" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="60"
+                            android:orientation="vertical"
+                            android:weightSum="100">
+
+                            <TextView
+                                android:id="@+id/place_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="50"
+                                android:text="Paris"
+                                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                            <TextView
+                                android:id="@+id/heart_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center|bottom"
+                                android:layout_weight="25"
+                                android:text="3,4567" />
+
+                            <TextView
+                                android:id="@+id/star_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center|bottom"
+                                android:layout_weight="25"
+                                android:text="4.9" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2.5dp"
+                        android:layout_marginTop="2.5dp"
+
+                        android:background="#1abc9c"
+                        android:text="영향력 있는 트레블러의 리뷰"
+                        android:textColor="#ffffff" />
+
+
+                    <LinearLayout
+                        android:id="@+id/best_review"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="45"
+                        android:orientation="vertical">
+
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2.5dp"
+                        android:layout_marginTop="2.5dp"
+
+                        android:background="#1abc9c"
+                        android:text="일반 트레블러의 리뷰"
+                        android:textColor="#ffffff" />
+
+
+                    <LinearLayout
+                        android:layout_weight="45"
+                        android:id="@+id/normal_review"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </ScrollView>
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/write_review_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom|right"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/img1" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/img1" />
+    </android.support.design.widget.CoordinatorLayout>
+</LinearLayout>
