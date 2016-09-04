@@ -1,4 +1,4 @@
-package com.example.user.travel360;
+package com.example.user.travel360.Review;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.example.user.travel360.R;
 
 /**
  * Created by yoojeong on 2016-09-02.

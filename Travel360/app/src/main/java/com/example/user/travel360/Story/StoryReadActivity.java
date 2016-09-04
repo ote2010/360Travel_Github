@@ -1,4 +1,4 @@
-package com.example.user.travel360;
+package com.example.user.travel360.Story;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.user.travel360.R;
 
 import java.io.IOException;
 import java.io.InputStream;

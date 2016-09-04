@@ -9,11 +9,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.user.travel360.R;
-import com.example.user.travel360.ReviewMainReadActivity;
-import com.example.user.travel360.StoryReadActivity;
+import com.example.user.travel360.Review.ReviewMainReadActivity;
+import com.example.user.travel360.Story.StoryReadActivity;
 import com.example.user.travel360.UserActivity;
 
 

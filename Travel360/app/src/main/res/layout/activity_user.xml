@@ -1,82 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.user.travel360.UserActivity">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/scrollView"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" >
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/userLogLayout">
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_alignParentBottom="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/button7"
-                android:text="리뷰"
-                android:id="@+id/button8" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_alignParentBottom="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="여행기"
-                android:id="@+id/button7" />
-        </LinearLayout>
-    </ScrollView>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.example.user.travel360.UserActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:id="@+id/reviewAndStoryContainer"
-        android:layout_above="@+id/scrollView">
-
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:id="@+id/imageView"
-            android:src="@drawable/hearticon"
-            android:adjustViewBounds="true"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3,623"
-            android:id="@+id/textView4"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/imageView"
-            android:layout_marginLeft="5dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="트레블러 3,534명"
-            android:id="@+id/textView6"
-            android:layout_alignTop="@+id/textView4"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="22dp"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="224dp"
         android:id="@+id/userContainer"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/reviewAndStoryContainer">
+        android:layout_above="@+id/reviewAndStoryContainer"
+        android:layout_alignParentStart="true">
 
         <ImageView
             android:layout_width="match_parent"
@@ -87,7 +23,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/testimg2" />
+            android:src="@drawable/img1" />
 
         <ImageView
             android:layout_width="70dp"
@@ -96,7 +32,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="100dp"
             android:layout_alignParentStart="true"
-            android:src="@drawable/hwiin"
+            android:src="@drawable/img1"
             android:scaleType="fitXY" />
 
         <TextView
@@ -145,4 +81,72 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/reviewAndStoryContainer"
+        android:layout_above="@+id/scrollView"
+        >
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/imageView"
+            android:src="@drawable/hearticon2"
+            android:adjustViewBounds="true"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3,623"
+            android:id="@+id/textView4"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/imageView"
+            android:layout_marginLeft="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="트레블러 3,534명"
+            android:id="@+id/textView6"
+            android:layout_alignTop="@+id/textView4"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="22dp"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:fillViewport="false">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/userLogLayout">
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_alignParentBottom="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/button7"
+                android:text="리뷰"
+                android:id="@+id/button8" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_alignParentBottom="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="여행기"
+                android:id="@+id/button7" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

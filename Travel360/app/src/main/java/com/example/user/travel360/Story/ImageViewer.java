@@ -1,4 +1,4 @@
-package com.example.user.travel360;
+package com.example.user.travel360.Story;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.example.user.travel360.R;
 import com.example.user.travel360.uk.co.senab.photoview.PhotoView;
 
 import java.io.InputStream;

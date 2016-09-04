@@ -1,4 +1,4 @@
-package com.example.user.travel360;
+package com.example.user.travel360.Story;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -26,7 +26,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.user.travel360.RecyclerItemClickListener.OnItemClickListener;
+import com.example.user.travel360.R;
+import com.example.user.travel360.Story.RecyclerItemClickListener.OnItemClickListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;

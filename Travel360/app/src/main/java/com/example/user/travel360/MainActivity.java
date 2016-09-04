@@ -192,7 +192,6 @@ public class MainActivity extends AppCompatActivity
 	2016-09-01 김유정
 	리뷰 본문 완성
 	필터 완성
-
 	*/
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언

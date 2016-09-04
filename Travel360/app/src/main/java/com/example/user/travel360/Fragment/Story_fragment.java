@@ -13,8 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.user.travel360.R;
-import com.example.user.travel360.StoryReadActivity;
-import com.example.user.travel360.StoryWriteActivity;
+import com.example.user.travel360.Story.StoryReadActivity;
+import com.example.user.travel360.Story.StoryWriteActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

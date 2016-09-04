@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -17,31 +15,33 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class UserActivity extends AppCompatActivity {
-    ViewGroup v;
+    LinearLayout v;
 
     int storyDayTotal=0; // storyDayTotal : 그 날의 여행기 게시글 개수
-    //static int i=0; // 여행기 item 배열의 인덱스
+    static int i=0; // 여행기 item 배열의 인덱스
     static int j=0; // 여행기 컨테이너 배열의 인덱스. item이 한번에 두개 들어감
-    View[] storyItemView = new View[100];
-    ImageView[] storyImageView = new ImageView[100]; // 여행기 대표 이미지
-    Button[] storyImageButton = new Button[100]; // 대표 이미지 오른쪽 하단 작은 버튼
-    ImageView[] storyUserImage = new ImageView[100]; // 여행기 게시자 프로필 사진
-    TextView[] storyUserName = new TextView[100]; // 여행기 작성자
-    TextView[] storyTitle = new TextView[100]; // 여행기 제목
-    LinearLayout[] storyBackgroundLayout = new LinearLayout[100]; // 여행기 프로필과 작성자, 제목의 배경이 되는 레이아웃
-    LinearLayout[] storyUserNameTitleLayout = new LinearLayout[100]; // 작성자, 제목을 감싸는 레이아웃
+    View[] storyItemView = new View[30];
+    ImageView[] storyImageView = new ImageView[30]; // 여행기 대표 이미지
+    Button[] storyImageButton = new Button[30]; // 대표 이미지 오른쪽 하단 작은 버튼
+    ImageView[] storyUserImage = new ImageView[30]; // 여행기 게시자 프로필 사진
+    TextView[] storyUserName = new TextView[30]; // 여행기 작성자
+    TextView[] storyTitle = new TextView[30]; // 여행기 제목
+    LinearLayout[] storyBackgroundLayout = new LinearLayout[30]; // 여행기 프로필과 작성자, 제목의 배경이 되는 레이아웃
+    LinearLayout[] storyUserNameTitleLayout = new LinearLayout[30]; // 작성자, 제목을 감싸는 레이아웃
 
     LinearLayout mainStoryContainer; // 여행기 메인 프래그먼트 화면 레이아웃
-    LinearLayout[] storyContainer = new LinearLayout[100]; // 여행기 두 개씩 감싸고 있는 레이아웃
+    LinearLayout[] storyContainer = new LinearLayout[30]; // 여행기 두 개씩 감싸고 있는 레이아웃
 
     boolean oddCheck = false; // oddCheck가 true면 게시글 개수가 홀수. 그러니까 마지막 게시글은 하나만 띄워야한다.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_user);
+
         storyDayTotal = 5; // 서버에서 데이터를 가져왔다고 가정. 0은 오늘. storyDayTotal은 오늘 올라갈 여행기 게시글 수. 5개
-        v = (ViewGroup)getLayoutInflater().inflate(R.layout.activity_user,null);
+        v = (LinearLayout)getLayoutInflater().inflate(R.layout.activity_user, null);
         mainStoryContainer = (LinearLayout)v.findViewById(R.id.userLogLayout);
         LayoutInflater inflater = getLayoutInflater().from(getApplicationContext());
 
@@ -131,5 +131,6 @@ public class UserActivity extends AppCompatActivity {
         }
 
         setContentView(v);
+
     }
 }

@@ -1,4 +1,4 @@
-package com.example.user.travel360;
+package com.example.user.travel360.Story;
 
 import android.content.Context;
 import android.net.Uri;

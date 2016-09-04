@@ -15,7 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.user.travel360.R;
-import com.example.user.travel360.ReviewMainReadActivity;
+import com.example.user.travel360.Review.ReviewMainReadActivity;
 
 
 public class Review_fragment extends Fragment {
