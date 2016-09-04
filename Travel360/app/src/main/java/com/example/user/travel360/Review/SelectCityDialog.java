@@ -1,4 +1,4 @@
-package com.example.user.travel360;
+package com.example.user.travel360.Review;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.user.travel360.R;
 
 public class SelectCityDialog extends Dialog {
     String City;

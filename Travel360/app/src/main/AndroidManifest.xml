@@ -84,7 +84,7 @@
             android:name="me.iwf.photopicker.PhotoPagerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".uk.co.senab.photoview.TFDatePickerDialog" />
-        <activity android:name=".SelectCityDialog"></activity>
+        <activity android:name=".Review.SelectCityDialog"></activity>
     </application>
 
 </manifest>
