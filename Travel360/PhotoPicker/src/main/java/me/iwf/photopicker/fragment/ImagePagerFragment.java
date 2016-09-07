@@ -185,7 +185,7 @@ public class ImagePagerFragment extends Fragment {
     final long duration = ANIM_DURATION;
 
     // Set starting values for properties we're going to animate. These
-    // values scale and position the full size version down to the thumbnail
+    // values scale and position the full size version down to thgete thumbnail
     // size/location, from which we'll animate it back up
     ViewHelper.setPivotX(mViewPager, 0);
     ViewHelper.setPivotY(mViewPager, 0);

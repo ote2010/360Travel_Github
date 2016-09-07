@@ -192,6 +192,9 @@ public class MainActivity extends AppCompatActivity
 	2016-09-01 김유정
 	리뷰 본문 완성
 	필터 완성
+
+	2016-09-07 오탁은
+	여행기쓰기2 구현중.. 아직 미구현 상태. 그 외 여행기 쓰기 자잘한 버그 및 오류 수정
 	*/
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언

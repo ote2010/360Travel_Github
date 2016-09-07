@@ -55,16 +55,11 @@ public class StoryWriteActivity extends AppCompatActivity {
     }
 
     ArrayList <RecyclerView> recyclerView = new ArrayList <RecyclerView> ();
-    //RecyclerView[] recyclerView = new RecyclerView[50];
-    int mRecyclerIndex;
     PhotoAdapter photoAdapter;
     LinearLayout container;
     Button textinsertButton;
     Button imageinsertButton;
     ArrayList <EditText> editText = new ArrayList <EditText> ();
-    //EditText[] editText = new EditText[50];
-    //int editTextCount = 0;
-    //int recyclerViewCount = 0;
 
     ArrayList<ArrayList <String>> selectedPhotos = new ArrayList <ArrayList<String>>();
 
@@ -151,13 +146,11 @@ public class StoryWriteActivity extends AppCompatActivity {
                         alert.setTitle("삭제하기");
                         alert.setIcon(R.drawable.__picker_ic_delete_black_24dp);
                         alert.show();
-                        //mRecyclerIndex를 알아냈으니 이걸로 지우는 작업을 해보자.
                     }
                 }));
 
                 checkPermission(RequestCode.pickphotoButton);
                 listItem.setBackgroundColor(Color.rgb(255, 164, 78));
-                //recyclerView[recyclerViewCount].setBackgroundColor(Color.rgb(255, 164, 78));
                 container.addView(listItem);
                 recyclerView.add(listItem);
                 contentsSequence.add(0);
@@ -172,7 +165,6 @@ public class StoryWriteActivity extends AppCompatActivity {
                 final EditText listItem = new EditText(getApplicationContext());
                 listItem.setBackgroundColor(Color.rgb(182, 252, 154));
                 listItem.setTextColor(Color.BLACK);
-                //listItem.setTag(editText.size());
                 container.addView(listItem);
 
                 listItem.setOnLongClickListener(new View.OnLongClickListener()
@@ -226,7 +218,6 @@ public class StoryWriteActivity extends AppCompatActivity {
                 contentsSequence.add(1);
                 listItem.requestFocus();
                 editText.add(listItem);
-                //editTextCount++;
             }
         });
     }
@@ -253,7 +244,7 @@ public class StoryWriteActivity extends AppCompatActivity {
 
             params.put("travelSeq", 1);
             params.put("userSeq", 1);
-            params.put("groupSeq", 1);
+            params.put("groupSeq", i);
 
             AsyncHttpClient client = new AsyncHttpClient();
             client.post("http://kibox327.cafe24.com/uploadImage.do", params, new AsyncHttpResponseHandler()
@@ -356,9 +347,23 @@ public class StoryWriteActivity extends AppCompatActivity {
             {
                 selectedPhotos.get(recyclerView.size()-1).addAll(photos);
                 //************테스트할때는 주석처리. 과도한 트래픽 막기위해*********
-                //ImageUpload();
                 UploadProgressDialog task = new UploadProgressDialog();
                 task.execute();
+            }
+            photoAdapter.notifyDataSetChanged();
+        }
+
+        if (resultCode == RESULT_OK && (requestCode == PhotoPreview.REQUEST_CODE))
+        {
+            List<String> photos = null;
+            if (data != null)
+            {
+                photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+            }
+            selectedPhotos.get(recyclerView.size()-1).clear();
+            if (photos != null)
+            {
+                selectedPhotos.get(recyclerView.size()-1).addAll(photos);
             }
             photoAdapter.notifyDataSetChanged();
         }
@@ -473,10 +478,13 @@ public class StoryWriteActivity extends AppCompatActivity {
                 // 이미지
                 case 0 :
                     storystring = storystring + "ImgGroup" + imgTemp + "\n";
+                    /*
+                    //이미지 절대 경로 붙이는 코드. 실제로는 필요없으므로 주석처리
                     for(int j = 0; j < selectedPhotos.get(imgTemp).size(); j++)
                     {
                         storystring = storystring + selectedPhotos.get(imgTemp).get(j) + "\n";
                     }
+                    */
                     imgTemp++;
                     break;
                 // 텍스트
@@ -532,16 +540,6 @@ public class StoryWriteActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params)
         {
-            /*
-            try
-            {
-                Thread.sleep(300);
-            }
-            catch(InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-            */
             while(true)
             {
                 if(imageUploadCheck != 0)
@@ -562,7 +560,8 @@ public class StoryWriteActivity extends AppCompatActivity {
         if(id == R.id.nextPage){
             storyLoadToString();
             Intent intent = new Intent(getApplicationContext(), StoryWrite2Activity.class);
-            intent.putExtra("write2", storystring);
+            intent.putExtra("storystring", storystring);
+            intent.putExtra("selectedPhotos", selectedPhotos);
             StoryStringUpload();
             storystring = "";
             startActivity(intent);
