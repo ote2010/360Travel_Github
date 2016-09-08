@@ -32,6 +32,9 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -59,12 +62,71 @@ public class StoryWriteActivity extends AppCompatActivity {
     LinearLayout container;
     Button textinsertButton;
     Button imageinsertButton;
+    Button videoinsertButton;
     ArrayList <EditText> editText = new ArrayList <EditText> ();
 
     ArrayList<ArrayList <String>> selectedPhotos = new ArrayList <ArrayList<String>>();
 
     String storystring;
     ArrayList <Integer> contentsSequence; // 이미지는 0, 텍스트는 1
+
+    //************* 서버 관련 코드 ****************
+    static int imgSeq;
+    static int travelSeq;
+    //********************************************
+
+    private void sendReadyVal()
+    {
+        RequestParams params = new RequestParams();
+        params.put("seq", 1);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post("http://kibox327.cafe24.com/writeRecordReady.do", params, new AsyncHttpResponseHandler()
+        {
+            @Override
+            public void onStart()
+            {
+                // called before request is started
+                //Toast.makeText(getApplicationContext(), "START!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response)
+            {
+                // called when response HTTP status is "200 OK"
+                //Toast.makeText(getApplicationContext(), new String(response), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "업로드 성공!", Toast.LENGTH_LONG).show();
+                Log.d("sendReadyVal",new String(response));
+                String res = new String(response); // travelSeq를 저장해야한다.!!!
+                try {
+                    JSONObject obj = new JSONObject(res);
+                    String objStr =  obj.get("userDto") + "";
+                    JSONObject travelSeqJSON = new JSONObject(objStr);
+                    travelSeq = (int)travelSeqJSON.get("travelSeq"); // 나중에 구현해야 할 것 : 이 imgSeq를 삭제할때 서버로 보내줘야한다.....
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e)
+            {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                //Toast.makeText(getApplicationContext(), new String(errorResponse), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "업로드가 실패했습니다! 다시 시도해주세요!", Toast.LENGTH_LONG).show();
+                Log.d("sendReadyVal1", new String(errorResponse));
+                Log.d("sendReadyVal2", new String(e.toString()));
+                String res = new String(errorResponse);
+            }
+
+            @Override
+            public void onRetry(int retryNo)
+            {
+                // called when request is retried
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +136,14 @@ public class StoryWriteActivity extends AppCompatActivity {
 
         container = (LinearLayout) findViewById(R.id.container);
         textinsertButton = (Button) findViewById(R.id.textinsertButton);
+        imageinsertButton = (Button)findViewById(R.id.pickphotoButton);
+        videoinsertButton = (Button) findViewById(R.id.pickVideoButton);
 
         storystring = new String();
         contentsSequence = new ArrayList <Integer> ();
 
-        imageinsertButton = (Button)findViewById(R.id.pickphotoButton);
+        sendReadyVal();
+
         imageinsertButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -189,16 +254,15 @@ public class StoryWriteActivity extends AppCompatActivity {
                                 container.removeView(listItem);
 
                                 int temp = 0;
-                                for(int i=0; i<contentsSequence.size(); i++)
+                                for (int i = 0; i < contentsSequence.size(); i++)
                                 {
-                                    if(contentsSequence.get(i) == 1)
+                                    if (contentsSequence.get(i) == 1)
                                     {
-                                        if(temp == editText.indexOf(listItem))
+                                        if (temp == editText.indexOf(listItem))
                                         {
                                             contentsSequence.remove(i);
                                             break;
-                                        }
-                                        else
+                                        } else
                                             temp++;
                                     }
                                 }
@@ -220,6 +284,16 @@ public class StoryWriteActivity extends AppCompatActivity {
                 editText.add(listItem);
             }
         });
+
+        videoinsertButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(getApplicationContext(), VideoPickerActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     int imageUploadCheck = 0;
@@ -229,7 +303,7 @@ public class StoryWriteActivity extends AppCompatActivity {
         for(int i=0; i<selectedPhotos.get(recyclerView.size()-1).size(); i++)
         {
             String path = new String();
-            path = selectedPhotos.get(recyclerView.size() - 1).get(i);
+            path = selectedPhotos.get(recyclerView.size()-1).get(i);
 
             File myFile = new File(path);
             RequestParams params = new RequestParams();
@@ -262,6 +336,18 @@ public class StoryWriteActivity extends AppCompatActivity {
                     // called when response HTTP status is "200 OK"
                     //Toast.makeText(getApplicationContext(), new String(response), Toast.LENGTH_LONG).show();
                     //Toast.makeText(getApplicationContext(), "업로드 성공!", Toast.LENGTH_LONG).show();
+                    Log.d("ImageUpload",new String(response));
+                    String res = new String(response);
+                    try {
+                        JSONObject obj = new JSONObject(res);
+                        String objStr =  obj.get("picture") + "";
+                        JSONObject imgSeqJSON = new JSONObject(objStr);
+                        imgSeq = (int)imgSeqJSON.get("picture_group_seq"); // 나중에 구현해야 할 것 : 이 imgSeq를 삭제할때 서버로 보내줘야한다.....
+                    }
+                    catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
                     Log.d("ImageUpload", "이미지 업로드 성공!");
                     imageUploadCheck = 1;
                 }
@@ -366,6 +452,11 @@ public class StoryWriteActivity extends AppCompatActivity {
                 selectedPhotos.get(recyclerView.size()-1).addAll(photos);
             }
             photoAdapter.notifyDataSetChanged();
+        }
+
+        if(resultCode == RESULT_OK && (requestCode == 4523))
+        {
+            Log.d("videoresult", "ok!!!");
         }
 
         if (resultCode == RESULT_CANCELED && (requestCode == PhotoPicker.REQUEST_CODE))

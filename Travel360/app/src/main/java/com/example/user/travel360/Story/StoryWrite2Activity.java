@@ -16,8 +16,13 @@ import android.widget.LinearLayout;
 
 import com.example.user.travel360.CustomDialog.MainImgSelectDialog;
 import com.example.user.travel360.R;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by user on 2016-08-24.
@@ -29,6 +34,7 @@ public class StoryWrite2Activity extends AppCompatActivity
     ArrayList <RecyclerView> recyclerView = new ArrayList <RecyclerView> ();
     ImageView mainStoryImgAddButton, reviewWriteAddButton, travelDayAddButton;
     ArrayList <String> mergePhotos = new ArrayList <String> ();
+    String storystring;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,7 +52,7 @@ public class StoryWrite2Activity extends AppCompatActivity
         travelDayAddButton = (ImageView) findViewById(R.id.travelDayAddButton);
 
         Intent intent = getIntent();
-        String storystring = new String(intent.getExtras().getString("storystring"));
+        storystring = new String(intent.getExtras().getString("storystring"));
         Log.d("storystring", storystring);
         selectedPhotos = (ArrayList <ArrayList<String>>) intent.getExtras().get("selectedPhotos");
 
@@ -120,15 +126,53 @@ public class StoryWrite2Activity extends AppCompatActivity
         recyclerView.add(listItem);
     }
 
+    private void storyWriteComplete()
+    {
+        RequestParams params = new RequestParams();
+
+        params.put("userSeq", 10);
+        params.put("seq", 10);
+        params.put("text", storystring);
+        params.put("title", "write title");
+        params.put("presentation_image", 1);
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("storyWriteComplete", "writeStory_Server()");
+        client.get("http://kibox327.cafe24.com/writeComplete.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                Log.d("storyWriteComplete", "getData_Server() onStart");
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("storyWriteComplete", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("storyWriteComplete", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {        }
+        });
+
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == android.R.id.home){
+        if(id == android.R.id.home)
+        {
             finish();
             return true;
         }
-        if(id == R.id.complete){
+        if(id == R.id.complete)
+        {
+            storyWriteComplete();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -139,4 +183,5 @@ public class StoryWrite2Activity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.story_write2, menu);
         return true;
     }
+
 }

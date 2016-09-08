@@ -89,6 +89,7 @@
             android:name=".CustomDialog.MainImgSelectDialog"
             android:theme="@android:style/Theme.Dialog">
         </activity>
+        <activity android:name=".Story.VideoPickerActivity"/>
     </application>
 
 </manifest>

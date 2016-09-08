@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.user.travel360.R;
 import com.example.user.travel360.Story.PhotoAdapter;
 import com.example.user.travel360.Story.RecyclerItemClickListener;
+import com.example.user.travel360.Story.StoryWrite2Activity;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,8 @@ public class MainImgSelectDialog extends Activity
     Button noButton;
     private static boolean main_img_selected = false;
     private static int checked_img_count = 0;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -96,7 +99,10 @@ public class MainImgSelectDialog extends Activity
         }
         else if(checked_img_count == 1)
         {
-            onBackPressed();
+            Intent intent = new Intent(getApplicationContext(), StoryWrite2Activity.class);
+
+            setResult(1234, intent);
+            finish();
         }
         else
         {
