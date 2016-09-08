@@ -1,9 +1,9 @@
 package com.example.user.travel360.Review;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,11 +17,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.travel360.R;
+import com.example.user.travel360.ReviewReadDialog;
+
+
 
 /**
  * Created by user on 2016-08-10.
  */
-public class ReviewMainReadActivity extends AppCompatActivity {
+public class ReviewMainReadActivity extends Activity {
+
 
     ScrollView mScroll;
     ImageLoadingTask task; // 백그라운드 쓰레드 동작을 위한 Asynctask 클래스 객체
@@ -54,37 +58,44 @@ public class ReviewMainReadActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_review_main_read);
-        BestReview = (LinearLayout) findViewById(R.id.best_review);
-        NormalReview = (LinearLayout) findViewById(R.id.normal_review);
-        WriteReview = (FloatingActionButton)findViewById(R.id.write_review_btn);
-        Up = (FloatingActionButton)findViewById(R.id.up);
-        mScroll = (ScrollView)findViewById(R.id.read_review_scroll);
 
-
+        init();
         Bestinit();
         Normalinit();
         onClickEvent();
 
     }
-public void onClickEvent(){
-    WriteReview.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Toast.makeText(getApplicationContext(),"글쓰기", Toast.LENGTH_SHORT).show();
-        }
-    });
-    Up.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Toast.makeText(getApplication(),"we",Toast.LENGTH_SHORT).show();
-            scrollToEnd();
 
-        }
-    });
+    public void init() {
+        BestReview = (LinearLayout) findViewById(R.id.best_review);
+        NormalReview = (LinearLayout) findViewById(R.id.normal_review);
+        WriteReview = (FloatingActionButton) findViewById(R.id.write_review_btn);
+        Up = (FloatingActionButton) findViewById(R.id.up);
+        mScroll = (ScrollView) findViewById(R.id.read_review_scroll);
 
-}
+
+    }
+
+    public void onClickEvent() {
+        WriteReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //  Toast.makeText(getApplicationContext(), "글쓰기", Toast.LENGTH_SHORT).show();
+            }
+        });
+        Up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Toast.makeText(getApplication(), "we", Toast.LENGTH_SHORT).show();
+                scrollToEnd();
+
+            }
+        });
+
+    }
+
     public void Bestinit() {
 
         LayoutInflater inflater = LayoutInflater.from(getApplication().getApplicationContext());
@@ -108,6 +119,15 @@ public void onClickEvent(){
 
             BText1[i].setText(text1);
             BDate[i].setText("2016.08.23");
+
+            BestReviewITem[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ReviewReadDialog reviewReadDialog = new ReviewReadDialog(ReviewMainReadActivity.this);
+
+                    reviewReadDialog.show();
+                }
+            });
             //*******************************************************************
 
             BestReview.addView(BestReviewITem[i]); // 추가해주기
@@ -138,6 +158,16 @@ public void onClickEvent(){
 
             NText1[i].setText(text1);
             NDate[i].setText("2016.08.23");
+
+
+            NormalReviewITem[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ReviewReadDialog reviewReadDialog = new ReviewReadDialog(ReviewMainReadActivity.this);
+
+                    reviewReadDialog.show();
+                }
+            });
             //*******************************************************************
 
             NormalReview.addView(NormalReviewITem[i]); // 추가해주기
@@ -166,20 +196,19 @@ public void onClickEvent(){
         getMenuInflater().inflate(R.menu.review_main_read, menu);
         return true;
     }
-    public void scrollToEnd(){
-        Log.d("@@@","in");
+
+    public void scrollToEnd() {
+        Log.d("@@@", "in");
         mScroll.post(new Runnable() {
             @Override
             public void run() {
-                Log.d("@@@","in2");
+                Log.d("@@@", "in2");
                 mScroll.fullScroll(View.FOCUS_UP);
             }
 
         });
 
     }
-
-
 
 
 }

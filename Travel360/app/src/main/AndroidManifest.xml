@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.example.user.travel360"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.user.travel360">
 
     <!-- 인터넷 연결 상태 확인을 위해 permission을 추가하였습니다.! -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <permission android:name="android.permission.CAMERA"/>
+    <permission android:name="android.permission.CAMERA" />
 
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="false"/>
+        android:required="false" />
     <uses-feature
         android:name="android.hardware.camera.autofocus"
-        android:required="false"/>
+        android:required="false" />
 
     <!-- activity에 screenOrientation="portrait"를 추가하여 세로로만 동작하도록 하였습니다.! -->
     <application
@@ -36,59 +36,59 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".Splash"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".UserActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".Search_Activity"
-            android:theme="@style/Theme.AppCompat.Translucent"/>
+            android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".Story.StoryWriteActivity"
-            android:label="여행기 쓰기"/>
+            android:label="여행기 쓰기" />
         <activity
             android:name=".Story.StoryWrite2Activity"
-            android:label="여행기 쓰기"/>
+            android:label="여행기 쓰기" />
         <activity
             android:name=".Story.StoryReadActivity"
-            android:label="여행기 본문"/>
+            android:label="여행기 본문" />
         <activity
             android:name=".Review.ReviewMainReadActivity"
-            android:label="리뷰 본문"/>
+            android:label="리뷰 본문" />
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".JoinActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".Story.ImageViewer"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="me.iwf.photopicker.PhotoPickerActivity"
-            android:theme="@style/customTheme"/>
+            android:theme="@style/customTheme" />
         <activity
             android:name="me.iwf.photopicker.PhotoPagerActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".uk.co.senab.photoview.TFDatePickerDialog"/>
-        <activity android:name=".Review.SelectCityDialog"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".uk.co.senab.photoview.TFDatePickerDialog" />
+        <activity android:name=".Review.SelectCityDialog" />
         <activity
             android:name=".CustomDialog.MainImgSelectDialog"
-            android:theme="@android:style/Theme.Dialog">
-        </activity>
+            android:theme="@android:style/Theme.Dialog"></activity>
+        <activity android:name=".ReviewReadDialog"></activity>
     </application>
 
 </manifest>
