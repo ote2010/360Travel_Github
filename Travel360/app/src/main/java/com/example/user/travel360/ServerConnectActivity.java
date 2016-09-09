@@ -22,7 +22,14 @@ public class ServerConnectActivity extends AppCompatActivity {
         필요한 기능의 함수만 짤라서 가져다 사용하면 됩니다.
         RequestParams params 는 서버로 보내줘야 할 필수 데이터들입니다.
         stroy 전체 데이터를 제외한 모든 부분에 필수 데이터들이 있습니다.
-        알맞게 채워서 보내주세요.
+        
+        미리 들어가 있는 것들은 최소 넣어주어야 할 기본 데이터이고, 
+        부가적으로 나머지를 다 채워 주셔야합니다
+
+        Dao 패키지 안에 클래스를 참고 하시면 됩니다.
+        TravleRecordDto : 여행기 객체
+        UserDto : 사용자 정보 객체
+		
 
 		연동 완료된 목록
 		1. story 쓰기  : writeStory_Server()
@@ -36,7 +43,7 @@ public class ServerConnectActivity extends AppCompatActivity {
     void writeStory_Server() {
 
         RequestParams params = new RequestParams();
-
+        // 기본 데이터
         params.put("userSeq","3");
         params.put("seq", 3);
         params.put("text", "write text");
@@ -130,6 +137,7 @@ public class ServerConnectActivity extends AppCompatActivity {
     void getTravleRecord_Server() {
 
         RequestParams params = new RequestParams();
+         // 기본 데이터
         params.put("seq", 1);
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -175,6 +183,7 @@ public class ServerConnectActivity extends AppCompatActivity {
     /****************************  댓글 쓰기  *************************/
     void writeComment_Server() {
         RequestParams params = new RequestParams();
+         // 기본 데이터
         params.put("seq",3);
         params.put("comment", "comment text");
         params.put("evaluation", 5);
