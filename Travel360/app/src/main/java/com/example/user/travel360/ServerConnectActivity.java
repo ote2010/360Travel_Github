@@ -15,29 +15,60 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 import cz.msebera.android.httpclient.Header;
 
 public class ServerConnectActivity extends AppCompatActivity {
     /*
         필요한 기능의 함수만 짤라서 가져다 사용하면 됩니다.
         RequestParams params 는 서버로 보내줘야 할 필수 데이터들입니다.
-        stroy 전체 데이터를 제외한 모든 부분에 필수 데이터들이 있습니다.
-        
-        미리 들어가 있는 것들은 최소 넣어주어야 할 기본 데이터이고, 
-        부가적으로 나머지를 다 채워 주셔야합니다
-
-        Dao 패키지 안에 클래스를 참고 하시면 됩니다.
-        TravleRecordDto : 여행기 객체
-        UserDto : 사용자 정보 객체
-		
+       알맞게 채워서 보내주세요.
 
 		연동 완료된 목록
+		0. stroy 쓰기전 확인 : writeStoryRead_Server()
 		1. story 쓰기  : writeStory_Server()
 		2. story 전체 데이터 받아오기 : getTravleRecordAll_Server()
 		3. story 1개에 대한 데이터 받아오기 : getTravleRecord_Server()
-		4. 댓글 쓰기 : writeComment_Server();
-		5. 저장된 image 가져오기 : getImage_Server();
+		4. 여행기 댓글 쓰기 : writeStoryComment_Server()
+		5. 저장된 image 가져오기 : getImage_Server()
+		6. 여행기 댓글 리스트 : getComment_Server()
+		7. 사용자 정보 가져오기 : getUserInfo_Server()
+		8. 친구 (요청)추가 하기  : addFriend_Server()
+		9. 친구 수락 하기 : acceptFriend_Server()
+		10. 내 친구 수 : getCountFriends_Server()
+		11. 내 친구 목록 : getFriendsList_Server()
 	*/
+
+    /************** stroy 쓰기전 확인 ******************/
+    void writeStoryRead_Server() {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 userSeq 만 있으면 됩니다.
+        params.put("seq","2");
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "writeStoryRead_Server()");
+        client.get("http://kibox327.cafe24.com/writeRecordReady.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {  }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {  }
+        });
+    }
 
     /************************  story 쓰기  *********************/
     void writeStory_Server() {
@@ -49,7 +80,7 @@ public class ServerConnectActivity extends AppCompatActivity {
         params.put("text", "write text");
         params.put("title", "write title");
         params.put("presentation_image", 1);
-
+        // 추가 데이터 Dao -> TravelRecordDto 참조
 
         AsyncHttpClient client = new AsyncHttpClient();
 
@@ -105,13 +136,6 @@ public class ServerConnectActivity extends AppCompatActivity {
                         String presentation_image = (String)obj.get("presentation_image");
                         String text = (String)obj.get("text");
 
-
-
-                       /* TravelRecordDto td = new TravelRecordDto();
-                        td.setSeq((Integer)obj.get("seq"));
-                        td.setUser_info_seq((Integer)obj.get("user_info_seq"));
-                        td.setPresentation_image((String)obj.get("presentation_image"));
-                        td.setText((String)obj.get("text"));*/
                     }
 
                 } catch (JSONException e) {
@@ -137,7 +161,7 @@ public class ServerConnectActivity extends AppCompatActivity {
     void getTravleRecord_Server() {
 
         RequestParams params = new RequestParams();
-         // 기본 데이터
+        // 보내는 data는 seq 만 있으면 됩니다.
         params.put("seq", 1);
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -180,32 +204,32 @@ public class ServerConnectActivity extends AppCompatActivity {
     }
 
 
-    /****************************  댓글 쓰기  *************************/
-    void writeComment_Server() {
+    /****************************  여행기 댓글 쓰기  *************************/
+    void writeStoryComment_Server() {
+     //   long todaydate = System.currentTimeMillis(); // long 형의 현재시간
+
         RequestParams params = new RequestParams();
-         // 기본 데이터
-        params.put("seq",3);
-        params.put("comment", "comment text");
-        params.put("evaluation", 5);
+        params.put("comment","travle comment");
+        params.put("evaluation","1");
+        params.put("travel_record_seq","1");
+        params.put("id","a");
+      //  params.put("write_date",todaydate);
 
-        params.put("travelSeq", 3);
-
-        params.put("UserSeq", 3);
-
+        params.put("UserSeq","1");
+        params.put("travelSeq","1");
 
         AsyncHttpClient client = new AsyncHttpClient();
 
-        Log.d("SUN", "writeStory_Server()");
+        Log.d("SUN", "getComment_Server()");
         client.get("http://kibox327.cafe24.com/writeComment.do", params, new AsyncHttpResponseHandler() {
             @Override
-            public void onStart() {
-                Log.d("SUN", "getData_Server() onStart");
-            }
+            public void onStart() {  }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                 Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
                 String res = new String(response);
+
             }
 
             @Override
@@ -214,10 +238,9 @@ public class ServerConnectActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onRetry(int retryNo) {        }
+            public void onRetry(int retryNo) {  }
         });
     }
-
     /***************  image 가져오기  *********************/
 
     public Bitmap byteArrayToBitmap(byte[] byteArray ) {  // byte -> bitmap 변환 및 반환
@@ -229,6 +252,7 @@ public class ServerConnectActivity extends AppCompatActivity {
     void getImage_Server() {
 
         RequestParams params = new RequestParams();
+        // 보내는 data는 imageName 만 있으면 됩니다.
         params.put("imageName", "20160903043004Screenshot_20160902-144102.png");
         AsyncHttpClient client = new AsyncHttpClient();
 
@@ -257,7 +281,243 @@ public class ServerConnectActivity extends AppCompatActivity {
         });
     }
 
+    /*********** 여행기 댓글 리스트  ***************/
+    void getComment_Server() {
 
+        RequestParams params = new RequestParams();
+        // 보내는 data는 userSeq 만 있으면 됩니다.
+        params.put("travelSeq","1");
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getComment_Server()");
+        client.get("http://kibox327.cafe24.com/getTravelCommentList.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {  }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+                try {
+                    JSONObject object = new JSONObject(res);
+                    String objStr =  object.get("comment") + "";
+                    JSONArray arr = new JSONArray(objStr);
+                    for(int i=0; i<arr.length(); i++ ) {
+                        JSONObject obj = (JSONObject)arr.get(i);
+                        String comment = (String)obj.get("comment");
+                        int evaluation = (int)obj.get("evaluation");
+                        String id = (String)obj.get("id");
+                        int seq = (int)obj.get("seq");
+                        int user_info_seq = (int)obj.get("user_info_seq");
+                        JSONObject write_date = (JSONObject)obj.get("write_date");
+
+                        long time  = (long)write_date.get("time");
+                        Date date = new Date(time);
+
+                        Log.d("SUN", "comment : "+comment + " , id : " + id + " , user_info_seq : " + user_info_seq + " , date : "+ date + " , seq : "+seq);
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("SUN",  "e : " + e.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {  }
+        });
+    }
+
+    /************* 사용자 정보 **************/
+    void getUserInfo_Server() {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 seq 만 있으면 됩니다.
+        params.put("seq","1");
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getUserInfo_Server()");
+        client.get("http://kibox327.cafe24.com/getUserInfo.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {  }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {  }
+        });
+    }
+
+    /************** 친구 추가 하기  ***********************/
+    void addFriend_Server() {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 seq, targetSeq 만 있으면 됩니다.
+        params.put("seq","1");
+        params.put("targetSeq","2");
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "addFriend_Server()");
+        client.get("http://kibox327.cafe24.com/addFriend.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {  }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {  }
+        });
+    }
+
+    /************   친구 수락 하기  ****************/
+    void acceptFriend_Server() {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 seq, targetSeq 만 있으면 됩니다.
+        params.put("seq","2");
+        params.put("targetSeq","1");
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "acceptFriend_Server()");
+        client.get("http://kibox327.cafe24.com/acceptFriend.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {  }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {  }
+        });
+    }
+
+    /**************  내 친구 수  **************/
+    void getCountFriends_Server() {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 seq 만 있으면 됩니다.
+        params.put("seq","1");
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getCountFriends_Server()");
+        client.get("http://kibox327.cafe24.com/getCountFriends.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {  }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+                try{
+                    JSONObject object = new JSONObject(res);
+                    int friendsCount = (int)object.get("friendsCount");
+                    Log.d("SUN","count : "+friendsCount);
+
+                }catch (JSONException e){
+                    e.printStackTrace();
+                    Log.d("SUN",  "e : " + e.toString());
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {  }
+        });
+    }
+
+    /*****************  내 친구 목록  ******************/
+    void getFriendsList_Server() {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 seq 만 있으면 됩니다.
+        params.put("seq","1");
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getFriendsList_Server()");
+        client.get("http://kibox327.cafe24.com/friendsList.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {  }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+                try{
+                    JSONObject object = new JSONObject(res);
+                    String arrayStr = object.get("userDtoList") + "";
+                    JSONArray array = new JSONArray(arrayStr);
+
+                    for(int i=0; i<array.length(); i++)
+                    {
+                        JSONObject friend = (JSONObject)array.get(i);
+                        String id = (String)friend.get("id");
+                        int seq = (int)friend.get("seq");
+                        Log.d("SUN", "id : "+id + " , seq : "+ seq);
+
+                    }
+
+                }catch (JSONException e){
+                    e.printStackTrace();
+                    Log.d("SUN",  "e : " + e.toString());
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {  }
+        });
+    }
 
 
 
