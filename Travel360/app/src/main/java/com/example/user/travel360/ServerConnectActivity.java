@@ -2,11 +2,10 @@ package com.example.user.travel360;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.example.user.travel360.Dao.TravelRecordDto;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -76,7 +75,7 @@ public class ServerConnectActivity extends AppCompatActivity {
         RequestParams params = new RequestParams();
         // 기본 데이터
         params.put("userSeq","3");
-        params.put("seq", 3);
+        params.put("seq", 3); // travelseq를 넣어서 보내주면 된다.
         params.put("text", "write text");
         params.put("title", "write title");
         params.put("presentation_image", 1);
