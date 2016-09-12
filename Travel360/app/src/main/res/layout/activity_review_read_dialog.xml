@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context="com.example.user.travel360.ReviewReadDialog">
+    tools:context=".Review.ReviewReadDialog">
 
 
     <LinearLayout
