@@ -1,1 +1,1 @@
-include ':app', ':photopickerdemo', ':PhotoPicker'
+include ':app', ':photopickerdemo', ':PhotoPicker', ':FriendsLink-1.5.10'
