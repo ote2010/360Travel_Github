@@ -12,6 +12,7 @@ public class ApplicationController extends Application {
     String pw;
     String gender;
     int point;
+    String seq;
     Boolean LoginFlag = false;
 
 
@@ -46,6 +47,7 @@ public class ApplicationController extends Application {
     }
 
     public void setEmail(String email) {
+        this.email = email;
         SharedPreferences.Editor editor = pref.edit();
         editor.clear();
         editor.commit();
@@ -68,6 +70,24 @@ public class ApplicationController extends Application {
     }
 
 
+    public String getSeq(){
+
+        pref = getSharedPreferences("login", 0);
+        edit = pref.edit();
+
+        this.seq = pref.getString("seq", seq);
+
+        return seq;
+    }
+    public void setSeq(String a){
+        this.seq = a;
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+        edit.putString("seq", a);
+        editor.commit();
+
+    }
     @Override
     public void onCreate() {
         super.onCreate();
