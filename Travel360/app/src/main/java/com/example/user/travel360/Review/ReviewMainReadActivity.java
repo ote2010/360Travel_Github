@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.travel360.R;
+import com.example.user.travel360.ReviewReadDialog;
 
 
 /**
@@ -81,9 +82,9 @@ public class ReviewMainReadActivity extends Activity {
             @Override
             public void onClick(View v) {
                 //  Toast.makeText(getApplicationContext(), "글쓰기", Toast.LENGTH_SHORT).show();
-                ReviewWriteActivity reviewWriteActivity = new ReviewWriteActivity(ReviewMainReadActivity.this);
+                //ReviewWriteActivity reviewWriteActivity = new ReviewWriteActivity(ReviewMainReadActivity.this);
 
-                reviewWriteActivity.show();
+                //reviewWriteActivity.show();
             }
         });
         Up.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +126,6 @@ public class ReviewMainReadActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     ReviewReadDialog reviewReadDialog = new ReviewReadDialog(ReviewMainReadActivity.this);
-
                     reviewReadDialog.show();
                 }
             });
@@ -165,7 +165,6 @@ public class ReviewMainReadActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     ReviewReadDialog reviewReadDialog = new ReviewReadDialog(ReviewMainReadActivity.this);
-
                     reviewReadDialog.show();
                 }
             });

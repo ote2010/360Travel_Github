@@ -129,6 +129,13 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
             return true;
         }
 
+        //*** To 선아 *** 이부분 ****************
+        if (id == R.id.travelerAddButton)
+        {
+            return true;
+        }
+        //*** To 선아 *** 이부분 ****************
+
         if (id == R.id.menuButton) {
             Toast.makeText(this, "메뉴 버튼 이벤트", Toast.LENGTH_SHORT).show();
             return true;
