@@ -305,10 +305,10 @@ public class MainActivity extends AppCompatActivity
     public void isLoginned() {
         Boolean LoginFlag = ApplicationController.getInstance().getLoginFlag();
         if (LoginFlag == true) {
-            Toast.makeText(getApplicationContext(),
+           /* Toast.makeText(getApplicationContext(),
                     "" + ApplicationController.getInstance().getLoginFlag(),
                     Toast.LENGTH_SHORT).show();
-
+*/
             UserIDTextView.setText(ApplicationController.getInstance().getEmail());
 
             LayoutNoLogin.setVisibility(View.INVISIBLE);

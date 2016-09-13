@@ -22,12 +22,17 @@ import java.util.ArrayList;
 
 public class MainImgSelectDialog extends Activity
 {
+    final static int MAIN_IMG_DIALOG_REQCODE = 1234;
+
     ArrayList <String> mergePhotos = new ArrayList <String> ();
+    ArrayList <Integer> mergeImgSeqList = new ArrayList <Integer> ();
     RecyclerView recyclerView;
     Button yesButton;
     Button noButton;
     private static boolean main_img_selected = false;
     private static int checked_img_count = 0;
+
+    int selectedMainImgSeq = -1; // 선택된 대표이미지의 ImgSeq 값
 
 
 
@@ -43,6 +48,7 @@ public class MainImgSelectDialog extends Activity
 
         Intent intent = getIntent();
         mergePhotos = (ArrayList <String>)intent.getExtras().get("mergePhotos");
+        mergeImgSeqList = (ArrayList <Integer>)intent.getExtras().get("mergeImgSeqList");
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         yesButton = (Button) findViewById(R.id.yesButton);
         noButton = (Button) findViewById(R.id.noButton);
@@ -65,14 +71,17 @@ public class MainImgSelectDialog extends Activity
             @Override
             public void onItemClick(View view, int position)
             {
-                if(!main_img_selected && view.getAlpha() == 1.0f)
+                if(!main_img_selected && view.getAlpha() == 1.0f) // 대표 사진 체크
                 {
                     view.setAlpha(0.6f);
                     main_img_selected = true;
                     checked_img_count++;
                     Log.d("checked_img_count", String.valueOf(checked_img_count));
+
+                    selectedMainImgSeq = mergeImgSeqList.get(recyclerView.indexOfChild(view));
+                    Log.d("selectedMainImgSeq", String.valueOf(selectedMainImgSeq));
                 }
-                else if(main_img_selected && view.getAlpha() == 0.6f)
+                else if(main_img_selected && view.getAlpha() == 0.6f) // 대표 사진 안체크
                 {
                     view.setAlpha(1.0f);
                     main_img_selected = false;
@@ -100,8 +109,8 @@ public class MainImgSelectDialog extends Activity
         else if(checked_img_count == 1)
         {
             Intent intent = new Intent(getApplicationContext(), StoryWrite2Activity.class);
-
-            setResult(1234, intent);
+            intent.putExtra("selectedMainImgSeq", selectedMainImgSeq);
+            setResult(MAIN_IMG_DIALOG_REQCODE);
             finish();
         }
         else

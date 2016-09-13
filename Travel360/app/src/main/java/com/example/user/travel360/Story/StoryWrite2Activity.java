@@ -29,12 +29,20 @@ import cz.msebera.android.httpclient.Header;
  */
 public class StoryWrite2Activity extends AppCompatActivity
 {
+    final static int MAIN_IMG_DIALOG_REQCODE = 1234;
+
     LinearLayout uploadImgLayout, mainStoryImgLayout, reviewWriteLayout, travelDayLayout;
     ArrayList<ArrayList<String>> selectedPhotos = new ArrayList <ArrayList<String>>();
+    ArrayList<ArrayList<Integer>> imgSeqList = new ArrayList <ArrayList<Integer>>();
     ArrayList <RecyclerView> recyclerView = new ArrayList <RecyclerView> ();
     ImageView mainStoryImgAddButton, reviewWriteAddButton, travelDayAddButton;
     ArrayList <String> mergePhotos = new ArrayList <String> ();
+    ArrayList <Integer> mergeImgSeqList = new ArrayList <Integer> ();
     String storystring;
+    int travelSeq = -1;
+
+    // ****서버에 보낼때 필요한 변수 ****
+    int selectedMainImgSeq = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -53,8 +61,10 @@ public class StoryWrite2Activity extends AppCompatActivity
 
         Intent intent = getIntent();
         storystring = new String(intent.getExtras().getString("storystring"));
+        travelSeq = intent.getExtras().getInt("travelSeq");
         Log.d("storystring", storystring);
         selectedPhotos = (ArrayList <ArrayList<String>>) intent.getExtras().get("selectedPhotos");
+        imgSeqList = (ArrayList <ArrayList<Integer>>) intent.getExtras().get("imgSeqList");
 
         mergeSelectedPhotos();
 
@@ -69,7 +79,8 @@ public class StoryWrite2Activity extends AppCompatActivity
             {
                 Intent intent = new Intent(getApplicationContext(), MainImgSelectDialog.class);
                 intent.putExtra("mergePhotos", mergePhotos);
-                startActivity(intent);
+                intent.putExtra("mergeImgSeqList", mergeImgSeqList);
+                startActivityForResult(intent, MAIN_IMG_DIALOG_REQCODE);
             }
         });
 
@@ -92,11 +103,27 @@ public class StoryWrite2Activity extends AppCompatActivity
         uploadedImgShowing();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK && (requestCode == MAIN_IMG_DIALOG_REQCODE))
+        {
+            selectedMainImgSeq = (int)data.getExtras().getInt("selectedMainImgSeq");
+        }
+    }
+
     private void mergeSelectedPhotos()
     {
         for(int i=0; i<selectedPhotos.size(); i++)
         {
             mergePhotos.addAll(selectedPhotos.get(i));
+        }
+
+        for(int i=0; i<imgSeqList.size(); i++)
+        {
+            mergeImgSeqList.addAll(imgSeqList.get(i));
         }
     }
 
@@ -131,10 +158,10 @@ public class StoryWrite2Activity extends AppCompatActivity
         RequestParams params = new RequestParams();
 
         params.put("userSeq", 10);
-        params.put("seq", 10);
+        params.put("seq", travelSeq);
         params.put("text", storystring);
         params.put("title", "write title");
-        params.put("presentation_image", 1);
+        params.put("presentation_image", selectedMainImgSeq);
         AsyncHttpClient client = new AsyncHttpClient();
 
         Log.d("storyWriteComplete", "writeStory_Server()");

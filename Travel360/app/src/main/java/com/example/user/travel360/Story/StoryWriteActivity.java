@@ -65,7 +65,8 @@ public class StoryWriteActivity extends AppCompatActivity {
     Button videoinsertButton;
     ArrayList <EditText> editText = new ArrayList <EditText> ();
 
-    ArrayList<ArrayList <String>> selectedPhotos = new ArrayList <ArrayList<String>>();
+    ArrayList <ArrayList <String>> selectedPhotos = new ArrayList <ArrayList<String>>();
+    ArrayList <ArrayList <Integer>> imgSeqList = new ArrayList <ArrayList <Integer>>();
 
     String storystring;
     ArrayList <Integer> contentsSequence; // 이미지는 0, 텍스트는 1
@@ -152,6 +153,7 @@ public class StoryWriteActivity extends AppCompatActivity {
                 final RecyclerView listItem = new RecyclerView (getApplicationContext());
 
                 selectedPhotos.add(new ArrayList<String>());
+                imgSeqList.add(new ArrayList<Integer>());
                 photoAdapter = new PhotoAdapter(getApplicationContext(), selectedPhotos.get(recyclerView.size()));
 
                 listItem.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
@@ -180,6 +182,7 @@ public class StoryWriteActivity extends AppCompatActivity {
                             {
                                 container.removeView(listItem);
                                 selectedPhotos.remove(recyclerView.indexOf(listItem));
+                                imgSeqList.remove(recyclerView.indexOf(listItem));
 
                                 int temp = 0;
                                 for(int i=0; i<contentsSequence.size(); i++)
@@ -316,8 +319,8 @@ public class StoryWriteActivity extends AppCompatActivity {
 
             }
 
-            params.put("travelSeq", 1);
-            params.put("userSeq", 1);
+            params.put("travelSeq", travelSeq);
+            params.put("userSeq", 1); // 이부분 유정이 풀하는거 보고 바꾸기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
             params.put("groupSeq", i);
 
             AsyncHttpClient client = new AsyncHttpClient();
@@ -338,11 +341,15 @@ public class StoryWriteActivity extends AppCompatActivity {
                     //Toast.makeText(getApplicationContext(), "업로드 성공!", Toast.LENGTH_LONG).show();
                     Log.d("ImageUpload",new String(response));
                     String res = new String(response);
-                    try {
+                    try
+                    {
                         JSONObject obj = new JSONObject(res);
                         String objStr =  obj.get("picture") + "";
                         JSONObject imgSeqJSON = new JSONObject(objStr);
-                        imgSeq = (int)imgSeqJSON.get("picture_group_seq"); // 나중에 구현해야 할 것 : 이 imgSeq를 삭제할때 서버로 보내줘야한다.....
+                        imgSeq = (int)imgSeqJSON.get("seq"); // 나중에 구현해야 할 것 : 이 imgSeq를 삭제할때 서버로 보내줘야한다.....
+                        Log.d("imgSeq", String.valueOf(imgSeq));
+                        imgSeqList.get(recyclerView.size()-1).add(imgSeq);
+
                     }
                     catch (JSONException e)
                     {
@@ -435,6 +442,7 @@ public class StoryWriteActivity extends AppCompatActivity {
                 //************테스트할때는 주석처리. 과도한 트래픽 막기위해*********
                 UploadProgressDialog task = new UploadProgressDialog();
                 task.execute();
+
             }
             photoAdapter.notifyDataSetChanged();
         }
@@ -653,6 +661,8 @@ public class StoryWriteActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), StoryWrite2Activity.class);
             intent.putExtra("storystring", storystring);
             intent.putExtra("selectedPhotos", selectedPhotos);
+            intent.putExtra("imgSeqList", imgSeqList);
+            intent.putExtra("travelSeq", travelSeq);
             StoryStringUpload();
             storystring = "";
             startActivity(intent);

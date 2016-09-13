@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import com.loopj.android.http.*;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -95,8 +98,11 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                         // called when response HTTP status is "200 OK"
-                        Toast.makeText(getApplicationContext(), new String(response), Toast.LENGTH_LONG).show();
-
+                        //   Toast.makeText(getApplicationContext(), new String(response), Toast.LENGTH_LONG).show();
+                        // Log.d("seq@@", JSONP(new String(response)));
+                        String seq = JSONP(new String(response));
+                        ApplicationController.getInstance().setSeq(seq);
+                        Log.d("seq@@", ApplicationController.getInstance().getSeq());
                         ApplicationController.getInstance().setEmail(email);
                         ApplicationController.getInstance().setLoginFlag(true);
                         finish();
@@ -127,5 +133,23 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
     }
+
+    public String JSONP(String a) {
+
+        String seq = null;
+
+        try {
+            JSONObject obj = new JSONObject(a);
+            String objStr = obj.get("userDto") + "";
+            JSONObject data = new JSONObject(objStr);
+            seq = data.get("seq")+"";
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return seq;
+    }
+
 
 }
