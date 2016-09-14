@@ -4,7 +4,6 @@ package com.example.user.travel360;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.Toast;
 
 public class ApplicationController extends Application {
     // 사용자 속성 저장

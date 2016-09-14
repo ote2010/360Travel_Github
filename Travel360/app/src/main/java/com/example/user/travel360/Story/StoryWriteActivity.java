@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.user.travel360.ApplicationController;
 import com.example.user.travel360.R;
 import com.example.user.travel360.Story.RecyclerItemClickListener.OnItemClickListener;
 import com.loopj.android.http.AsyncHttpClient;
@@ -74,12 +75,13 @@ public class StoryWriteActivity extends AppCompatActivity {
     //************* 서버 관련 코드 ****************
     static int imgSeq;
     static int travelSeq;
+    static int userSeq = -1;
     //********************************************
 
     private void sendReadyVal()
     {
         RequestParams params = new RequestParams();
-        params.put("seq", 1);
+        params.put("seq", userSeq);
 
         AsyncHttpClient client = new AsyncHttpClient();
         client.post("http://kibox327.cafe24.com/writeRecordReady.do", params, new AsyncHttpResponseHandler()
@@ -142,6 +144,9 @@ public class StoryWriteActivity extends AppCompatActivity {
 
         storystring = new String();
         contentsSequence = new ArrayList <Integer> ();
+
+        if(ApplicationController.getInstance().getSeq() != null)
+            userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
 
         sendReadyVal();
 
@@ -320,7 +325,8 @@ public class StoryWriteActivity extends AppCompatActivity {
             }
 
             params.put("travelSeq", travelSeq);
-            params.put("userSeq", 1); // 이부분 유정이 풀하는거 보고 바꾸기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+            params.put("userSeq", userSeq);
+            //params.put("userSeq", 1);
             params.put("groupSeq", i);
 
             AsyncHttpClient client = new AsyncHttpClient();
@@ -387,7 +393,7 @@ public class StoryWriteActivity extends AppCompatActivity {
     {
         RequestParams params = new RequestParams();
         params.put("storystring", storystring);
-        params.put("seq", 1);
+        params.put("seq", travelSeq);
 
         AsyncHttpClient client = new AsyncHttpClient();
         client.post("http://kibox327.cafe24.com/writeComplete.do", params, new AsyncHttpResponseHandler()

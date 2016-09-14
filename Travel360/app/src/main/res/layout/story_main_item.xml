@@ -17,10 +17,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/storyImageView"
-                android:src="@drawable/testimg2"
                 android:baselineAlignBottom="false"
                 android:scaleType="fitStart"
-                android:adjustViewBounds="true"/>
+                android:adjustViewBounds="true"
+                android:src="@drawable/defaultimg"/>
 
             <Button
                 style="?android:attr/buttonStyleSmall"
@@ -42,26 +42,33 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:id="@+id/storyUserImage"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@drawable/defaultimg"
+                android:scaleType="fitXY"/>
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="49dp"
+                android:layout_height="wrap_content"
                 android:background="#f79797"
                 android:id="@+id/storyUserNameTitleLayout">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="오탁은"
-                    android:id="@+id/storyUserName"/>
+                    android:id="@+id/storyUserName"
+                    android:text="asdasd"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="숭실대 왔습니당"
-                    android:id="@+id/storyTitle"/>
+                    android:id="@+id/storyTitle"
+                    android:text="asdasd"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/storyDate"
+                    android:text="asdasd"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

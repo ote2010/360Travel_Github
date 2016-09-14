@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.user.travel360.ApplicationController;
 import com.example.user.travel360.CustomDialog.MainImgSelectDialog;
 import com.example.user.travel360.R;
 import com.loopj.android.http.AsyncHttpClient;
@@ -42,7 +43,8 @@ public class StoryWrite2Activity extends AppCompatActivity
     int travelSeq = -1;
 
     // ****서버에 보낼때 필요한 변수 ****
-    int selectedMainImgSeq = -1;
+    static int selectedMainImgSeq = -1;
+    static int userSeq = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -58,6 +60,8 @@ public class StoryWrite2Activity extends AppCompatActivity
         mainStoryImgAddButton = (ImageView) findViewById(R.id.mainStoryImgAddButton);
         reviewWriteAddButton = (ImageView) findViewById(R.id.reviewWriteAddButton);
         travelDayAddButton = (ImageView) findViewById(R.id.travelDayAddButton);
+
+        userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
 
         Intent intent = getIntent();
         storystring = new String(intent.getExtras().getString("storystring"));
@@ -157,7 +161,7 @@ public class StoryWrite2Activity extends AppCompatActivity
     {
         RequestParams params = new RequestParams();
 
-        params.put("userSeq", 10);
+        params.put("userSeq", userSeq);
         params.put("seq", travelSeq);
         params.put("text", storystring);
         params.put("title", "write title");
