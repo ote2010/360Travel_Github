@@ -102,11 +102,10 @@ public class LoginActivity extends AppCompatActivity {
                         // Log.d("seq@@", JSONP(new String(response)));
                         String seq = JSONP(new String(response));
                         ApplicationController.getInstance().setSeq(seq);
-                        Log.d("seq@@", ApplicationController.getInstance().getSeq());
+                        //   Log.d("seq@@", ApplicationController.getInstance().getSeq());
                         ApplicationController.getInstance().setEmail(email);
-                        ApplicationController.getInstance().setLoginFlag(true);
+                        // ApplicationController.getInstance().setLoginFlag(true);
                         finish();
-
                     }
 
                     @Override

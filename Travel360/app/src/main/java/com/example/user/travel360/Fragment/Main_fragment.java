@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,8 +26,8 @@ public class Main_fragment extends Fragment {
 
     TextView Reco_story_text1, Reco_story_text2, Reco_traveler_text1, Reco_traveler_text2, Reco_place_text1, Reco_place_text2;
     ImageView Reco_traveler_img1, Reco_traveler_img2;
-    Button Reco_story_btn1, Reco_story_btn2, Reco_place_btn1, Reco_place_btn2;
-    ;
+    //  Button Reco_story_btn1, Reco_story_btn2, Reco_place_btn1, Reco_place_btn2;
+    FrameLayout Reco_story_btn1, Reco_story_btn2, Reco_place_btn1, Reco_place_btn2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,10 +54,10 @@ public class Main_fragment extends Fragment {
         Reco_place_text2 = (TextView) v.findViewById(R.id.reco_placeText2);
 
         //button 선언
-        Reco_story_btn1 = (Button) v.findViewById(R.id.reco_storybtn1);
-        Reco_story_btn2 = (Button) v.findViewById(R.id.reco_storybtn2);
-        Reco_place_btn1 = (Button) v.findViewById(R.id.reco_placebtn1);
-        Reco_place_btn2 = (Button) v.findViewById(R.id.reco_placebtn2);
+        Reco_story_btn1 = (FrameLayout) v.findViewById(R.id.reco_storybtn1);
+        Reco_story_btn2 = (FrameLayout) v.findViewById(R.id.reco_storybtn2);
+        Reco_place_btn1 = (FrameLayout)v.findViewById(R.id.reco_placebtn1);
+        Reco_place_btn2 = (FrameLayout) v.findViewById(R.id.reco_placebtn2);
 
         //image 선언
         Reco_traveler_img1 = (ImageView) v.findViewById(R.id.reco_travelerImg1);
