@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity
                 //editor.commit();
 
                // edit.putBoolean("LoginFlag", false);
-               ApplicationController.getInstance().setLoginFlag(false);
+                ApplicationController.getInstance().setEmail(null);
             }
         });
         UserProfileImg.setOnClickListener(new View.OnClickListener() {
@@ -303,8 +303,11 @@ public class MainActivity extends AppCompatActivity
 //로그인 됐는지 확인 -> 로그인 돼있으면 ApplicationController에 있는 LoginFlag가 true로 바뀜
 
     public void isLoginned() {
-        Boolean LoginFlag = ApplicationController.getInstance().getLoginFlag();
-        if (LoginFlag == true) {
+        String LoginFlag = ApplicationController.getInstance().getEmail();
+
+
+        if (!(LoginFlag+"").equals(null)) {
+//            ApplicationController.getInstance().getSeq();
            /* Toast.makeText(getApplicationContext(),
                     "" + ApplicationController.getInstance().getLoginFlag(),
                     Toast.LENGTH_SHORT).show();

@@ -8,8 +8,8 @@ import android.widget.Toast;
 
 public class ApplicationController extends Application {
     // 사용자 속성 저장
-    String email;
-    String pw;
+    String email=null;
+    String pw=null;
     String gender;
     int point;
     String seq;
@@ -32,26 +32,38 @@ public class ApplicationController extends Application {
         return instance;
     }
 
-    public void setLoginFlag(boolean a) {
-        this.LoginFlag = a;
+    /* public void setLoginFlag(boolean a) {
+         this.LoginFlag = a;
 
-    }
+     }
 
+ */
     public Boolean getLoginFlag() {
-        return LoginFlag;
+        pref = getSharedPreferences("login", 0);
+        edit = pref.edit();
+
+        this.email = pref.getString("email", email);
+        if(email.equals(null) == true){
+            return false;
+        }else
+            return  true;
     }
 
     public String getEmail() {
+        pref = getSharedPreferences("login", 0);
+        edit = pref.edit();
 
-        return this.email;
+        this.email = pref.getString("email", email);
+//        Log.d("@seq@", seq);
+        return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmail(String e) {
+        this.email = e;
         SharedPreferences.Editor editor = pref.edit();
         editor.clear();
         editor.commit();
-        edit.putString("email", email);
+        edit.putString("email", e);
         editor.commit();
 
     }
@@ -70,16 +82,17 @@ public class ApplicationController extends Application {
     }
 
 
-    public String getSeq(){
+    public String getSeq() {
 
         pref = getSharedPreferences("login", 0);
         edit = pref.edit();
 
         this.seq = pref.getString("seq", seq);
-
+//        Log.d("@seq@", seq);
         return seq;
     }
-    public void setSeq(String a){
+
+    public void setSeq(String a) {
         this.seq = a;
         SharedPreferences.Editor editor = pref.edit();
         editor.clear();
@@ -88,6 +101,7 @@ public class ApplicationController extends Application {
         editor.commit();
 
     }
+
     @Override
     public void onCreate() {
         super.onCreate();

@@ -46,6 +46,7 @@
                 android:layout_gravity="center_horizontal">
 
                 <FrameLayout
+                    android:id="@+id/reco_storybtn1"
                     android:background="#dedede"
                     android:layout_marginTop="2.5dp"
                     android:layout_marginBottom="2.5dp"
@@ -68,12 +69,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+"
-                        android:id="@+id/reco_storybtn1"
+
                         android:layout_gravity="right|bottom"/>
-                   />
+                    />
                 </FrameLayout>
 
                 <FrameLayout
+                    android:id="@+id/reco_storybtn2"
                     android:background="#dedede"
                     android:layout_marginTop="2.5dp"
                     android:layout_marginBottom="2.5dp"
@@ -96,7 +98,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+"
-                        android:id="@+id/reco_storybtn2"
+
                         android:layout_gravity="right|bottom" />
                 </FrameLayout>
             </LinearLayout>
@@ -204,6 +206,7 @@
                 android:layout_gravity="right">
 
                 <FrameLayout
+                    android:id="@+id/reco_placebtn1"
                     android:background="#dedede"
                     android:layout_marginTop="2.5dp"
                     android:layout_marginBottom="2.5dp"
@@ -225,12 +228,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+"
-                        android:id="@+id/reco_placebtn1"
+
                         android:layout_gravity="right|bottom"
-                   />
+                        />
                 </FrameLayout>
 
                 <FrameLayout
+                    android:id="@+id/reco_placebtn2"
                     android:background="#dedede"
                     android:layout_marginTop="2.5dp"
                     android:layout_marginBottom="2.5dp"
@@ -253,7 +257,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+"
-                        android:id="@+id/reco_placebtn2"
+
                         android:layout_gravity="right|bottom" />
                 </FrameLayout>
 
