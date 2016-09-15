@@ -2,6 +2,7 @@ package com.example.user.travel360;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -10,9 +11,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import cz.msebera.android.httpclient.Header;
 
 public class UserActivity extends AppCompatActivity {
     LinearLayout v;
@@ -34,15 +42,30 @@ public class UserActivity extends AppCompatActivity {
 
     boolean oddCheck = false; // oddCheck가 true면 게시글 개수가 홀수. 그러니까 마지막 게시글은 하나만 띄워야한다.
 
+    Button addTravlerBtn;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_user);
+        //setContentView(R.layout.activity_user);
 
         storyDayTotal = 5; // 서버에서 데이터를 가져왔다고 가정. 0은 오늘. storyDayTotal은 오늘 올라갈 여행기 게시글 수. 5개
         v = (LinearLayout)getLayoutInflater().inflate(R.layout.activity_user, null);
         mainStoryContainer = (LinearLayout)v.findViewById(R.id.userLogLayout);
+
+        addTravlerBtn = (Button)v.findViewById(R.id.addTravlerBtn);
+        addTravlerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"add travler",Toast.LENGTH_SHORT).show();
+                addFriend_Server(1,4);
+            }
+        });
+
+
+
         LayoutInflater inflater = getLayoutInflater().from(getApplicationContext());
 
         // 현재 날짜 라벨도 동적으로 붙여줍니다.
@@ -133,4 +156,38 @@ public class UserActivity extends AppCompatActivity {
         setContentView(v);
 
     }
+
+    /************** 친구 (요청)추가 하기  ***********************/
+    void addFriend_Server(int mySeq, int otherSeq) {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 seq, targetSeq 만 있으면 됩니다.
+        params.put("seq",mySeq);
+        params.put("targetSeq",otherSeq);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "addFriend_Server()");
+        client.get("http://kibox327.cafe24.com/addFriend.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {  }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {  }
+        });
+    }
+
+
 }

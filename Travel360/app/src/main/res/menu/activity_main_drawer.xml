@@ -52,5 +52,10 @@
             android:id="@+id/nav_connectVR"
             android:icon="@drawable/ic_menu_manage"
             android:title="VR 연결하기"/>
+
+        <item
+            android:id="@+id/nav_friend"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="친구목록"/>
     </group>
 </menu>

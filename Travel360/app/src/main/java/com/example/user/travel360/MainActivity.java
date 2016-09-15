@@ -364,6 +364,9 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_connectVR) {
 
+        }else if (id == R.id.nav_friend) {
+            Intent intent = new Intent( MainActivity.this,FriendActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
