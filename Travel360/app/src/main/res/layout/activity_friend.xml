@@ -12,19 +12,12 @@
         android:orientation="horizontal">
 
         <EditText
+            android:id="@+id/friendSearchEt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:layout_weight="1" />
 
-        <Button
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:text="검색" />
-
-        <Button
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:text="추가" />
     </LinearLayout>
 
     <ListView
