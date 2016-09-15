@@ -61,6 +61,8 @@ public class Story_fragment extends Fragment {
     static String profile_image;
     static int storyDayTotal = 0; // storyDayTotal : 그 날의 여행기 게시글 개수
 
+    Bitmap temp;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -339,8 +341,8 @@ public class Story_fragment extends Fragment {
     }
 
     public Bitmap byteArrayToBitmap(byte[] byteArray ) {  // byte -> bitmap 변환 및 반환
-        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length) ;
-        return bitmap ;
+        temp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length) ;
+        return temp;
     }
 
     void getImage_Server(String imageName, final int RequestCode, final int index) {
@@ -370,7 +372,6 @@ public class Story_fragment extends Fragment {
                 }
 
                 Log.d("getImage_Server", "statusCode : " + statusCode + " , response : " +  new String(response));
-
             }
 
             @Override
