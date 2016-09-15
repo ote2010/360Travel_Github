@@ -88,6 +88,7 @@
             android:theme="@android:style/Theme.Dialog"></activity>
         <activity android:name=".Story.VideoPickerActivity" />
         <activity android:name=".Review.ReviewWriteActivity"></activity>
+        <activity android:name=".FriendActivity"></activity>
     </application>
 
 </manifest>

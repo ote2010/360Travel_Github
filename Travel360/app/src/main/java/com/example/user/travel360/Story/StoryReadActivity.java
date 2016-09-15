@@ -132,6 +132,8 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
         //*** To 선아 *** 이부분 ****************
         if (id == R.id.travelerAddButton)
         {
+            Toast.makeText(getApplicationContext(),"add travler",Toast.LENGTH_SHORT).show();
+            addFriend_Server(1,3);
             return true;
         }
         //*** To 선아 *** 이부분 ****************
@@ -470,6 +472,38 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onRetry(int retryNo) {   }
+        });
+    }
+
+    /************** 친구 (요청)추가 하기  ***********************/
+    void addFriend_Server(int mySeq, int otherSeq) {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 seq, targetSeq 만 있으면 됩니다.
+        params.put("seq",mySeq);
+        params.put("targetSeq",otherSeq);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "addFriend_Server()");
+        client.get("http://kibox327.cafe24.com/addFriend.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {  }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {  }
         });
     }
 }

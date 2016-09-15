@@ -5,13 +5,21 @@ import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class ReviewReadDialog extends Dialog {
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import cz.msebera.android.httpclient.Header;
+
+public class ReviewReadDialog extends Dialog implements View.OnClickListener{
 
     Button Detail, Add_Traveler, Close;
     TextView Name, Date, Review_Text, Star_Num;
@@ -31,13 +39,8 @@ public class ReviewReadDialog extends Dialog {
 
         init();
         Review_Text.setText(a);
-        Close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-
+        Close.setOnClickListener(this);
+        Add_Traveler.setOnClickListener(this);
     }
 
     public void init() {
@@ -54,4 +57,51 @@ public class ReviewReadDialog extends Dialog {
 
     }
 
+    @Override
+    public void onClick(View v) {
+        switch(v.getId())
+        {
+            case R.id.dialog_ad_traveler :
+                Toast.makeText(getContext(),"add travler",Toast.LENGTH_SHORT).show();
+                addFriend_Server(1,3);
+                break;
+
+            case R.id.dialog_close_btn:
+                dismiss();
+                break;
+        }
+    }
+
+
+    /************** 친구 (요청)추가 하기  ***********************/
+    void addFriend_Server(int mySeq, int otherSeq) {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 seq, targetSeq 만 있으면 됩니다.
+        params.put("seq",mySeq);
+        params.put("targetSeq",otherSeq);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "addFriend_Server()");
+        client.get("http://kibox327.cafe24.com/addFriend.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {  }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {  }
+        });
+    }
 }
