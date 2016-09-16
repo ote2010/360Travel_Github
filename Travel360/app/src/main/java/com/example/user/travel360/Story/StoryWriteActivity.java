@@ -146,7 +146,10 @@ public class StoryWriteActivity extends AppCompatActivity {
         contentsSequence = new ArrayList <Integer> ();
 
         if(ApplicationController.getInstance().getSeq() != null)
+        {
             userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
+            Log.d("userSeq", String.valueOf(userSeq));
+        }
 
         sendReadyVal();
 

@@ -61,7 +61,11 @@ public class StoryWrite2Activity extends AppCompatActivity
         reviewWriteAddButton = (ImageView) findViewById(R.id.reviewWriteAddButton);
         travelDayAddButton = (ImageView) findViewById(R.id.travelDayAddButton);
 
-        userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
+        if(ApplicationController.getInstance().getSeq() != null)
+        {
+            userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
+            Log.d("userSeq", String.valueOf(userSeq));
+        }
 
         Intent intent = getIntent();
         storystring = new String(intent.getExtras().getString("storystring"));

@@ -61,9 +61,6 @@ public class Story_fragment extends Fragment {
     static String profile_image;
     static int storyDayTotal = 0; // storyDayTotal : 그 날의 여행기 게시글 개수
 
-    Bitmap temp;
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,114 +90,6 @@ public class Story_fragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState)
     {
         getTravleRecordAll_Server();
-
-
-        /*//storyDayTotal = 5; // 서버에서 데이터를 가져왔다고 가정. 0은 오늘. storyDayTotal은 오늘 올라갈 여행기 게시글 수. 5개
-
-        LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
-
-        *//*
-        // 현재 날짜 라벨도 동적으로 붙여줍니다.
-        View timeText = inflater.inflate(R.layout.time_label, v, false);
-        TextView timeTextView = (TextView) timeText.findViewById(R.id.timeLabelTextView);
-
-        //현재 날짜를 받아와서 setText해주는 코드입니다.
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd");
-        Calendar now = Calendar.getInstance();
-        String currentDate = formatter.format(now.getTime());
-        timeTextView.setText("        " + currentDate);
-
-
-        // 현재 날짜로 setText된 날짜 라벨을 mainStoryContainer에 addView 해줍니다.
-        mainStoryContainer.addView(timeText);
-        *//*
-
-        // 현재 날짜에 올릴 여행기가 홀수개인지 짝수개인지 판별합니다. 홀수개면 마지막에 하나만 띄워줘야합니다.
-        if(storyDayTotal % 2 == 1)
-            oddCheck = true;
-
-        // 올릴 여행기 개수만큼 for문을 돌립니다.
-        for(int i = 0; i < storyDayTotal; i++)
-        {
-            // 올릴 여행기 아이템 하나를 inflate합니다.
-            storyItemView[i] = inflater.inflate(R.layout.story_main_item, v, false);
-
-            // Id를 받아옵니다. 버튼으로 사용하는 것들 1)storyImageView 2)storyImageButton 3)storyUserImage
-            storyImageView[i] = (ImageView)storyItemView[i].findViewById(R.id.storyImageView); // 클릭시 여행기 본문
-            storyImageButton[i] = (Button) storyItemView[i].findViewById(R.id.storyImageButton); // 클릭시 간략화된 여행기 정보
-            storyBackgroundLayout[i] = (LinearLayout) storyItemView[i].findViewById(R.id.storyBackgroundLayout);
-            storyUserImage[i] = (ImageButton) storyItemView[i].findViewById(R.id.storyUserImage); // 클릭시 트레블러 프로필
-            storyUserNameTitleLayout[i] = (LinearLayout) storyItemView[i].findViewById(R.id.storyUserNameTitleLayout);
-            storyUserName[i] = (TextView) storyItemView[i].findViewById(R.id.storyUserName);
-            storyTitle[i] = (TextView) storyItemView[i].findViewById(R.id.storyTitle);
-            TextView storyDateItem = (TextView) storyItemView[i].findViewById(R.id.storyDate);
-            storyDateList.add(storyDateItem);
-
-            /*//******************이 부분에서 서버에서 받아온 정보로 바꿔줍니다.******************************************
-            // 현재는 그냥 일괄적으로 동일한 정보로 해줬습니다.
-            *//*
-            storyImageView[i].setImageResource(R.drawable.testimg1);
-            storyUserName[i].setText("전성일");
-            storyTitle[i].setText("파오후쿰척쿰척");
-            *//*
-
-            storyImageView[i].setOnClickListener(new ImageView.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    /*//***서버에서 정보를 받아오는 코드를 작성하고, StoryReadActivity로 전달한다.***
-                    startActivity(new Intent(getActivity(), StoryReadActivity.class));
-                }
-            });
-            /*//******************************************************************************************************
-
-            // 여행기 아이템 하나의 레이아웃 속성을 지정합니다. 1번째 para : width 2번재 para : height 3번째 para : layout_weight
-            // 참고로 layout_weight는 레이아웃의 비율입니다. 1:1 반반씩 가지게 만들려고 1로 줍니다.
-            LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-
-            if(i % 2 == 0)
-            {
-                // 왼쪽 여행기의 경우입니다. 두 아이템 여행기를 감싸줄 storyContainer 레이아웃을 동적으로 생성하고 속성을 지정합니다.
-                itemParams.rightMargin = 2;
-                itemParams.leftMargin = 4;
-                storyContainer[j] = new LinearLayout(getActivity().getApplicationContext());
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.bottomMargin = 15;
-                storyContainer[j].setLayoutParams(params);
-            }
-            else
-            {
-                // 오른쪽 여행기의 경우입니다. 앞서 왼쪽 여행기에서 필요한 레이아웃 들을 동적으로 생성해줘서 딱히 해줄 과정은 없고 속성만 지정해줍니다.
-                itemParams.rightMargin = 4;
-                itemParams.leftMargin = 2;
-            }
-
-            // 속성을 지정해주고, 앞서 만들어두었던 storyContainer에 addView 해줍니다.
-            storyItemView[i].setLayoutParams(itemParams);
-            storyContainer[j].addView(storyItemView[i]);
-
-            if(i % 2 == 1) // i가 홀수 일때만 들어온다.
-            {
-                mainStoryContainer.addView(storyContainer[j]);
-                j++;
-            }
-            else if(oddCheck && i == storyDayTotal-1) // i가 짝수이고, oddCheck가 true, i가 마지막 index일 경우
-            {
-                // i가 짝수이고, 여행기 게시글 개수가 odd(홀수)이고, i의 값이 storyDayTotal-1 인 경우(즉, for문에서 마지막으로 돌때) 경우 입니다.
-                View invisibleBlock = new View(getActivity().getApplicationContext());
-
-                // 레이아웃 비율을 맞춰줘야하니까 속성 그대로 맞춰주고
-                LinearLayout.LayoutParams invisibleItemparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-                invisibleBlock.setLayoutParams(invisibleItemparams);
-
-                // addView 해줍니다.
-                storyContainer[j].addView(invisibleBlock);
-                mainStoryContainer.addView(storyContainer[j]);
-                j++;
-            }
-        }
-        */
 
         super.onActivityCreated(savedInstanceState);
     }
@@ -340,9 +229,25 @@ public class Story_fragment extends Fragment {
         });
     }
 
-    public Bitmap byteArrayToBitmap(byte[] byteArray ) {  // byte -> bitmap 변환 및 반환
-        temp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length) ;
-        return temp;
+    public Bitmap byteArrayToBitmap(byte[] byteArray, final int index) {  // byte -> bitmap 변환 및 반환
+        //리사이즈 코드
+        int targetW = storyImageView[index].getWidth();
+        int targetH = storyImageView[index].getHeight();
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length, options);
+        int photoW  = options.outHeight;
+        int photoH  = options.outWidth;
+
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = scaleFactor;
+        options.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length, options);
+        return bitmap;
     }
 
     void getImage_Server(String imageName, final int RequestCode, final int index) {
@@ -360,7 +265,7 @@ public class Story_fragment extends Fragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                 // byteArrayToBitmap 를 통해 reponse로 받은 이미지 데이터 bitmap으로 변환
-                Bitmap bitmap = byteArrayToBitmap(response);
+                Bitmap bitmap = byteArrayToBitmap(response, index);
 
                 if(RequestCode == REQUEST_PRESENTATION_IMAGE)
                 {
