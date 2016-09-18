@@ -10,6 +10,12 @@
         android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <ScrollView
+            android:id="@+id/read_review_scroll"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -17,12 +23,7 @@
             android:orientation="vertical">
 
 
-            <ScrollView
-                android:id="@+id/read_review_scroll"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:fillViewport="true">
+
 
 
                 <LinearLayout
@@ -127,9 +128,9 @@
 
                 </LinearLayout>
 
-            </ScrollView>
-        </LinearLayout>
 
+        </LinearLayout>
+    </ScrollView>
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/write_review_btn"
             android:layout_width="wrap_content"
@@ -146,4 +147,5 @@
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/img1" />
     </android.support.design.widget.CoordinatorLayout>
+
 </LinearLayout>

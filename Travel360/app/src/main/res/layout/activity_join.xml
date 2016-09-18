@@ -35,7 +35,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="13dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -77,7 +77,7 @@
                         android:backgroundTint="@color/colorPrimaryDark"
                         android:hint="이름을 입력하세요."
                         android:textColorHint="#aaaaaa"
-                        android:inputType="numberDecimal"
+
                         android:maxLength="4"
                         android:textColor="#000000"
                         android:textSize="13dp" />
@@ -95,26 +95,19 @@
                     android:maxLength="20"
                     android:textColor="#000000"
                     android:textSize="13dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:text="생년월일 (필수)"
-                    android:textColor="#000000"
-                    android:textSize="15dp" />
-
                 <EditText
-                    android:id="@+id/editBirth"
+                    android:id="@+id/editPwCh"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorPrimaryDark"
-                    android:hint="8자리 입력 (ex. 19920427)"
+                    android:hint="비밀번호 확인(4-20자 이내)"
                     android:textColorHint="#aaaaaa"
-                    android:inputType="numberDecimal"
-                    android:maxLength="8"
+                    android:inputType="textPassword"
+                    android:maxLength="20"
                     android:textColor="#000000"
-                    android:textSize="15dp" />
+                    android:textSize="13dp" />
+
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -160,8 +153,14 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="right"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+        <TextView
+            android:gravity="left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
+
+            android:id="@+id/PWCH" />
         <Button
             android:text="등록하기"
             android:id="@+id/btnSubmit"
@@ -169,7 +168,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_marginRight="10dp"
-           />
+            />
+
+
     </LinearLayout>
 
 </LinearLayout>
