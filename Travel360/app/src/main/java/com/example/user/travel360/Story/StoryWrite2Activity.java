@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.user.travel360.ApplicationController;
 import com.example.user.travel360.CustomDialog.MainImgSelectDialog;
@@ -38,8 +39,13 @@ public class StoryWrite2Activity extends AppCompatActivity
     ArrayList <RecyclerView> recyclerView = new ArrayList <RecyclerView> ();
     ImageView mainStoryImgAddButton, reviewWriteAddButton, travelDayAddButton;
     ArrayList <String> mergePhotos = new ArrayList <String> ();
+    ArrayList <String> mainPhoto = new ArrayList <String> ();
     ArrayList <Integer> mergeImgSeqList = new ArrayList <Integer> ();
+
+    RecyclerView mainImgRecycler;
+
     String storystring;
+    String title;
     int travelSeq = -1;
 
     // ****서버에 보낼때 필요한 변수 ****
@@ -70,6 +76,7 @@ public class StoryWrite2Activity extends AppCompatActivity
         Intent intent = getIntent();
         storystring = new String(intent.getExtras().getString("storystring"));
         travelSeq = intent.getExtras().getInt("travelSeq");
+        title = intent.getExtras().getString("title");
         Log.d("storystring", storystring);
         selectedPhotos = (ArrayList <ArrayList<String>>) intent.getExtras().get("selectedPhotos");
         imgSeqList = (ArrayList <ArrayList<Integer>>) intent.getExtras().get("imgSeqList");
@@ -116,9 +123,27 @@ public class StoryWrite2Activity extends AppCompatActivity
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK && (requestCode == MAIN_IMG_DIALOG_REQCODE))
+        if(resultCode == MAIN_IMG_DIALOG_REQCODE && (requestCode == MAIN_IMG_DIALOG_REQCODE))
         {
+            // 이부분 해야된다
             selectedMainImgSeq = (int)data.getExtras().getInt("selectedMainImgSeq");
+            mainPhoto.clear();
+            mainPhoto.add(mergePhotos.get(mergeImgSeqList.indexOf(selectedMainImgSeq)));
+            if(mainStoryImgLayout.getChildCount() != 0)
+            {
+                if(mainStoryImgAddButton != null)
+                {
+                    mainStoryImgLayout.removeView(mainStoryImgAddButton);
+                    mainStoryImgAddButton = null;
+                }
+                else
+                {
+                    mainStoryImgLayout.removeView(mainImgRecycler);
+                    mainImgRecycler = null;
+                }
+            }
+
+            mainImgShowing();
         }
     }
 
@@ -161,39 +186,88 @@ public class StoryWrite2Activity extends AppCompatActivity
         recyclerView.add(listItem);
     }
 
+    private void mainImgShowing()
+    {
+        mainImgRecycler = new RecyclerView(getApplicationContext());
+        PhotoAdapter photoAdapter = new PhotoAdapter(getApplicationContext(), mainPhoto);
+
+        mainImgRecycler.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
+        mainImgRecycler.setAdapter(photoAdapter);
+
+        mainImgRecycler.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(View view, int position)
+            {
+                Intent intent = new Intent(getApplicationContext(), MainImgSelectDialog.class);
+                intent.putExtra("mergePhotos", mergePhotos);
+                intent.putExtra("mergeImgSeqList", mergeImgSeqList);
+                startActivityForResult(intent, MAIN_IMG_DIALOG_REQCODE);
+            }
+
+            @Override
+            public void onItemLongClick()
+            {
+            }
+        }));
+
+        mainImgRecycler.setBackgroundColor(Color.rgb(255, 164, 78));
+        mainStoryImgLayout.addView(mainImgRecycler);
+        recyclerView.add(mainImgRecycler);
+    }
+
     private void storyWriteComplete()
     {
         RequestParams params = new RequestParams();
 
         params.put("userSeq", userSeq);
+        Log.d("storyWriteComplete", "userSeq : " + String.valueOf(userSeq));
         params.put("seq", travelSeq);
+        Log.d("storyWriteComplete", "travelSeq : " + String.valueOf(travelSeq));
         params.put("text", storystring);
-        params.put("title", "write title");
+        Log.d("storyWriteComplete", "storystring : " + storystring);
+        params.put("title", title);
+        Log.d("storyWriteComplete", "title : " + title);
         params.put("presentation_image", selectedMainImgSeq);
+        Log.d("storyWriteComplete", "presentation_image : " + selectedMainImgSeq);
         AsyncHttpClient client = new AsyncHttpClient();
 
         Log.d("storyWriteComplete", "writeStory_Server()");
-        client.get("http://kibox327.cafe24.com/writeComplete.do", params, new AsyncHttpResponseHandler() {
+        client.get("http://kibox327.cafe24.com/writeComplete.do", params, new AsyncHttpResponseHandler()
+        {
             @Override
-            public void onStart() {
+            public void onStart()
+            {
                 Log.d("storyWriteComplete", "getData_Server() onStart");
             }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                Log.d("storyWriteComplete", "statusCode : " + statusCode + " , response : " +  new String(response));
+            public void onSuccess(int statusCode, Header[] headers, byte[] response)
+            {
+                Log.d("storyWriteComplete", "statusCode : " + statusCode + " , response : " + new String(response));
                 String res = new String(response);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error)
+            {
                 Log.d("storyWriteComplete", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
             }
 
             @Override
-            public void onRetry(int retryNo) {        }
+            public void onRetry(int retryNo)
+            {
+            }
         });
 
+    }
+
+    private int checkList()
+    {
+        if(mainPhoto.size() < 1)
+            return -1;
+
+        return 1;
     }
 
     @Override
@@ -207,7 +281,13 @@ public class StoryWrite2Activity extends AppCompatActivity
         }
         if(id == R.id.complete)
         {
-            storyWriteComplete();
+            //!!!!!!!!!!!!!!!!!!!!!!!!!!서버 코드!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            int errorMsg = checkList();
+            if(errorMsg == 1)
+                storyWriteComplete();
+            else if(errorMsg == -1)
+                Toast.makeText(getApplicationContext(), "여행기 메인 이미지를 하나 선택해주세요!", Toast.LENGTH_LONG).show();
+
             return true;
         }
         return super.onOptionsItemSelected(item);

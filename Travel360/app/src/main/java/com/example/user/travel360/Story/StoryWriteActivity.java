@@ -65,6 +65,7 @@ public class StoryWriteActivity extends AppCompatActivity {
     Button imageinsertButton;
     Button videoinsertButton;
     ArrayList <EditText> editText = new ArrayList <EditText> ();
+    EditText editTitle;
 
     ArrayList <ArrayList <String>> selectedPhotos = new ArrayList <ArrayList<String>>();
     ArrayList <ArrayList <Integer>> imgSeqList = new ArrayList <ArrayList <Integer>>();
@@ -73,8 +74,8 @@ public class StoryWriteActivity extends AppCompatActivity {
     ArrayList <Integer> contentsSequence; // 이미지는 0, 텍스트는 1
 
     //************* 서버 관련 코드 ****************
-    static int imgSeq;
-    static int travelSeq;
+    static int imgSeq = -1;
+    static int travelSeq = -1;
     static int userSeq = -1;
     //********************************************
 
@@ -104,8 +105,7 @@ public class StoryWriteActivity extends AppCompatActivity {
                 try {
                     JSONObject obj = new JSONObject(res);
                     String objStr =  obj.get("userDto") + "";
-                    JSONObject travelSeqJSON = new JSONObject(objStr);
-                    travelSeq = (int)travelSeqJSON.get("travelSeq"); // 나중에 구현해야 할 것 : 이 imgSeq를 삭제할때 서버로 보내줘야한다.....
+                    travelSeq = (int)obj.get("travelSeq");
                 }
                 catch (JSONException e)
                 {
@@ -141,6 +141,7 @@ public class StoryWriteActivity extends AppCompatActivity {
         textinsertButton = (Button) findViewById(R.id.textinsertButton);
         imageinsertButton = (Button)findViewById(R.id.pickphotoButton);
         videoinsertButton = (Button) findViewById(R.id.pickVideoButton);
+        editTitle = (EditText) findViewById(R.id.editTitle);
 
         storystring = new String();
         contentsSequence = new ArrayList <Integer> ();
@@ -151,6 +152,7 @@ public class StoryWriteActivity extends AppCompatActivity {
             Log.d("userSeq", String.valueOf(userSeq));
         }
 
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!서버 코드!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         sendReadyVal();
 
         imageinsertButton.setOnClickListener(new View.OnClickListener()
@@ -375,11 +377,14 @@ public class StoryWriteActivity extends AppCompatActivity {
                     //Toast.makeText(getApplicationContext(), new String(errorResponse), Toast.LENGTH_LONG).show();
                     //Toast.makeText(getApplicationContext(), "업로드가 실패했습니다! 다시 시도해주세요!", Toast.LENGTH_LONG).show();
                     Log.d("ImageUpload", "이미지 업로드 실패!");
-                    container.removeView(recyclerView.get(recyclerView.size()-1));
-                    recyclerView.remove(recyclerView.size()-1);
-                    selectedPhotos.remove(selectedPhotos.size()-1);
-                    contentsSequence.remove(contentsSequence.size() - 1);
-                    imageUploadCheck = -1;
+                    if(recyclerView.size() != 0)
+                    {
+                        container.removeView(recyclerView.get(recyclerView.size() - 1));
+                        recyclerView.remove(recyclerView.size() - 1);
+                        selectedPhotos.remove(selectedPhotos.size() - 1);
+                        contentsSequence.remove(contentsSequence.size() - 1);
+                        imageUploadCheck = -1;
+                    }
                 }
 
                 @Override
@@ -448,6 +453,7 @@ public class StoryWriteActivity extends AppCompatActivity {
             if (photos != null) // 업로드를 성공적으로 추가하고 돌아온 경우
             {
                 selectedPhotos.get(recyclerView.size()-1).addAll(photos);
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!서버 코드!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 //************테스트할때는 주석처리. 과도한 트래픽 막기위해*********
                 UploadProgressDialog task = new UploadProgressDialog();
                 task.execute();
@@ -657,6 +663,27 @@ public class StoryWriteActivity extends AppCompatActivity {
         }
     }
 
+    private int checkList()
+    {
+        if(contentsSequence.size() == 0)
+            return -1;
+        if(editTitle.getText().toString().equals(""))
+            return -2;
+
+        boolean mustOneImgCheck = false;
+        for(int i=0; i<contentsSequence.size(); i++)
+        {
+            if(contentsSequence.get(i) == 0)
+            {
+                mustOneImgCheck = true;
+                break;
+            }
+        }
+        if(!mustOneImgCheck)
+            return -3;
+
+        return 1;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -666,16 +693,33 @@ public class StoryWriteActivity extends AppCompatActivity {
             return true;
         }
         if(id == R.id.nextPage){
-            storyLoadToString();
-            Intent intent = new Intent(getApplicationContext(), StoryWrite2Activity.class);
-            intent.putExtra("storystring", storystring);
-            intent.putExtra("selectedPhotos", selectedPhotos);
-            intent.putExtra("imgSeqList", imgSeqList);
-            intent.putExtra("travelSeq", travelSeq);
-            StoryStringUpload();
-            storystring = "";
-            startActivity(intent);
-            return true;
+            int errorMsg = checkList();
+            if(errorMsg == 1)
+            {
+                storyLoadToString();
+                Intent intent = new Intent(getApplicationContext(), StoryWrite2Activity.class);
+                intent.putExtra("storystring", storystring);
+                intent.putExtra("selectedPhotos", selectedPhotos);
+                intent.putExtra("imgSeqList", imgSeqList);
+                intent.putExtra("travelSeq", travelSeq);
+                intent.putExtra("title", editTitle.getText().toString());
+                StoryStringUpload();
+                storystring = "";
+                startActivity(intent);
+                return true;
+            }
+            else if(errorMsg == -1)
+            {
+                Toast.makeText(getApplicationContext(), "여행기 내용을 작성해주세요!", Toast.LENGTH_LONG).show();
+            }
+            else if(errorMsg == -2)
+            {
+                Toast.makeText(getApplicationContext(), "여행기 제목을 작성해주세요!", Toast.LENGTH_LONG).show();
+            }
+            else if(errorMsg == -3)
+            {
+                Toast.makeText(getApplicationContext(), "사진을 최소 1개 이상 업로드해주세요!", Toast.LENGTH_LONG).show();
+            }
         }
         return super.onOptionsItemSelected(item);
     }

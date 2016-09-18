@@ -110,7 +110,7 @@ public class MainImgSelectDialog extends Activity
         {
             Intent intent = new Intent(getApplicationContext(), StoryWrite2Activity.class);
             intent.putExtra("selectedMainImgSeq", selectedMainImgSeq);
-            setResult(MAIN_IMG_DIALOG_REQCODE);
+            setResult(MAIN_IMG_DIALOG_REQCODE, intent);
             finish();
         }
         else
