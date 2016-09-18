@@ -284,7 +284,12 @@ public class StoryWrite2Activity extends AppCompatActivity
             //!!!!!!!!!!!!!!!!!!!!!!!!!!서버 코드!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             int errorMsg = checkList();
             if(errorMsg == 1)
+            {
                 storyWriteComplete();
+                StoryWriteActivity activity = (StoryWriteActivity)StoryWriteActivity.write1Activity;
+                activity.finish();
+                finish();
+            }
             else if(errorMsg == -1)
                 Toast.makeText(getApplicationContext(), "여행기 메인 이미지를 하나 선택해주세요!", Toast.LENGTH_LONG).show();
 

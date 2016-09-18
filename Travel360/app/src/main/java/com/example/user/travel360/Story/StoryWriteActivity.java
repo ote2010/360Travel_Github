@@ -1,6 +1,7 @@
 package com.example.user.travel360.Story;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -73,6 +74,8 @@ public class StoryWriteActivity extends AppCompatActivity {
     String storystring;
     ArrayList <Integer> contentsSequence; // 이미지는 0, 텍스트는 1
 
+    public static Activity write1Activity;
+
     //************* 서버 관련 코드 ****************
     static int imgSeq = -1;
     static int travelSeq = -1;
@@ -136,6 +139,8 @@ public class StoryWriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_story_write);
+
+        write1Activity = StoryWriteActivity.this;
 
         container = (LinearLayout) findViewById(R.id.container);
         textinsertButton = (Button) findViewById(R.id.textinsertButton);
