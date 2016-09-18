@@ -19,24 +19,33 @@ import java.util.Date;
 import cz.msebera.android.httpclient.Header;
 
 public class ServerConnectActivity extends AppCompatActivity {
-    /*
+     /*
         필요한 기능의 함수만 짤라서 가져다 사용하면 됩니다.
         RequestParams params 는 서버로 보내줘야 할 필수 데이터들입니다.
        알맞게 채워서 보내주세요.
 
 		연동 완료된 목록
+
 		0. stroy 쓰기전 확인 : writeStoryRead_Server()
 		1. story 쓰기  : writeStory_Server()
 		2. story 전체 데이터 받아오기 : getTravleRecordAll_Server()
 		3. story 1개에 대한 데이터 받아오기 : getTravleRecord_Server()
-		4. 여행기 댓글 쓰기 : writeStoryComment_Server()
-		5. 저장된 image 가져오기 : getImage_Server()
-		6. 여행기 댓글 리스트 : getComment_Server()
+		4. story 댓글 쓰기 : writeStoryComment_Server()
+        5. story 댓글 리스트 : getComment_Server()
+
+		6. 저장된 image 가져오기 : getImage_Server()
 		7. 사용자 정보 가져오기 : getUserInfo_Server()
+
 		8. 친구 (요청)추가 하기  : addFriend_Server()
 		9. 친구 수락 하기 : acceptFriend_Server()
 		10. 내 친구 수 : getCountFriends_Server()
 		11. 내 친구 목록 : getFriendsList_Server()
+
+		12. review 전체 데이터 : getTravleReviewAll_Server()
+		13. review 1개 데이터 : getTravleReview_Server()
+		14. review 쓰기 :  writeReview_Server()
+		15. review 댓글 쓰기 : writeReviewComment_Server()
+		16. review 댓글 리스트 : getReviewComment_Server()
 	*/
 
     /************** stroy 쓰기전 확인 ******************/
@@ -219,7 +228,7 @@ public class ServerConnectActivity extends AppCompatActivity {
 
         AsyncHttpClient client = new AsyncHttpClient();
 
-        Log.d("SUN", "getComment_Server()");
+        Log.d("SUN", "writeStoryComment_Server()");
         client.get("http://kibox327.cafe24.com/writeComment.do", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {  }
@@ -240,6 +249,8 @@ public class ServerConnectActivity extends AppCompatActivity {
             public void onRetry(int retryNo) {  }
         });
     }
+
+
     /***************  image 가져오기  *********************/
 
     public Bitmap byteArrayToBitmap(byte[] byteArray ) {  // byte -> bitmap 변환 및 반환
@@ -517,6 +528,237 @@ public class ServerConnectActivity extends AppCompatActivity {
             public void onRetry(int retryNo) {  }
         });
     }
+
+
+
+    /*****************  review 전체 데이터  **********************/
+
+    void getTravleReviewAll_Server() {
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        Log.d("SUN", "getTravleReviewAll_Server()");
+        client.get("http://kibox327.cafe24.com//travelReviewList.do", new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {         }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+
+                String res = new String(response);
+                try {
+                    JSONObject object = new JSONObject(res);
+                    String objStr =  object.get("reviews") + "";
+                    JSONArray arr = new JSONArray(objStr);
+                    for(int i=0; i<arr.length(); i++ ) {
+                        /*
+                        JSONObject obj = (JSONObject)arr.get(i);
+
+                        int seq  = (Integer)obj.get("seq");
+                        int user_info_seq = (Integer)obj.get("user_info_seq");
+                        String presentation_image = (String)obj.get("presentation_image");
+                        String text = (String)obj.get("text");
+                        */
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("SUN",  "e : " + e.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {          }
+        });
+    }
+
+
+    /*****************  review 1개 데이터  **********************/
+
+    void getTravleReview_Server() {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 reviewSeq 만 있으면 됩니다.
+        params.put("reviewSeq", 1);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getTravleReview_Server()");
+        client.get("http://kibox327.cafe24.com/getTravelReview.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {   }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+
+                try {
+                    JSONObject obj = new JSONObject(res);
+                    String objStr =  obj.get("review") + "";
+                    JSONObject review = new JSONObject(objStr);
+                    String location = (String)review.get("location");
+                    String text = (String)review.get("text");
+                    // String user = (String)review.get("user");
+                    // long write_date_client = (long)review.get("write_date_client");
+
+                    Log.d("SUN",  "location : " +location);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("SUN",  "e : " + e.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+
+            @Override
+            public void onRetry(int retryNo) {         }
+        });
+    }
+
+
+    /************************  review 쓰기  *********************/
+    void writeReview_Server() {
+        //   long todaydate = System.currentTimeMillis(); // long 형의 현재시간
+        RequestParams params = new RequestParams();
+        // 기본 데이터
+        params.put("user_seq","3");
+        params.put("text", "review text");
+        // params.put("write_date", todaydate);
+        //  params.put("location", "korea");
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "writeStory_Server()");
+        client.get("http://kibox327.cafe24.com/writeTravelReview.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {        }
+        });
+    }
+
+
+    /****************************  리뷰 댓글 쓰기  *************************/
+    void writeReviewComment_Server() {
+        //   long todaydate = System.currentTimeMillis(); // long 형의 현재시간
+
+        RequestParams params = new RequestParams();
+        params.put("comment","review comment");
+        params.put("evaluation","1");
+        params.put("reviewSeq","1");
+        params.put("userSeq","1");
+        //params.put("write_date",todaydate);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getComment_Server()");
+        client.get("http://kibox327.cafe24.com/writeReviewComment.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {  }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {  }
+        });
+    }
+
+    /*********** 리뷰 댓글 리스트  ***************/
+    void getReviewComment_Server() {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 reviewSeq 만 있으면 됩니다.
+        params.put("reviewSeq","1");
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getReviewComment_Server()");
+        client.get("http://kibox327.cafe24.com/getReviewCommentList.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {  }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+                try {
+                    JSONObject object = new JSONObject(res);
+                    String objStr =  object.get("comment") + "";
+                    JSONArray arr = new JSONArray(objStr);
+                    for(int i=0; i<arr.length(); i++ ) {
+                        JSONObject obj = (JSONObject)arr.get(i);
+                         /* String comment = (String)obj.get("comment");
+                        int evaluation = (int)obj.get("evaluation");
+                        String id = (String)obj.get("id");
+                        int seq = (int)obj.get("seq");
+                        int user_info_seq = (int)obj.get("user_info_seq");
+                        JSONObject write_date = (JSONObject)obj.get("write_date");
+
+                        long time  = (long)write_date.get("time");
+                        Date date = new Date(time);
+
+                        Log.d("SUN", "comment : "+comment + " , id : " + id + " , user_info_seq : " + user_info_seq + " , date : "+ date + " , seq : "+seq);
+                        */
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("SUN",  "e : " + e.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {  }
+        });
+    }
+
+
+
+
+
+
+
+
 
 
 
