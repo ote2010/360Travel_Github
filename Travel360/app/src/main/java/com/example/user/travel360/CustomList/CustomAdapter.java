@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.user.travel360.R;
@@ -56,7 +57,7 @@ public class CustomAdapter extends BaseAdapter {
         if(convertView == null){
             convertView = layoutInflater.inflate(R.layout.comment_item, parent ,false);
 
-        //    viewHolder.comment_img = (ImageView)convertView.findViewById(R.id.comment_img);
+            viewHolder.comment_img = (ImageView)convertView.findViewById(R.id.comment_img);
             viewHolder.comment_id=(TextView)convertView.findViewById(R.id.comment_id);
             viewHolder.comment_txt = (TextView)convertView.findViewById(R.id.comment_txt);
              convertView.setTag(viewHolder);
@@ -67,7 +68,7 @@ public class CustomAdapter extends BaseAdapter {
 
         ItemData itemData = itemDatas.get(position);
        // viewHolder.comment_img.setImageBitmap(itemData.comment_img);
-       // viewHolder.comment_img.setImageDrawable(itemData.comment_img);
+        viewHolder.comment_img.setImageDrawable(contexts.getResources().getDrawable(R.drawable.empty_profile));
         viewHolder.comment_id.setText(itemData.comment_id);
         viewHolder.comment_txt.setText(itemData.comment_txt);
 

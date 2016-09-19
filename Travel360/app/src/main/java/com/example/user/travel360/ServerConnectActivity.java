@@ -19,6 +19,11 @@ import java.util.Date;
 import cz.msebera.android.httpclient.Header;
 
 public class ServerConnectActivity extends AppCompatActivity {
+    /* 한글 인코딩 방법
+        String com = (String) obj.get("comment"); // json 객체 값 받아서
+        String comment = new String(com.getBytes("utf-8"),"utf-8"); // 변환
+   */
+
      /*
         필요한 기능의 함수만 짤라서 가져다 사용하면 됩니다.
         RequestParams params 는 서버로 보내줘야 할 필수 데이터들입니다.
@@ -214,14 +219,14 @@ public class ServerConnectActivity extends AppCompatActivity {
 
     /****************************  여행기 댓글 쓰기  *************************/
     void writeStoryComment_Server() {
-     //   long todaydate = System.currentTimeMillis(); // long 형의 현재시간
+        //   long todaydate = System.currentTimeMillis(); // long 형의 현재시간
 
         RequestParams params = new RequestParams();
         params.put("comment","travle comment");
         params.put("evaluation","1");
         params.put("travel_record_seq","1");
         params.put("id","a");
-      //  params.put("write_date",todaydate);
+        //  params.put("write_date",todaydate);
 
         params.put("UserSeq","1");
         params.put("travelSeq","1");
@@ -606,7 +611,7 @@ public class ServerConnectActivity extends AppCompatActivity {
                     String location = (String)review.get("location");
                     String text = (String)review.get("text");
                     // String user = (String)review.get("user");
-                    // long write_date_client = (long)review.get("write_date_client");
+                    long write_date_client = (long)review.get("write_date_client");
 
                     Log.d("SUN",  "location : " +location);
                 } catch (JSONException e) {
@@ -629,12 +634,12 @@ public class ServerConnectActivity extends AppCompatActivity {
 
     /************************  review 쓰기  *********************/
     void writeReview_Server() {
-        //   long todaydate = System.currentTimeMillis(); // long 형의 현재시간
+        long todaydate = System.currentTimeMillis(); // long 형의 현재시간
         RequestParams params = new RequestParams();
         // 기본 데이터
         params.put("user_seq","3");
         params.put("text", "review text");
-        // params.put("write_date", todaydate);
+        params.put("write_date_client", todaydate);
         //  params.put("location", "korea");
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -665,14 +670,14 @@ public class ServerConnectActivity extends AppCompatActivity {
 
     /****************************  리뷰 댓글 쓰기  *************************/
     void writeReviewComment_Server() {
-        //   long todaydate = System.currentTimeMillis(); // long 형의 현재시간
+        long todaydate = System.currentTimeMillis(); // long 형의 현재시간
 
         RequestParams params = new RequestParams();
         params.put("comment","review comment");
         params.put("evaluation","1");
         params.put("reviewSeq","1");
         params.put("userSeq","1");
-        //params.put("write_date",todaydate);
+        params.put("write_date_client",todaydate);
 
         AsyncHttpClient client = new AsyncHttpClient();
 
@@ -711,6 +716,7 @@ public class ServerConnectActivity extends AppCompatActivity {
         client.get("http://kibox327.cafe24.com/getReviewCommentList.do", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {  }
+
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {

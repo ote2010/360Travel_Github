@@ -399,7 +399,7 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
                     for (int i = 0; i < arr.length(); i++) {
                         JSONObject obj = (JSONObject) arr.get(i);
                         String com = (String) obj.get("comment");
-                        String comment = new String(com.getBytes("euc-kr"),"utf-8"); //8859_1
+                        String comment = new String(com.getBytes("utf-8"),"utf-8"); //8859_1
                         
                         int evaluation = (int) obj.get("evaluation");
                         String id = (String) obj.get("id");
