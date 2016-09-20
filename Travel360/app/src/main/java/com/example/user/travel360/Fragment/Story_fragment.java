@@ -3,6 +3,7 @@ package com.example.user.travel360.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -26,6 +27,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
@@ -61,9 +66,15 @@ public class Story_fragment extends Fragment {
     static String profile_image;
     static int storyDayTotal = 0; // storyDayTotal : 그 날의 여행기 게시글 개수
 
+    Bitmap presentation_img;
+    Bitmap profile_img;
+    int index;
+    boolean upload_OK_Check = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -95,7 +106,6 @@ public class Story_fragment extends Fragment {
     }
 
     /*****************  story 전체 데이터  **********************/
-
     void getTravleRecordAll_Server() {
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -151,65 +161,73 @@ public class Story_fragment extends Fragment {
                         storyDateList.add(storyDateItem);
 
                         //******서버에서 받아온 정보로 수정 **********
-                        //storyImageView[i].setImageResource(R.drawable.testimg1);
-                        getImage_Server(presentation_image, REQUEST_PRESENTATION_IMAGE, i);
-                        getImage_Server(profile_image, REQUEST_USER_IMAGE, i);
-                        storyUserName[i].setText(name);
-                        storyTitle[i].setText(title);
+                        //getImage_Server(presentation_image, REQUEST_PRESENTATION_IMAGE, i);
+                        //getImage_Server(profile_image, REQUEST_USER_IMAGE, i);
+                        ImageLoadingTask task = new ImageLoadingTask();
+                        task.execute(presentation_image, profile_image, String.valueOf(i));
 
-                        storyImageView[i].setOnClickListener(new ImageView.OnClickListener()
+                        while(true)
                         {
-                            @Override
-                            public void onClick(View v)
+                            if(upload_OK_Check)
                             {
-                                //***서버에서 정보를 받아오는 코드를 작성하고, StoryReadActivity로 전달한다.***
-                                startActivity(new Intent(getActivity(), StoryReadActivity.class));
+                                storyUserName[i].setText(name);
+                                storyTitle[i].setText(title);
+                                storyImageView[i].setOnClickListener(new ImageView.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(View v)
+                                    {
+                                        //***서버에서 정보를 받아오는 코드를 작성하고, StoryReadActivity로 전달한다.***
+                                        startActivity(new Intent(getActivity(), StoryReadActivity.class));
+                                    }
+                                });
+
+                                LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+
+                                if (i % 2 == 0)
+                                {
+                                    // 왼쪽 여행기의 경우입니다. 두 아이템 여행기를 감싸줄 storyContainer 레이아웃을 동적으로 생성하고 속성을 지정합니다.
+                                    itemParams.rightMargin = 2;
+                                    itemParams.leftMargin = 4;
+                                    storyContainer[j] = new LinearLayout(getActivity().getApplicationContext());
+                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    params.bottomMargin = 15;
+                                    storyContainer[j].setLayoutParams(params);
+                                } else
+                                {
+                                    // 오른쪽 여행기의 경우입니다. 앞서 왼쪽 여행기에서 필요한 레이아웃 들을 동적으로 생성해줘서 딱히 해줄 과정은 없고 속성만 지정해줍니다.
+                                    itemParams.rightMargin = 4;
+                                    itemParams.leftMargin = 2;
+                                }
+
+                                // 속성을 지정해주고, 앞서 만들어두었던 storyContainer에 addView 해줍니다.
+                                storyItemView[i].setLayoutParams(itemParams);
+                                storyContainer[j].addView(storyItemView[i]);
+
+                                if (i % 2 == 1) // i가 홀수 일때만 들어온다.
+                                {
+                                    mainStoryContainer.addView(storyContainer[j]);
+                                    j++;
+                                } else if (oddCheck && i == storyDayTotal - 1) // i가 짝수이고, oddCheck가 true, i가 마지막 index일 경우
+                                {
+                                    // i가 짝수이고, 여행기 게시글 개수가 odd(홀수)이고, i의 값이 storyDayTotal-1 인 경우(즉, for문에서 마지막으로 돌때) 경우 입니다.
+                                    View invisibleBlock = new View(getActivity().getApplicationContext());
+                                    // 레이아웃 비율을 맞춰줘야하니까 속성 그대로 맞춰주고
+                                    LinearLayout.LayoutParams invisibleItemparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+                                    invisibleBlock.setLayoutParams(invisibleItemparams);
+
+                                    // addView 해줍니다
+                                    storyContainer[j].addView(invisibleBlock);
+                                    mainStoryContainer.addView(storyContainer[j]);
+                                    j++;
+                                }
+                                upload_OK_Check = false;
+                                break;
                             }
-                        });
-
-                        LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-
-                        if (i % 2 == 0)
-                        {
-                            // 왼쪽 여행기의 경우입니다. 두 아이템 여행기를 감싸줄 storyContainer 레이아웃을 동적으로 생성하고 속성을 지정합니다.
-                            itemParams.rightMargin = 2;
-                            itemParams.leftMargin = 4;
-                            storyContainer[j] = new LinearLayout(getActivity().getApplicationContext());
-                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                            params.bottomMargin = 15;
-                            storyContainer[j].setLayoutParams(params);
-                        } else
-                        {
-                            // 오른쪽 여행기의 경우입니다. 앞서 왼쪽 여행기에서 필요한 레이아웃 들을 동적으로 생성해줘서 딱히 해줄 과정은 없고 속성만 지정해줍니다.
-                            itemParams.rightMargin = 4;
-                            itemParams.leftMargin = 2;
-                        }
-
-                        // 속성을 지정해주고, 앞서 만들어두었던 storyContainer에 addView 해줍니다.
-                        storyItemView[i].setLayoutParams(itemParams);
-                        storyContainer[j].addView(storyItemView[i]);
-
-                        if (i % 2 == 1) // i가 홀수 일때만 들어온다.
-                        {
-                            mainStoryContainer.addView(storyContainer[j]);
-                            j++;
-                        } else if (oddCheck && i == storyDayTotal - 1) // i가 짝수이고, oddCheck가 true, i가 마지막 index일 경우
-                        {
-                            // i가 짝수이고, 여행기 게시글 개수가 odd(홀수)이고, i의 값이 storyDayTotal-1 인 경우(즉, for문에서 마지막으로 돌때) 경우 입니다.
-                            View invisibleBlock = new View(getActivity().getApplicationContext());
-
-                            // 레이아웃 비율을 맞춰줘야하니까 속성 그대로 맞춰주고
-                            LinearLayout.LayoutParams invisibleItemparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-                            invisibleBlock.setLayoutParams(invisibleItemparams);
-
-                            // addView 해줍니다.
-                            storyContainer[j].addView(invisibleBlock);
-                            mainStoryContainer.addView(storyContainer[j]);
-                            j++;
                         }
                     }
-
-                } catch (JSONException e)
+                }
+                catch (JSONException e)
                 {
                     e.printStackTrace();
                     Log.d("SUN", "e : " + e.toString());
@@ -225,6 +243,7 @@ public class Story_fragment extends Fragment {
             @Override
             public void onRetry(int retryNo)
             {
+
             }
         });
     }
@@ -250,6 +269,7 @@ public class Story_fragment extends Fragment {
         return bitmap;
     }
 
+    /*
     void getImage_Server(String imageName, final int RequestCode, final int index) {
 
         RequestParams params = new RequestParams();
@@ -258,34 +278,99 @@ public class Story_fragment extends Fragment {
         AsyncHttpClient client = new AsyncHttpClient();
 
         Log.d("SUN", "getImage_Server()");
-        client.get("http://kibox327.cafe24.com/Image.do", params, new AsyncHttpResponseHandler() {
+        client.get("http://kibox327.cafe24.com/Image.do", params, new AsyncHttpResponseHandler()
+        {
             @Override
-            public void onStart() {            }
+            public void onStart()
+            {
+            }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+            public void onSuccess(int statusCode, Header[] headers, byte[] response)
+            {
                 // byteArrayToBitmap 를 통해 reponse로 받은 이미지 데이터 bitmap으로 변환
                 Bitmap bitmap = byteArrayToBitmap(response, index);
 
-                if(RequestCode == REQUEST_PRESENTATION_IMAGE)
+                if (RequestCode == REQUEST_PRESENTATION_IMAGE)
                 {
                     storyImageView[index].setImageBitmap(bitmap);
-                }
-                else if(RequestCode == REQUEST_USER_IMAGE)
+                } else if (RequestCode == REQUEST_USER_IMAGE)
                 {
                     storyUserImage[index].setImageBitmap(bitmap);
                 }
 
-                Log.d("getImage_Server", "statusCode : " + statusCode + " , response : " +  new String(response));
+                Log.d("getImage_Server", "statusCode : " + statusCode + " , response : " + new String(response));
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error)
+            {
                 Log.d("getImage_Server", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
             }
 
             @Override
-            public void onRetry(int retryNo) {    }
+            public void onRetry(int retryNo)
+            {
+            }
         });
+    }
+    */
+
+    private class ImageLoadingTask extends AsyncTask<String, Integer, Bitmap>
+    {
+        @Override
+        protected Bitmap doInBackground(String... params)
+        {
+            try
+            {
+                URL url1 = new URL("http://kibox327.cafe24.com/Image.do?imageName=" + params[0]);
+                HttpURLConnection conn1 = (HttpURLConnection)url1.openConnection();
+                Log.d("params", params[0]);
+                conn1.setDoInput(true);
+                conn1.connect();
+
+                InputStream is1 = conn1.getInputStream();
+                presentation_img = BitmapFactory.decodeStream(is1);
+
+                URL url2 = new URL("http://kibox327.cafe24.com/Image.do?imageName=" + params[1]);
+                HttpURLConnection conn2 = (HttpURLConnection)url2.openConnection();
+                Log.d("params", params[1]);
+                conn2.setDoInput(true);
+                conn2.connect();
+
+                InputStream is2 = conn2.getInputStream();
+                profile_img = BitmapFactory.decodeStream(is2);
+
+                index = Integer.valueOf(params[2]);
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            onPostExecute(null);
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap)
+        {
+            storyImageView[index].setImageBitmap(presentation_img);
+            storyUserImage[index].setImageBitmap(profile_img);
+            Log.d("TAK", String.valueOf(index) + "success");
+            upload_OK_Check = true;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values)
+        {
+            super.onProgressUpdate(values);
+        }
     }
 }

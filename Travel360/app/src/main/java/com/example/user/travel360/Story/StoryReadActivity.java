@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -222,7 +221,8 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
     }
 
     // 이미지 웹 상에서 불러오기 위한 AsyncTask 쓰레드 클래스
-    private class ImageLoadingTask extends AsyncTask<String, Integer, Long> {
+    // <params, progress, result>
+    private class ImageLoadingTask extends AsyncTask <String, Integer, Long> {
         //실제 스레드 작업을 작성하는 곳이며 execute에서 전달한 params 인수를 사용할 수 있다.
         //백그라운드에서 파라미터로 URL을 받아서 비트맵으로 이미지를 저장한다.
         @Override

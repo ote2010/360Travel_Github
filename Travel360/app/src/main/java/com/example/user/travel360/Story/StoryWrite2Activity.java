@@ -304,4 +304,5 @@ public class StoryWrite2Activity extends AppCompatActivity
         return true;
     }
 
+
 }
