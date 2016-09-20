@@ -314,8 +314,8 @@ public class MainActivity extends AppCompatActivity
 */
             UserIDTextView.setText(ApplicationController.getInstance().getEmail());
 
-            LayoutNoLogin.setVisibility(View.INVISIBLE);
-            LayoutLogin.setVisibility(View.VISIBLE);
+            LayoutLogin.setVisibility(View.INVISIBLE);
+            LayoutNoLogin.setVisibility(View.VISIBLE);
         }
 
     }
@@ -348,21 +348,21 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.message) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.scrap) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.mytext) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.myreply) {
 
         }
         // 여기서부터 추가한 사항들입니다. 그냥 그대로 추가했습니다.
-        else if (id == R.id.nav_notifications) {
+        else if (id == R.id.setting) {
 
-        } else if (id == R.id.nav_question) {
+        } else if (id == R.id.notice) {
 
-        } else if (id == R.id.nav_connectVR) {
+        } else if (id == R.id.vr) {
 
         }else if (id == R.id.nav_friend) {
             Intent intent = new Intent( MainActivity.this,FriendActivity.class);

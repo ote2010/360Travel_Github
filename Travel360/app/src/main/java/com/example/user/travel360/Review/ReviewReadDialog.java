@@ -17,6 +17,9 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import cz.msebera.android.httpclient.Header;
 
 public class ReviewReadDialog extends Dialog implements View.OnClickListener{
@@ -38,9 +41,10 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener{
         setContentView(R.layout.activity_review_read_dialog);
 
         init();
-        Review_Text.setText(a);
+     //   Review_Text.setText(a);
         Close.setOnClickListener(this);
         Add_Traveler.setOnClickListener(this);
+        getTravleReview_Server();
     }
 
     public void init() {
@@ -104,4 +108,56 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener{
             public void onRetry(int retryNo) {  }
         });
     }
+
+    void getTravleReview_Server() {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 reviewSeq 만 있으면 됩니다.
+        params.put("reviewSeq", 1);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getTravleReview_Server()");
+        client.get("http://kibox327.cafe24.com/getTravelReview.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {   }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+                Log.d("ReviewDialo@", res);
+
+                try {
+                    JSONObject obj = new JSONObject(res);
+                    String objStr =  obj.get("review") + "";
+                    JSONObject review = new JSONObject(objStr);
+                    String location = (String)review.get("location");
+                    String text = (String)review.get("text");
+                    // String user = (String)review.get("user");
+                    // long write_date_client = (long)review.get("write_date_client");
+             //  Name.setText((String)review.get("user"));
+             //     Date.setText((String)review.get("write_date"));   무슨형인지 몰라서 오류남
+                    Review_Text.setText(text);
+
+
+                    Log.d("SUN",  "location : " +location);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("SUN",  "e : " + e.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+
+            @Override
+            public void onRetry(int retryNo) {         }
+        });
+    }
+
+
 }

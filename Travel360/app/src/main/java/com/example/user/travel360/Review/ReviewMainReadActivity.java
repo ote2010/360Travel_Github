@@ -18,6 +18,14 @@ import android.widget.Toast;
 
 import com.example.user.travel360.R;
 import com.example.user.travel360.ReviewReadDialog;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 
 /**
@@ -27,7 +35,7 @@ public class ReviewMainReadActivity extends Activity {
 
 
     ScrollView mScroll;
-    ImageLoadingTask task; // 백그라운드 쓰레드 동작을 위한 Asynctask 클래스 객체
+
     ViewGroup v;
     LinearLayout BestReview, NormalReview;
     int BEST_REVIEW_NUM = 3;
@@ -61,7 +69,8 @@ public class ReviewMainReadActivity extends Activity {
         setContentView(R.layout.activity_review_main_read);
 
         init();
-        Bestinit();
+        getTravleReviewAll_Server();
+       // Bestinit();
         Normalinit();
         onClickEvent();
 
@@ -209,14 +218,84 @@ public class ReviewMainReadActivity extends Activity {
         });
 
     }
+    void getTravleReviewAll_Server() {
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        Log.d("SUN", "getTravleReviewAll_Server()");
+        client.get("http://kibox327.cafe24.com//travelReviewList.do", new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {         }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+
+                String res = new String(response);
+                try {
+                    JSONObject object = new JSONObject(res);
+                    String objStr =  object.get("reviews") + "";
+                    JSONArray arr = new JSONArray(objStr);
+                    LayoutInflater inflater = LayoutInflater.from(getApplication().getApplicationContext());
+                    for(int i=0; i<arr.length(); i++ ) {
 
 
-}
+                        JSONObject obj = (JSONObject)arr.get(i);
+/*
+                        int seq  = (Integer)obj.get("seq");
+                        int user_info_seq = (Integer)obj.get("user_info_seq");
+                        String presentation_image = (String)obj.get("presentation_image");
+                        String text = (String)obj.get("text");
 
-//나중에 서버 연동을 위해 그냥 써둠
-class ImageLoadingTask extends AsyncTask<String, Integer, Long> {
-    @Override
-    protected Long doInBackground(String... params) {
-        return null;
+                     */
+
+                        BestReviewITem[i] = inflater.inflate(R.layout.review_read_listitem_view, v, false); // 추가할 순위권 여행지 뷰 inflate
+
+                        // 메달 아이콘, 여행지 장소 텍스트, 여행지 별점 ID 불러오기
+                        BUser_profile[i] = (ImageView) BestReviewITem[i].findViewById(R.id.Review_read_user_img);
+                        BStar[i] = (ImageView) BestReviewITem[i].findViewById(R.id.Review_read_star);
+                        BUser_name[i] = (TextView) BestReviewITem[i].findViewById(R.id.Review_read_user_name);
+                        BText1[i] = (TextView) BestReviewITem[i].findViewById(R.id.Review_read_text);
+                        BDate[i] = (TextView) BestReviewITem[i].findViewById(R.id.Review_read_date);
+                        BStarNum[i] = (TextView) BestReviewITem[i].findViewById(R.id.Review_read_starnum);
+
+
+                        //***********이 부분에서 서버에서 받아와서 바꿔주면 된다!!!!!***********
+                        BUser_profile[i].setImageResource(R.drawable.img1);
+                        BStar[i].setImageResource(R.drawable.star);
+                        BUser_name[i].setText("오탁은");
+                        BStarNum[i].setText("4.8");
+
+                        Log.d("Review@@@",(String)obj.get("text"));
+                        BText1[i].setText((String)obj.get("text"));
+                        BDate[i].setText("2016.08.23");
+
+                        BestReviewITem[i].setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ReviewReadDialog reviewReadDialog = new ReviewReadDialog(ReviewMainReadActivity.this);
+                                reviewReadDialog.show();
+                            }
+                        });
+                        //*******************************************************************
+
+                        BestReview.addView(BestReviewITem[i]); // 추가해주기
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("SUN",  "e : " + e.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {          }
+        });
     }
+
 }

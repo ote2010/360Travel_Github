@@ -21,36 +21,36 @@
 
 
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
+            android:id="@+id/message"
+            android:icon="@drawable/message"
             android:title="메세지"/>
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
+            android:id="@+id/scrap"
+            android:icon="@drawable/scrap"
             android:title="스크랩"/>
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:id="@+id/mytext"
+            android:icon="@drawable/mytext"
             android:title="내가 쓴 글"/>
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
+            android:id="@+id/myreply"
+            android:icon="@drawable/myreply"
             android:title="내가 쓴 댓글"/>
         <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_manage"
+            android:id="@+id/setting"
+            android:icon="@drawable/setting"
             android:title="설정"/>
         <item
-            android:id="@+id/nav_notifications"
-            android:icon="@drawable/ic_menu_manage"
+            android:id="@+id/notice"
+            android:icon="@drawable/notice"
             android:title="공지사항"/>
         <item
-            android:id="@+id/nav_question"
-            android:icon="@drawable/ic_menu_manage"
+            android:id="@+id/ask"
+            android:icon="@drawable/ask"
             android:title="문의"/>
         <item
-            android:id="@+id/nav_connectVR"
-            android:icon="@drawable/ic_menu_manage"
+            android:id="@+id/vr"
+            android:icon="@drawable/vr"
             android:title="VR 연결하기"/>
 
         <item
