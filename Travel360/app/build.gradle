@@ -26,6 +26,14 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile project(':PhotoPicker')
-
     compile 'com.loopj.android:android-async-http:1.4.9'
+    compile project(':base')
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    compile fileTree(include: ['common'], dir: 'libraries')
+    compile fileTree(include: ['commonwidget'], dir: 'libraries')
+    compile fileTree(include: ['base'], dir: 'libraries')
+    compile fileTree(include: ['panowidget'], dir: 'libraries')
+    compile project(':common')
+    compile project(':commonwidget')
+    compile project(':panowidget')
 }

@@ -1,7 +1,6 @@
 package com.example.user.travel360.Review;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.travel360.R;
-import com.example.user.travel360.ReviewReadDialog;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -51,6 +49,13 @@ public class ReviewMainReadActivity extends Activity {
     TextView[] BStarNum = new TextView[10]; //별점 점수
     ImageView[] BStar = new ImageView[10]; //별점 이미지
 
+    //서버에서 받아와 저장할 배열
+    String[] Best_text1 = new String[10];
+    String[] Best_Date = new String[10];
+    String[] Best_StarNum = new String[10];
+    String[] Best_Ster = new String[10];
+    String as;
+
     // 일반 여행자 리뷰
     ImageView[] NUser_profile = new ImageView[10]; // 사용자 프로필 사진
     TextView[] NUser_name = new TextView[10]; // 사용자 이름
@@ -58,6 +63,7 @@ public class ReviewMainReadActivity extends Activity {
     TextView[] NDate = new TextView[10]; //리뷰 날짜
     TextView[] NStarNum = new TextView[10]; //별점 점수
     ImageView[] NStar = new ImageView[10]; //별점 이미지
+
 
     //플로팅 버튼
     FloatingActionButton WriteReview, Up;
@@ -69,8 +75,8 @@ public class ReviewMainReadActivity extends Activity {
         setContentView(R.layout.activity_review_main_read);
 
         init();
-        getTravleReviewAll_Server();
-       // Bestinit();
+       // getTravleReviewAll_Server();
+         Bestinit();
         Normalinit();
         onClickEvent();
 
@@ -93,7 +99,7 @@ public class ReviewMainReadActivity extends Activity {
                 //  Toast.makeText(getApplicationContext(), "글쓰기", Toast.LENGTH_SHORT).show();
                 ReviewWriteActivity reviewWriteActivity = new ReviewWriteActivity(ReviewMainReadActivity.this);
 
-               reviewWriteActivity.show();
+                reviewWriteActivity.show();
             }
         });
         Up.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +114,7 @@ public class ReviewMainReadActivity extends Activity {
     }
 
     public void Bestinit() {
-
+        getTravleReviewAll_Server();
         LayoutInflater inflater = LayoutInflater.from(getApplication().getApplicationContext());
         for (int i = 0; i < BEST_REVIEW_NUM; i++) {
             BestReviewITem[i] = inflater.inflate(R.layout.review_read_listitem_view, v, false); // 추가할 순위권 여행지 뷰 inflate
@@ -128,7 +134,7 @@ public class ReviewMainReadActivity extends Activity {
             BUser_name[i].setText("오탁은");
             BStarNum[i].setText("4.8");
 
-            BText1[i].setText(text1);
+            BText1[i].setText(Best_text1[i]);
             BDate[i].setText("2016.08.23");
 
             BestReviewITem[i].setOnClickListener(new View.OnClickListener() {
@@ -218,73 +224,46 @@ public class ReviewMainReadActivity extends Activity {
         });
 
     }
+
     void getTravleReviewAll_Server() {
 
         AsyncHttpClient client = new AsyncHttpClient();
         Log.d("SUN", "getTravleReviewAll_Server()");
         client.get("http://kibox327.cafe24.com//travelReviewList.do", new AsyncHttpResponseHandler() {
             @Override
-            public void onStart() {         }
+            public void onStart() {
+            }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
 
-                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " + new String(response));
 
                 String res = new String(response);
                 try {
                     JSONObject object = new JSONObject(res);
-                    String objStr =  object.get("reviews") + "";
+                    String objStr = object.get("reviews") + "";
                     JSONArray arr = new JSONArray(objStr);
                     LayoutInflater inflater = LayoutInflater.from(getApplication().getApplicationContext());
-                    for(int i=0; i<arr.length(); i++ ) {
+                    for (int i = 0; i < arr.length(); i++) {
 
 
-                        JSONObject obj = (JSONObject)arr.get(i);
+                        JSONObject obj = (JSONObject) arr.get(i);
 /*
                         int seq  = (Integer)obj.get("seq");
                         int user_info_seq = (Integer)obj.get("user_info_seq");
                         String presentation_image = (String)obj.get("presentation_image");
                         String text = (String)obj.get("text");
 
+
                      */
+                        Best_text1[i] = (String)obj.get("text");
 
-                        BestReviewITem[i] = inflater.inflate(R.layout.review_read_listitem_view, v, false); // 추가할 순위권 여행지 뷰 inflate
-
-                        // 메달 아이콘, 여행지 장소 텍스트, 여행지 별점 ID 불러오기
-                        BUser_profile[i] = (ImageView) BestReviewITem[i].findViewById(R.id.Review_read_user_img);
-                        BStar[i] = (ImageView) BestReviewITem[i].findViewById(R.id.Review_read_star);
-                        BUser_name[i] = (TextView) BestReviewITem[i].findViewById(R.id.Review_read_user_name);
-                        BText1[i] = (TextView) BestReviewITem[i].findViewById(R.id.Review_read_text);
-                        BDate[i] = (TextView) BestReviewITem[i].findViewById(R.id.Review_read_date);
-                        BStarNum[i] = (TextView) BestReviewITem[i].findViewById(R.id.Review_read_starnum);
-
-
-                        //***********이 부분에서 서버에서 받아와서 바꿔주면 된다!!!!!***********
-                        BUser_profile[i].setImageResource(R.drawable.img1);
-                        BStar[i].setImageResource(R.drawable.star);
-                        BUser_name[i].setText("오탁은");
-                        BStarNum[i].setText("4.8");
-
-                        Log.d("Review@@@",(String)obj.get("text"));
-                        BText1[i].setText((String)obj.get("text"));
-                        BDate[i].setText("2016.08.23");
-
-                        BestReviewITem[i].setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ReviewReadDialog reviewReadDialog = new ReviewReadDialog(ReviewMainReadActivity.this);
-                                reviewReadDialog.show();
-                            }
-                        });
-                        //*******************************************************************
-
-                        BestReview.addView(BestReviewITem[i]); // 추가해주기
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Log.d("SUN",  "e : " + e.toString());
+                    Log.d("SUN", "e : " + e.toString());
                 }
             }
 
@@ -294,7 +273,8 @@ public class ReviewMainReadActivity extends Activity {
             }
 
             @Override
-            public void onRetry(int retryNo) {          }
+            public void onRetry(int retryNo) {
+            }
         });
     }
 

@@ -10,9 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.user.travel360.R;
+import com.example.user.travel360.ShowVrActivity;
 import com.example.user.travel360.uk.co.senab.photoview.PhotoView;
 
 import java.io.InputStream;
@@ -23,6 +25,7 @@ import java.net.URL;
  */
 public class ImageViewer extends AppCompatActivity
 {
+    Button ImgVr;
     ImageView[] ViewerImg = new ImageView[10];
     Intent getIntent;
     int imgCount, imgIndex; // 로드할 이미지 개수, 이미지 인덱스
@@ -55,6 +58,18 @@ public class ImageViewer extends AppCompatActivity
 
         ViewerImgLoading task = new ViewerImgLoading();
         task.execute();
+        init();
+    }
+    public void init(){
+        ImgVr = (Button)findViewById(R.id.ImgVr);
+        ImgVr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ShowVrActivity.class);
+                intent.putExtra("ImagePath","path" );
+                startActivity(intent);
+            }
+        });
     }
 
     class SamplePagerAdapter extends PagerAdapter
