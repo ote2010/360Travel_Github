@@ -107,11 +107,12 @@ public class JoinActivity extends Activity {
         BtnSumit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    checkEditBoxInput();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+
+                    if (!checkEditBoxInput()) {
+                        return;
+                    }
+
+                    Join_Server();
 
 
             }
@@ -168,7 +169,7 @@ public class JoinActivity extends Activity {
         edit = pref.edit();
     }
 
-    private boolean checkEditBoxInput() throws FileNotFoundException {
+    private boolean checkEditBoxInput()  {
         if (TextUtils.isEmpty(EditEmail.getText().toString())) {
             Toast.makeText(getApplicationContext(), "이메일을 입력하세요.", Toast.LENGTH_SHORT).show();
             return false;
@@ -181,9 +182,6 @@ public class JoinActivity extends Activity {
         } else if (uri == null) {
             Toast.makeText(getApplicationContext(), "프로필 사진을 선택하세요.", Toast.LENGTH_SHORT).show();
             return false;
-        } else {
-            Join_Server();
-            finish();
         }
         return true;
     }
@@ -209,10 +207,7 @@ public class JoinActivity extends Activity {
                     //Toast.makeText(getBaseContext(), "name_Str : "+name_Str , Toast.LENGTH_SHORT).show();
 
 
-                } catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IOException e) {
+                }  catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 } catch (Exception e) {
@@ -223,13 +218,15 @@ public class JoinActivity extends Activity {
 
     }
 
-    void Join_Server() throws FileNotFoundException {
+    void Join_Server()   {
         //   long todaydate = System.currentTimeMillis(); // long 형의 현재시간
         RequestParams params = new RequestParams();
         // 기본 데이터
         String email1 = EditEmail.getText().toString();
         String PW1 = EditPW.getText().toString();
         String name1 = EditName.getText().toString();
+
+
         File myFile = new File(String.valueOf(uri));
 
         params.put("password", PW1);
@@ -237,7 +234,15 @@ public class JoinActivity extends Activity {
         params.put("id", email1);
         params.put("name", name1);
         params.put("permission", true);
-         params.put("profile_image",myFile);
+        try
+        {
+            params.put("profile_image", myFile);
+        }
+        catch (FileNotFoundException e)
+        {
+
+        }
+
 
         AsyncHttpClient client = new AsyncHttpClient();
 
@@ -258,13 +263,7 @@ public class JoinActivity extends Activity {
                 pw = EditPW.getText().toString();
                 name = EditName.getText().toString();
 
-                try {
-                    if (!checkEditBoxInput()) {
-                        return;
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+
                 SharedPreferences.Editor editor = pref.edit();
                 editor.clear();
                 editor.commit();

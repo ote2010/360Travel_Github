@@ -104,35 +104,43 @@ public class Search_Activity extends Activity implements View.OnClickListener {
                 break;
             //index 0
             case R.id.Tstory:
-                if(checkList[0] == 0) {
+                if (checkList[0] == 0) {
                     checkList[0] = 1;
-                }else if(checkList[0] == 1){
-                    checkList[0] =0;
+                    Tstory.setText("선택");
+                } else if (checkList[0] == 1) {
+                    checkList[0] = 0;
+                    Tstory.setText("여행기");
+
                 }
 
                 break;
             //index 1
             case R.id.Review:
-                if(checkList[1] == 0) {
+                if (checkList[1] == 0) {
                     checkList[1] = 1;
-                }else if(checkList[1] == 1){
-                    checkList[1] =0;
+                    Review.setText("선택");
+                    Review.setText("");
+                } else if (checkList[1] == 1) {
+                    checkList[1] = 0;
+                    Review.setText("리뷰");
                 }
                 break;
             //index 2
 
             case R.id.New_turn:
-                if(checkList[2] == 0) {
+                if (checkList[2] == 0) {
                     checkList[2] = 1;
-                }else if(checkList[2] == 1){
-                    checkList[2] =0;
+                    New_turn.setText("선택");
+                } else if (checkList[2] == 1) {
+                    checkList[2] = 0;
+                    New_turn.setText("최신순");
                 }
                 break;
             //index 3
             case R.id.Detail_date:
-                if(checkList[0] == 0) {
+                if (checkList[0] == 0) {
                     checkList[0] = 1;
-
+                    Detail_date.setText("선택");
 
                     //Dialog_DatePicker();
                     tfDatePickerDialog = new TFDatePickerDialog(this);
@@ -148,8 +156,10 @@ public class Search_Activity extends Activity implements View.OnClickListener {
                     tfDatePickerDialog.show();
 
 
-                }else if(checkList[0] == 1){
-                    checkList[0] =0;
+                } else if (checkList[0] == 1) {
+                    checkList[0] = 0;
+                    Detail_date.setText("세부날짜선택");
+
                 }
                 break;
 
