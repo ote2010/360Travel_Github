@@ -70,10 +70,10 @@ public class Search_Activity extends Activity implements View.OnClickListener {
     public void init() {
         FilterButton = (Button) findViewById(R.id.FilterButton);
         Tstory = (Button) findViewById(R.id.Tstory);
-        Review = (Button) findViewById(R.id.Review);
 
         New_turn = (Button) findViewById(R.id.New_turn);
         Detail_date = (Button) findViewById(R.id.Detail_date);
+        Review = (Button) findViewById(R.id.Review);
 
 
         Btn_List1 = (LinearLayout) findViewById(R.id.BtnList1);
