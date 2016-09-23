@@ -30,8 +30,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 import cz.msebera.android.httpclient.Header;
 
 
@@ -46,7 +44,6 @@ public class Story_fragment extends Fragment {
     ImageView[] storyUserImage = new ImageView[50]; // 여행기 게시자 프로필 사진
     TextView[] storyUserName = new TextView[50]; // 여행기 작성자
     TextView[] storyTitle = new TextView[50]; // 여행기 제목
-    ArrayList<TextView> storyDateList = new ArrayList <TextView> ();
     LinearLayout[] storyBackgroundLayout = new LinearLayout[50]; // 여행기 프로필과 작성자, 제목의 배경이 되는 레이아웃
     LinearLayout[] storyUserNameTitleLayout = new LinearLayout[50]; // 작성자, 제목을 감싸는 레이아웃
 
@@ -57,7 +54,7 @@ public class Story_fragment extends Fragment {
 
     //****서버 코드 *****/
     final static int REQUEST_PRESENTATION_IMAGE = 1111, REQUEST_USER_IMAGE = 2222;
-    static int seq ;
+    static int seq;
     static int user_info_seq;
     static String presentation_image;
     static String title;
@@ -168,6 +165,7 @@ public class Story_fragment extends Fragment {
                         JSONObject obj = (JSONObject) arr.get(i);
 
                         seq = (Integer) obj.get("seq");
+                        Log.d("SEQ", String.valueOf(seq));
                         presentation_image = (String) obj.get("presentation_image");
                         title = (String) obj.get("title");
 
@@ -189,7 +187,7 @@ public class Story_fragment extends Fragment {
                         storyUserName[i] = (TextView) storyItemView[i].findViewById(R.id.storyUserName);
                         storyTitle[i] = (TextView) storyItemView[i].findViewById(R.id.storyTitle);
                         TextView storyDateItem = (TextView) storyItemView[i].findViewById(R.id.storyDate);
-                        storyDateList.add(storyDateItem);
+                        storyImageView[i].setTag(seq);
 
                         //******서버에서 받아온 정보로 수정 **********
                         //storyImageView[i].setImageResource(R.drawable.testimg1);
@@ -204,7 +202,12 @@ public class Story_fragment extends Fragment {
                             public void onClick(View v)
                             {
                                 //***서버에서 정보를 받아오는 코드를 작성하고, StoryReadActivity로 전달한다.***
-                                startActivity(new Intent(getActivity(), StoryReadActivity.class));
+
+                                int storySeq = (int)v.getTag();
+                                Intent intent = new Intent(getActivity(), StoryReadActivity.class);
+                                intent.putExtra("seq", storySeq);
+                                Log.d("seq", String.valueOf(storySeq));
+                                startActivity(intent);
                             }
                         });
 

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -95,7 +94,7 @@ public class UserActivity extends AppCompatActivity {
             storyImageView[i] = (ImageView)storyItemView[i].findViewById(R.id.storyImageView);
             storyImageButton[i] = (Button) storyItemView[i].findViewById(R.id.storyImageButton);
             storyBackgroundLayout[i] = (LinearLayout) storyItemView[i].findViewById(R.id.storyBackgroundLayout);
-            storyUserImage[i] = (ImageButton) storyItemView[i].findViewById(R.id.storyUserImage);
+            storyUserImage[i] = (ImageView) storyItemView[i].findViewById(R.id.storyUserImage);
             storyUserNameTitleLayout[i] = (LinearLayout) storyItemView[i].findViewById(R.id.storyUserNameTitleLayout);
             storyUserName[i] = (TextView) storyItemView[i].findViewById(R.id.storyUserName);
             storyTitle[i] = (TextView) storyItemView[i].findViewById(R.id.storyTitle);

@@ -71,6 +71,11 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
     Bitmap[] bitmapImg = new Bitmap[10]; // 웹 URL -> 비트맵 으로 저장하기 위한 비트맵 배열
     ImageLoadingTask task; // 백그라운드 쓰레드 동작을 위한 Asynctask 클래스 객체
 
+    //서버관련 코드
+    ArrayList <Image> ImageList = new ArrayList <Image> ();
+    String title;
+    String text;
+
 
     // 댓글 관련 위젯
     public ListView listView;
@@ -83,10 +88,21 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         setContentView(R.layout.activity_story_read);
 
+        Intent intent = getIntent();
+        int storySeq = intent.getExtras().getInt("seq");
+        Log.d("storySeq", String.valueOf(storySeq));
+
         container = (LinearLayout) findViewById(R.id.container);
+
+        getTravleRecord_Server(storySeq);
+
+
+
+
+
+
         task = new ImageLoadingTask();
 
         // 여행기 사진, 이미지가 몇개인지 받아오는 코드 필요!!! 일단 사진은 총 7개라고 가정.
@@ -114,7 +130,6 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
         imgCountIntent = new Intent(getApplicationContext(), ImageViewer.class);
 
         findViewById(R.id.commentBtn).setOnClickListener(this);
-
     }
 
     @Override
@@ -350,6 +365,78 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    void getTravleRecord_Server(int storySeq) {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 seq 만 있으면 됩니다.
+        params.put("seq", storySeq);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("getTravleRecord_Server", "getData_Server()");
+        client.get("http://kibox327.cafe24.com/getTravelRecord.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                Log.d("getTravleRecord_Server", "getData_Server() onStart");
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                //Log.d("getTravleRecord_Server", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+
+                try {
+                    JSONObject obj = new JSONObject(res);
+
+                    Log.d("getTravleRecord_Server", "images : " + obj.get("images"));
+                    Log.d("getTravleRecord_Server", "travelRecordDto : " + obj.get("travelRecordDto"));
+                    Log.d("getTravleRecord_Server", "travel : " + obj.get("travel"));
+
+                    String imagesStr = obj.get("images") + "";
+                    JSONArray imagesArr = new JSONArray(imagesStr);
+
+                    for (int i = 0; i < imagesArr.length(); i++)
+                    {
+                        JSONObject imageObj = (JSONObject) imagesArr.get(i);
+                        int picture_group_seq = (int)imageObj.get("picture_group_seq");
+                        String picture_loc = (String)imageObj.get("picture_loc");
+                        int seq = (int)imageObj.get("seq");
+
+                        Log.d("ImageList", "picture_group_seq : " + String.valueOf(picture_group_seq));
+                        Log.d("ImageList", "picture_loc : " + picture_loc);
+                        Log.d("ImageList", "seq : " + String.valueOf(seq));
+
+                        Image image = new Image(picture_group_seq, picture_loc, seq);
+                        ImageList.add(image);
+                    }
+
+                    String travelStr = obj.get("travel") + "";
+                    JSONObject travelStrObj = new JSONObject(travelStr);
+
+                    title = (String)travelStrObj.get("title");
+                    text = (String)travelStrObj.get("text");
+                    Log.d("travelStrObj", "title : " + title);
+                    Log.d("travelStrObj", "text : " + text);
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                    Log.d("getTravleRecord_Server",  "e : " + e.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("getTravleRecord_Server", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+
+            @Override
+            public void onRetry(int retryNo) {         }
+        });
+    }
+
     /***********
      * 여행기 댓글 리스트
      ***************/
@@ -505,5 +592,53 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onRetry(int retryNo) {  }
         });
+    }
+
+    class Image
+    {
+        int picture_group_seq;
+        String picture_loc;
+        int seq;
+
+        public Image()
+        {
+        }
+
+        public Image(int picture_group_seq, String picture_loc, int seq)
+        {
+            this.picture_group_seq = picture_group_seq;
+            this.picture_loc = picture_loc;
+            this.seq = seq;
+        }
+
+        public int getPicture_group_seq()
+        {
+            return picture_group_seq;
+        }
+
+        public void setPicture_group_seq(int picture_group_seq)
+        {
+            this.picture_group_seq = picture_group_seq;
+        }
+
+        public String getPicture_loc()
+        {
+            return picture_loc;
+        }
+
+        public void setPicture_loc(String picture_loc)
+        {
+            this.picture_loc = picture_loc;
+        }
+
+        public int getSeq()
+        {
+            return seq;
+        }
+
+        public void setSeq(int seq)
+        {
+            this.seq = seq;
+        }
     }
 }
