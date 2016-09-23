@@ -305,19 +305,21 @@ public class MainActivity extends AppCompatActivity
     public void isLoginned() {
         String LoginFlag = ApplicationController.getInstance().getEmail();
 
+        boolean check = (LoginFlag + "").equals(null + "");
+//        Log.d("Check_Flag", check+"/"+LoginFlag+"/");
 
-        if (!(LoginFlag+"").equals(null)) {
+        if (check) { // 로그인 안했을때
 //            ApplicationController.getInstance().getSeq();
-           /* Toast.makeText(getApplicationContext(),
-                    "" + ApplicationController.getInstance().getLoginFlag(),
-                    Toast.LENGTH_SHORT).show();
-*/
-            UserIDTextView.setText(ApplicationController.getInstance().getEmail());
+
 
             LayoutLogin.setVisibility(View.INVISIBLE);
             LayoutNoLogin.setVisibility(View.VISIBLE);
-        }
+        } else {
+            UserIDTextView.setText(LoginFlag);
+            LayoutNoLogin.setVisibility(View.INVISIBLE);
+            LayoutLogin.setVisibility(View.VISIBLE);
 
+        }
     }
 
     @Override

@@ -50,6 +50,7 @@ public class ReviewWriteActivity extends Dialog {
         init();
         onClickEvent();
         SelectGrade();
+      //  writeReview_Server();
     }
 
     public void init() {
@@ -104,15 +105,15 @@ public class ReviewWriteActivity extends Dialog {
         RequestParams params = new RequestParams();
         // 기본 데이터
         String WriteText = ReviewWrite.getText().toString();
-        params.put("user_seq","3");
-        params.put("text", WriteText);
-        // params.put("write_date", todaydate);
-        //  params.put("location", "korea");
+        params.put("user_seq","1");
+        params.put("text", "wefwefwefef");
+         params.put("write_date", "todaydate");
+          params.put("location", "korea");
 
         AsyncHttpClient client = new AsyncHttpClient();
 
         Log.d("SUN", "writeStory_Server()");
-        client.get("http://kibox327.cafe24.com/writeTravelReview.do", params, new AsyncHttpResponseHandler() {
+        client.post("http://kibox327.cafe24.com/writeTravelReview.do", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
 
@@ -120,13 +121,13 @@ public class ReviewWriteActivity extends Dialog {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                Log.d("SUN@@", "statusCode : " + statusCode + " , response : " +  new String(response));
+                Log.d("SUN@@", "Success // statusCode : " + statusCode + " , response : " +  new String(response));
                 String res = new String(response);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.d("Fail", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+                Log.d("SUN@@", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
             }
 
             @Override

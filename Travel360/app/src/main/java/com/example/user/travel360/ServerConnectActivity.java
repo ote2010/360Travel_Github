@@ -38,7 +38,7 @@ public class ServerConnectActivity extends AppCompatActivity {
 		4. story 댓글 쓰기 : writeStoryComment_Server()
         5. story 댓글 리스트 : getComment_Server()
 
-		6. 저장된 image 가져오기 : getImage_Server()
+		6. 저장된 image 가져오기 : getImage_Server(),
 		7. 사용자 정보 가져오기 : getUserInfo_Server()
 
 		8. 친구 (요청)추가 하기  : addFriend_Server()

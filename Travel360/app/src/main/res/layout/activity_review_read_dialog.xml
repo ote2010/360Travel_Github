@@ -125,12 +125,25 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/dialog_textview"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="340dp"
-                android:layout_margin="7dp"
-                android:background="@drawable/my_border" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="right">
+
+                <TextView
+                    android:id="@+id/dialog_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="340dp"
+                    android:layout_margin="7dp"
+                    android:background="@drawable/my_border" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="댓글"
+                    android:id="@+id/ReviewComment"
+                    android:layout_gravity="bottom|right"/>
+            </FrameLayout>
 
             <Button
 
@@ -141,7 +154,9 @@
                 android:layout_marginRight="100dp"
 
                 android:text="닫기" />
+
         </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>
 
