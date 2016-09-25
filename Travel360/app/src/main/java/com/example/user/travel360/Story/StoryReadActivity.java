@@ -180,7 +180,7 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
                 imgCount++;
             }
         }
-
+        imgGroupIndex++;
         DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
         int width = dm.widthPixels;
 
