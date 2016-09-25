@@ -1,6 +1,7 @@
 package com.example.user.travel360;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,13 +9,17 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 
-
+import com.example.user.travel360.Story.Image;
 import com.google.vr.sdk.widgets.pano.VrPanoramaView;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 
 public class ShowVrActivity extends Activity {
     VrPanoramaView panoWidgetView;
@@ -22,14 +27,48 @@ public class ShowVrActivity extends Activity {
 
     ImageLoaderTask backgroundImageLoaderTask;
 
+    Intent getIntent;
+    ArrayList <Image> ImageList = new ArrayList <Image> ();
+    int index;
+    Bitmap bitmap;
+    boolean check = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_vr);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        getIntent = new Intent(this.getIntent());
+        ImageList = (ArrayList<Image>)getIntent.getSerializableExtra("imgList");
+        index = getIntent.getIntExtra("index", -1);
+
+        new Thread()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    URL ImageUrl = new URL("http://kibox327.cafe24.com/Image.do?imageName=" + ImageList.get(index).getPicture_loc());
+                    HttpURLConnection conn = (HttpURLConnection) ImageUrl.openConnection();
+                    conn.setDoInput(true);
+                    conn.connect();
+
+                    InputStream is = conn.getInputStream();
+
+                    bitmap = BitmapFactory.decodeStream(is);
+                    check = true;
+                }
+
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
 
         panoWidgetView = (VrPanoramaView) findViewById(R.id.pano_view1);
-      //  loadPanoImage();
-
     }
 
     @Override
@@ -40,7 +79,7 @@ public class ShowVrActivity extends Activity {
 
     @Override
     public void onResume() {
-      loadPanoImage();
+        loadPanoImage();
         panoWidgetView.resumeRendering();
 
         super.onResume();
@@ -95,7 +134,13 @@ public class ShowVrActivity extends Activity {
             }
 
             try(InputStream istr = assetManager.open(assetName)) {
-                Bitmap b = BitmapFactory.decodeStream(istr);
+                //Bitmap b = BitmapFactory.decodeStream(istr);
+                while(true)
+                {
+                    if(check)
+                        break;
+                }
+                Bitmap b = bitmap;
                 lastBitmap = new WeakReference<>(b);
                 lastName = assetName;
                 return b;

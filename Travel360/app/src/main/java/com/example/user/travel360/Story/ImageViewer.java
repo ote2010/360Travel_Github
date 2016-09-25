@@ -36,6 +36,7 @@ public class ImageViewer extends AppCompatActivity
     SamplePagerAdapter adapter;
     ViewerImgLoading task;
 
+    ViewPager mViewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -51,11 +52,11 @@ public class ImageViewer extends AppCompatActivity
         ImageList = (ArrayList <Image>)getIntent.getSerializableExtra("imgList");
         imgDrawable = new Drawable[imgCount];
 
-        ViewPager mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        mViewPager = (ViewPager) findViewById(R.id.view_pager);
         adapter = new SamplePagerAdapter();
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(10);
-        mViewPager.setCurrentItem(imgIndex-1);
+        mViewPager.setCurrentItem(imgIndex - 1);
 
         ViewerImgLoading task = new ViewerImgLoading();
         task.execute();
@@ -67,7 +68,8 @@ public class ImageViewer extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ShowVrActivity.class);
-                intent.putExtra("ImagePath","path" );
+                intent.putExtra("index", mViewPager.getCurrentItem());
+                intent.putExtra("imgList", ImageList);
                 startActivity(intent);
             }
         });
@@ -138,37 +140,4 @@ public class ImageViewer extends AppCompatActivity
             adapter.notifyDataSetChanged();
         }
     }
-
-
-    /*async http 라이브러리 사용법
-    public void onButtonClicked(View v)
-    {
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://kibox327.cafe24.com/login.do?id=a&password=1234", new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onStart() {
-                // called before request is started
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody)
-            {
-                String byteToString = new String(responseBody,0,responseBody.length);
-                test.setText(byteToString);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
-                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-            }
-
-
-            @Override
-            public void onRetry(int retryNo) {
-                // called when request is retried
-            }
-        });
-    }
-    */
 }
