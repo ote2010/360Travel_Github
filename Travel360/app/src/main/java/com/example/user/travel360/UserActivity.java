@@ -16,9 +16,6 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import cz.msebera.android.httpclient.Header;
 
 public class UserActivity extends AppCompatActivity {
@@ -67,18 +64,6 @@ public class UserActivity extends AppCompatActivity {
 
         LayoutInflater inflater = getLayoutInflater().from(getApplicationContext());
 
-        // 현재 날짜 라벨도 동적으로 붙여줍니다.
-        View timeText = inflater.inflate(R.layout.time_label, v, false);
-        TextView timeTextView = (TextView) timeText.findViewById(R.id.timeLabelTextView);
-
-        //현재 날짜를 받아와서 setText해주는 코드입니다.
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd");
-        Calendar now = Calendar.getInstance();
-        String currentDate = formatter.format(now.getTime());
-        timeTextView.setText("        " + currentDate);
-
-        // 현재 날짜로 setText된 날짜 라벨을 mainStoryContainer에 addView 해줍니다.
-        mainStoryContainer.addView(timeText);
 
         // 현재 날짜에 올릴 여행기가 홀수개인지 짝수개인지 판별합니다. 홀수개면 마지막에 하나만 띄워줘야합니다.
         if(storyDayTotal % 2 == 1)

@@ -19,6 +19,7 @@ import com.example.user.travel360.uk.co.senab.photoview.PhotoView;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Created by user on 2016-08-11.
@@ -29,7 +30,7 @@ public class ImageViewer extends AppCompatActivity
     ImageView[] ViewerImg = new ImageView[10];
     Intent getIntent;
     int imgCount, imgIndex; // 로드할 이미지 개수, 이미지 인덱스
-    String [] imgUriStringArray;
+    ArrayList <Image> ImageList;
     Drawable [] imgDrawable;
 
     SamplePagerAdapter adapter;
@@ -45,9 +46,9 @@ public class ImageViewer extends AppCompatActivity
         setContentView(R.layout.activity_imageviewer);
 
         getIntent = new Intent(this.getIntent());
-        imgCount = getIntent.getIntExtra("imgCountIntent", -1);
+        imgCount = getIntent.getIntExtra("imgCount", -1);
         imgIndex = getIntent.getIntExtra("imgIndex", -1);
-        imgUriStringArray = getIntent.getStringArrayExtra("imgUri");
+        ImageList = (ArrayList <Image>)getIntent.getSerializableExtra("imgList");
         imgDrawable = new Drawable[imgCount];
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.view_pager);
@@ -122,9 +123,9 @@ public class ImageViewer extends AppCompatActivity
         @Override
         protected Long doInBackground(String... params)
         {
-            for(int i = 0; i<imgUriStringArray.length; i++)
+            for(int i = 0; i<ImageList.size(); i++)
             {
-                imgDrawable[i] = LoadImageFromWeb(imgUriStringArray[i]);
+                imgDrawable[i] = LoadImageFromWeb("http://kibox327.cafe24.com/Image.do?imageName=" + ImageList.get(i).getPicture_loc());
                 publishProgress();
             }
              return null;

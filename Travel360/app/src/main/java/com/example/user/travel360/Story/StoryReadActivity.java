@@ -7,7 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,7 +54,7 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
     3) 받아온게 사진인지 그림인지. 판단해서 순차적으로 보여줘야한다.
     */
 
-    int[] sequence = {1, 0, 0, 1, 0}; // 불러올 본문의 순서. 1 : 글 0 : 사진이라고 임의로 가정. 그러니까 글 사진 사진 글 사진과 같은 순서임.
+    ArrayList <Integer> sequence = new ArrayList <Integer>(); // 불러올 본문의 순서. 1 : 글 0 : 사진이라고 임의로 가정. 그러니까 글 사진 사진 글 사진과 같은 순서임.
     LinearLayout container; // container에 모든 뷰들이 담긴다. 전체 틀.
     String storyText;
 
@@ -69,13 +71,20 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
 
     //쓰레드 작업을 위한 변수 (이미지를 웹에서 받아오는 작업은 백그라운드에서 진행해야해서)
     Bitmap[] bitmapImg = new Bitmap[10]; // 웹 URL -> 비트맵 으로 저장하기 위한 비트맵 배열
-    ImageLoadingTask task; // 백그라운드 쓰레드 동작을 위한 Asynctask 클래스 객체
 
     //서버관련 코드
     ArrayList <Image> ImageList = new ArrayList <Image> ();
+    ArrayList <String> TextList = new ArrayList <String> ();
     String title;
     String text;
+    int imgGroupIndex = 0;
 
+    int [] multiThreading;
+    int multiThreadIndex = 0;
+    ArrayList <ArrayList <Image>> ImageGrpList = new ArrayList <ArrayList <Image>> ();
+    ArrayList <Image> threadImageList = new ArrayList <Image> ();
+
+    ImageView [] threadImgView;
 
     // 댓글 관련 위젯
     public ListView listView;
@@ -98,35 +107,6 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
 
         getTravleRecord_Server(storySeq);
 
-
-
-
-
-
-        task = new ImageLoadingTask();
-
-        // 여행기 사진, 이미지가 몇개인지 받아오는 코드 필요!!! 일단 사진은 총 7개라고 가정.
-        imgCount = 7;
-        stringLayoutCount = 2;
-        imgLayoutCount = 3;
-
-        //*****여기서 서버에서 이미지 URL, 텍스트를 받아오는 코드를 작성***************
-        storyText = "메밀꽃 필 무렵\n마지막 잎새가 어쩌구저쩌구 쏼라쏼라 끼야호 으아아앙ㄴ마ㅐ아ㅐㅏㅐ바재압ㅈ";
-
-        storyLoad(); // 여행기 틀을 로드하는 메소드
-
-        //이미지 URL : 1 파리 2 서울 3 프라하 4 리우데자네이루 5 뉴욕 6 만리장성 7 런던
-        imgUriArray = new String[]{"http://www.gaviota.kr/xe/files/attach/images/163/900/003/PARIS_111001_14.jpg"
-                , "http://cfd.tourtips.com/@cms_600/2015081735/gjexj7/%EC%84%9C%EC%9A%B8_%EA%B4%91%ED%99%94%EB%AC%B8%EC%9D%B4%EC%88%9C%EC%8B%A0%EB%8F%99%EC%83%81_MT(2).JPG"
-                , "http://cfile28.uf.tistory.com/image/161C0E484D996432071D6C"
-                , "http://cfile215.uf.daum.net/image/2278674F539FAD9C24F377"
-                , "http://www.languagebookings.com/uploads/img/up/new_york_1.jpg"
-                , "http://cfile214.uf.daum.net/image/2422054951ADACDD34188E"
-                , "http://www.glion.co.kr/wp-content/themes/glion2/images/img_sub_top/banner-glion-life-in-london-page1280.jpg"};
-
-        task.execute(imgUriArray);
-        //*************************************************************************
-
         imgCountIntent = new Intent(getApplicationContext(), ImageViewer.class);
 
         findViewById(R.id.commentBtn).setOnClickListener(this);
@@ -143,14 +123,12 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
             return true;
         }
 
-        //*** To 선아 *** 이부분 ****************
         if (id == R.id.travelerAddButton)
         {
             Toast.makeText(getApplicationContext(),"add travler",Toast.LENGTH_SHORT).show();
             addFriend_Server(1,3);
             return true;
         }
-        //*** To 선아 *** 이부분 ****************
 
         if (id == R.id.menuButton) {
             Toast.makeText(this, "메뉴 버튼 이벤트", Toast.LENGTH_SHORT).show();
@@ -167,8 +145,8 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
 
     // 여행기 로드 메소드 : 글인지 사진인지에 따라서 storyTextLoad, storyImageLoad 메소드로 갈림
     public void storyLoad() {
-        for (int i = 0; i < sequence.length; i++) {
-            if (sequence[i] == 1) // 글
+        for (int i = 0; i < sequence.size(); i++) {
+            if (sequence.get(i) == 1) // 글
             {
                 storyTextLoad();
             } else // 사진
@@ -184,7 +162,7 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
 
         textLayout[textLayoutTotal] = (LinearLayout) textLayoutInflater.inflate(R.layout.story_textview, null);
         TextView textLayoutTextView = (TextView) textLayout[textLayoutTotal].findViewById(R.id.storyTextView);
-        textLayoutTextView.setText(storyText);
+        textLayoutTextView.setText(TextList.get(textLayoutTotal));
 
         container.addView(textLayout[textLayoutTotal]);
 
@@ -192,17 +170,33 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
     }
 
     // 여행기 사진 메소드
-    public void storyImageLoad() {
+    public void storyImageLoad()
+    {
+        imgCount = 0;
+        for(int i=0; i<ImageList.size(); i++)
+        {
+            if(ImageList.get(i).getPicture_group_seq() == imgGroupIndex)
+            {
+                imgCount++;
+            }
+        }
+
+        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
+        int width = dm.widthPixels;
+
         LayoutInflater imageLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (imgCount > 4) {
             imageLayout[imageLayoutTotal] = (LinearLayout) imageLayoutInflater.inflate(R.layout.story_morethan4pic, null);
             TextView otherimgCount = (TextView) imageLayout[imageLayoutTotal].findViewById(R.id.otherimgCount);
             otherimgCount.setText("+" + String.valueOf(imgCount - 3));
+            imageLayout[imageLayoutTotal].setLayoutParams(new LinearLayout.LayoutParams(width, width));
         } else if (imgCount == 4) {
             imageLayout[imageLayoutTotal] = (LinearLayout) imageLayoutInflater.inflate(R.layout.story_4pic, null);
+            imageLayout[imageLayoutTotal].setLayoutParams(new LinearLayout.LayoutParams(width, width));
         } else if (imgCount == 3) {
             imageLayout[imageLayoutTotal] = (LinearLayout) imageLayoutInflater.inflate(R.layout.story_3pic, null);
+            imageLayout[imageLayoutTotal].setLayoutParams(new LinearLayout.LayoutParams(width, width));
         } else if (imgCount == 2) {
             imageLayout[imageLayoutTotal] = (LinearLayout) imageLayoutInflater.inflate(R.layout.story_2pic, null);
             ViewGroup.LayoutParams par = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -211,6 +205,7 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
             imageLayout[imageLayoutTotal].setLayoutParams(par);
         } else if (imgCount == 1) {
             imageLayout[imageLayoutTotal] = (LinearLayout) imageLayoutInflater.inflate(R.layout.story_1pic, null);
+            imageLayout[imageLayoutTotal].setLayoutParams(new LinearLayout.LayoutParams(width, width));
         } else {
             Toast.makeText(getApplicationContext(), "Image Loading Error", Toast.LENGTH_LONG).show();
             return;
@@ -231,136 +226,92 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
                // writeStoryComment_Server();
                 break;
         }
-
-
     }
 
-    // 이미지 웹 상에서 불러오기 위한 AsyncTask 쓰레드 클래스
-    // <params, progress, result>
-    private class ImageLoadingTask extends AsyncTask <String, Integer, Long> {
+    class BitmapAndIndex
+    {
+        Bitmap bitmap;
+        int index;
+
+        public BitmapAndIndex(Bitmap bitmap, int index)
+        {
+            this.bitmap = bitmap;
+            this.index = index;
+        }
+
+        public Bitmap getBitmap()
+        {
+            return bitmap;
+        }
+
+        public void setBitmap(Bitmap bitmap)
+        {
+            this.bitmap = bitmap;
+        }
+
+        public int getIndex()
+        {
+            return index;
+        }
+
+        public void setIndex(int index)
+        {
+            this.index = index;
+        }
+    }
+
+    private class ImageLoadingTask extends AsyncTask <Integer, Integer, BitmapAndIndex> {
         //실제 스레드 작업을 작성하는 곳이며 execute에서 전달한 params 인수를 사용할 수 있다.
         //백그라운드에서 파라미터로 URL을 받아서 비트맵으로 이미지를 저장한다.
         @Override
-        protected Long doInBackground(String... params) {
-            try {
-                // 지금은 그냥 모든 이미지 레이아웃의 이미지 개수 imgCount=7로 가정하고 짠 코드. 나중에 imgCount가 계속 바뀌면 그때 코드 바꿔야함
-                int temp;
-                if (imgCount >= 4) // 이미지가 4개 이상이면 그냥 4개만 이미지 표현해주면 됨!
-                {
-                    temp = 4;
-                } else {
-                    temp = imgCount;
-                }
+        protected BitmapAndIndex doInBackground(Integer... params) {
+            multiThreadIndex = params[0];
+            Bitmap bitmap = null;
+            try
+            {
+                URL ImageUrl = new URL("http://kibox327.cafe24.com/Image.do?imageName=" + threadImageList.get(params[0]).getPicture_loc());
+                HttpURLConnection conn = (HttpURLConnection) ImageUrl.openConnection();
+                conn.setDoInput(true);
+                conn.connect();
 
-                for (int i = 0; i < temp; i++) {
-                    URL ImageUrl = new URL(params[i]);
-                    HttpURLConnection conn = (HttpURLConnection) ImageUrl.openConnection();
-                    conn.setDoInput(true);
-                    conn.connect();
+                InputStream is = conn.getInputStream();
 
-                    InputStream is = conn.getInputStream();
-
-                    bitmapImg[i] = BitmapFactory.decodeStream(is);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+                bitmap = BitmapFactory.decodeStream(is);
+                Log.d("ImageLoadingTask", String.valueOf(params[0]) + ": success");
             }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+                Log.d("ImageLoadingTask", String.valueOf(params[0]) + ": fail");
+            }
+            BitmapAndIndex bitmapAndIndex = new BitmapAndIndex(bitmap, params[0]);
 
-            return null;
+            return bitmapAndIndex;
         }
 
         //doInBackground 작업의 리턴값을 파라미터로 받으며 작업이 끝났음을 알리는 작업을 작성한다.
         @Override
-        protected void onPostExecute(Long aLong) {
-            for (int i = 0; i < imgLayoutCount; i++) {
-                if (imgCount > 4) {
-                    ImageView morepic4Viewer1 = (ImageView) imageLayout[i].findViewById(R.id.morepic4Viewer1);
-                    ImageView morepic4Viewer2 = (ImageView) imageLayout[i].findViewById(R.id.morepic4Viewer2);
-                    ImageView morepic4Viewer3 = (ImageView) imageLayout[i].findViewById(R.id.morepic4Viewer3);
-                    ImageView morepic4Viewer4 = (ImageView) imageLayout[i].findViewById(R.id.morepic4Viewer4);
-
-                    morepic4Viewer1.setImageBitmap(bitmapImg[0]);
-                    morepic4Viewer2.setImageBitmap(bitmapImg[1]);
-                    morepic4Viewer3.setImageBitmap(bitmapImg[2]);
-                    morepic4Viewer4.setImageBitmap(bitmapImg[3]);
-
-                    morepic4Viewer1.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            imgCountIntent.putExtra("imgCountIntent", imgCount);
-                            imgCountIntent.putExtra("imgIndex", 1);
-                            imgCountIntent.putExtra("imgUri", imgUriArray);
-                            startActivity(imgCountIntent);
-                        }
-                    });
-                    morepic4Viewer2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            imgCountIntent.putExtra("imgCountIntent", imgCount);
-                            imgCountIntent.putExtra("imgIndex", 2);
-                            imgCountIntent.putExtra("imgUri", imgUriArray);
-                            startActivity(imgCountIntent);
-                        }
-                    });
-                    morepic4Viewer3.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            imgCountIntent.putExtra("imgCountIntent", imgCount);
-                            imgCountIntent.putExtra("imgIndex", 3);
-                            imgCountIntent.putExtra("imgUri", imgUriArray);
-                            startActivity(imgCountIntent);
-                        }
-                    });
-                    morepic4Viewer4.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            imgCountIntent.putExtra("imgCountIntent", imgCount);
-                            imgCountIntent.putExtra("imgIndex", 4);
-                            imgCountIntent.putExtra("imgUri", imgUriArray);
-                            startActivity(imgCountIntent);
-                        }
-                    });
-                } else if (imgCount == 4) {
-                    ImageView pic4Viewer1 = (ImageView) imageLayout[i].findViewById(R.id.pic4Viewer1);
-                    ImageView pic4Viewer2 = (ImageView) imageLayout[i].findViewById(R.id.pic4Viewer2);
-                    ImageView pic4Viewer3 = (ImageView) imageLayout[i].findViewById(R.id.pic4Viewer3);
-                    ImageView pic4Viewer4 = (ImageView) imageLayout[i].findViewById(R.id.pic4Viewer4);
-
-                    pic4Viewer1.setImageBitmap(bitmapImg[0]);
-                    pic4Viewer2.setImageBitmap(bitmapImg[1]);
-                    pic4Viewer3.setImageBitmap(bitmapImg[2]);
-                    pic4Viewer4.setImageBitmap(bitmapImg[3]);
-                } else if (imgCount == 3) {
-                    ImageView pic3Viewer1 = (ImageView) imageLayout[i].findViewById(R.id.pic3Viewer1);
-                    ImageView pic3Viewer2 = (ImageView) imageLayout[i].findViewById(R.id.pic3Viewer2);
-                    ImageView pic3Viewer3 = (ImageView) imageLayout[i].findViewById(R.id.pic3Viewer3);
-
-                    pic3Viewer1.setImageBitmap(bitmapImg[0]);
-                    pic3Viewer2.setImageBitmap(bitmapImg[1]);
-                    pic3Viewer3.setImageBitmap(bitmapImg[2]);
-                } else if (imgCount == 2) {
-                    ImageView pic2Viewer1 = (ImageView) imageLayout[i].findViewById(R.id.pic2Viewer1);
-                    ImageView pic2Viewer2 = (ImageView) imageLayout[i].findViewById(R.id.pic2Viewer2);
-
-                    pic2Viewer1.setImageBitmap(bitmapImg[0]);
-                    pic2Viewer2.setImageBitmap(bitmapImg[1]);
-                } else if (imgCount == 1) {
-                    ImageView pic1Viewer1 = (ImageView) imageLayout[i].findViewById(R.id.pic1Viewer1);
-
-                    pic1Viewer1.setImageBitmap(bitmapImg[0]);
-                }
+        protected void onPostExecute(BitmapAndIndex bitmapAndIndex) {
+            if(bitmapAndIndex != null)
+            {
+                threadImgView[bitmapAndIndex.getIndex()].setImageBitmap(bitmapAndIndex.getBitmap());
+                Log.d("ImageLoadingTask", String.valueOf(bitmapAndIndex.getIndex()) + ": setBitmap success");
             }
+
+            Log.d("multiThreading", String.valueOf(bitmapAndIndex.getIndex()) + "번 쓰레드 작업끝!");
         }
 
         //doInBackground 시작 전에 호출되어 UI 스레드에서 실행된다. 주로 로딩바나 Progress 같은 동작 중임을 알리는 작업을 작성한다.
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
             super.onPreExecute();
         }
 
         //publishProgress()를 통해 호출되며 UI 스레드에서 실행된다. 파일 내려받는다고 치면 그때 퍼센티지 표시 작업 같은 걸 작성한다.
         @Override
-        protected void onProgressUpdate(Integer... values) {
+        protected void onProgressUpdate(Integer... values)
+        {
             super.onProgressUpdate(values);
         }
     }
@@ -418,6 +369,319 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
                     text = (String)travelStrObj.get("text");
                     Log.d("travelStrObj", "title : " + title);
                     Log.d("travelStrObj", "text : " + text);
+
+                    String[] values = text.split("\n");
+
+                    for(int i = 0; i<values.length; i++)
+                    {
+                        if(values[i].contains("ImgGroup"))
+                        {
+                            sequence.add(0);
+                            Log.d("sequence", String.valueOf(sequence.get(sequence.size()-1)));
+                        }
+                        else if(values[i].contains("TxtGroup"))
+                        {
+                            sequence.add(1);
+                            TextList.add(values[i+1]);
+                            Log.d("sequence", String.valueOf(sequence.get(sequence.size()-1)));
+                            Log.d("TextList", TextList.get(TextList.size()-1));
+                        }
+                        else
+                            continue;
+                    }
+
+                    ActionBar actionBar = getSupportActionBar();
+                    actionBar.setTitle(title);
+
+                    storyLoad();
+
+                    int grpSeqTemp = 0;
+                    ArrayList <Image> temp = new ArrayList <Image> ();
+                    for(int i = 0; i<ImageList.size(); i++)
+                    {
+                        if(ImageList.get(i).getPicture_group_seq() == grpSeqTemp)
+                        {
+                            temp.add(ImageList.get(i));
+                        }
+                        else
+                        {
+                            ImageGrpList.add((ArrayList <Image>)temp.clone());
+                            temp.clear();
+                            temp.add(ImageList.get(i));
+                            grpSeqTemp++;
+                        }
+                        if(i == ImageList.size()-1)
+                        {
+                            ImageGrpList.add(temp);
+                        }
+                    }
+
+                    ////이미지 멀티쓰레드 처리 코드///이부분 해야함
+                    multiThreading = new int[ImageList.size()];
+
+                    for(int i = 0; i < multiThreading.length; i++)
+                    {
+                        multiThreading[i] = 0;
+                    }
+
+                    for(int i = 0; i<ImageGrpList.size(); i++)
+                    {
+                        if(ImageGrpList.get(i).size() > 4)
+                        {
+                            for(int j = 4; j<ImageGrpList.get(i).size(); j++)
+                            {
+                                if(j==4)
+                                {
+                                    Image dummy = new Image(-1, "dummy", -1);
+                                    ImageGrpList.get(i).set(4, dummy);
+                                    continue;
+                                }
+                                ImageGrpList.get(i).remove(j);
+                            }
+                        }
+                    }
+
+                    int imageTaskCount = 0;
+                    for(int i = 0; i < ImageGrpList.size(); i++)
+                    {
+                        if(ImageGrpList.get(i).size() > 4)
+                            imageTaskCount += 4;
+                        else
+                            imageTaskCount += ImageGrpList.get(i).size();
+                    }
+                    Log.d("imageTaskCount", String.valueOf(imageTaskCount));
+
+                    threadImgView = new ImageView [imageTaskCount];
+
+                    int imgtaskcountindex = 0;
+                    for(int i = 0; i<ImageGrpList.size(); i++)
+                    {
+                        while(true)
+                        {
+                            if(imageLayout[i] != null)
+                                break;
+                        }
+
+                        if(ImageGrpList.get(i).size() > 4)
+                        {
+                            threadImgView[imgtaskcountindex] = (ImageView)imageLayout[i].findViewById(R.id.morepic4Viewer1);
+                            threadImgView[imgtaskcountindex+1] = (ImageView)imageLayout[i].findViewById(R.id.morepic4Viewer2);
+                            threadImgView[imgtaskcountindex+2] = (ImageView)imageLayout[i].findViewById(R.id.morepic4Viewer3);
+                            threadImgView[imgtaskcountindex+3] = (ImageView)imageLayout[i].findViewById(R.id.morepic4Viewer4);
+
+                            threadImgView[imgtaskcountindex].setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    Log.d("threadImgView", "4개이상 : 1");
+                                    imgCountIntent.putExtra("imgCount", ImageList.size());
+                                    imgCountIntent.putExtra("imgIndex", 1);
+                                    imgCountIntent.putExtra("imgList", ImageList);
+                                    startActivity(imgCountIntent);
+                                }
+                            });
+                            threadImgView[imgtaskcountindex+1].setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    Log.d("threadImgView", "4개이상 : 2");
+                                    imgCountIntent.putExtra("imgCount", ImageList.size());
+                                    imgCountIntent.putExtra("imgIndex", 2);
+                                    imgCountIntent.putExtra("imgList", ImageList);
+                                    startActivity(imgCountIntent);
+                                }
+                            });
+                            threadImgView[imgtaskcountindex+2].setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    Log.d("threadImgView", "4개이상 : 3");
+                                    imgCountIntent.putExtra("imgCount", ImageList.size());
+                                    imgCountIntent.putExtra("imgIndex", 3);
+                                    imgCountIntent.putExtra("imgList", ImageList);
+                                    startActivity(imgCountIntent);
+                                }
+                            });
+                            threadImgView[imgtaskcountindex+3].setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    Log.d("threadImgView", "4개이상 : 4");
+                                    imgCountIntent.putExtra("imgCount", ImageList.size());
+                                    imgCountIntent.putExtra("imgIndex", 4);
+                                    imgCountIntent.putExtra("imgList", ImageList);
+                                    startActivity(imgCountIntent);
+                                }
+                            });
+                            imgtaskcountindex += 4;
+                            ImageGrpList.get(i).remove(4);
+                        }
+                        else if(ImageGrpList.get(i).size() == 4)
+                        {
+                            threadImgView[imgtaskcountindex] = (ImageView)imageLayout[i].findViewById(R.id.pic4Viewer1);
+                            threadImgView[imgtaskcountindex+1] = (ImageView)imageLayout[i].findViewById(R.id.pic4Viewer2);
+                            threadImgView[imgtaskcountindex+2] = (ImageView)imageLayout[i].findViewById(R.id.pic4Viewer3);
+                            threadImgView[imgtaskcountindex+3] = (ImageView)imageLayout[i].findViewById(R.id.pic4Viewer4);
+
+                            threadImgView[imgtaskcountindex].setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    Log.d("threadImgView", "4개 : 1");
+                                    imgCountIntent.putExtra("imgCount", ImageList.size());
+                                    imgCountIntent.putExtra("imgIndex", 1);
+                                    imgCountIntent.putExtra("imgList", ImageList);
+                                    startActivity(imgCountIntent);
+                                }
+                            });
+                            threadImgView[imgtaskcountindex+1].setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    Log.d("threadImgView", "4개 : 2");
+                                    imgCountIntent.putExtra("imgCount", ImageList.size());
+                                    imgCountIntent.putExtra("imgIndex", 2);
+                                    imgCountIntent.putExtra("imgList", ImageList);
+                                    startActivity(imgCountIntent);
+                                }
+                            });
+                            threadImgView[imgtaskcountindex+2].setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    Log.d("threadImgView", "4개 : 3");
+                                    imgCountIntent.putExtra("imgCount", ImageList.size());
+                                    imgCountIntent.putExtra("imgIndex", 3);
+                                    imgCountIntent.putExtra("imgList", ImageList);
+                                    startActivity(imgCountIntent);
+                                }
+                            });
+                            threadImgView[imgtaskcountindex+3].setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    Log.d("threadImgView", "4개 : 4");
+                                    imgCountIntent.putExtra("imgCount", ImageList.size());
+                                    imgCountIntent.putExtra("imgIndex", 4);
+                                    imgCountIntent.putExtra("imgList", ImageList);
+                                    startActivity(imgCountIntent);
+                                }
+                            });
+
+                            imgtaskcountindex += 4;
+                        }
+                        else if(ImageGrpList.get(i).size() == 3)
+                        {
+                            threadImgView[imgtaskcountindex] = (ImageView)imageLayout[i].findViewById(R.id.pic3Viewer1);
+                            threadImgView[imgtaskcountindex+1] = (ImageView)imageLayout[i].findViewById(R.id.pic3Viewer2);
+                            threadImgView[imgtaskcountindex+2] = (ImageView)imageLayout[i].findViewById(R.id.pic3Viewer3);
+
+                            threadImgView[imgtaskcountindex].setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    Log.d("threadImgView", "3개 : 1");
+                                    imgCountIntent.putExtra("imgCount", ImageList.size());
+                                    imgCountIntent.putExtra("imgIndex", 1);
+                                    imgCountIntent.putExtra("imgList", ImageList);
+                                    startActivity(imgCountIntent);
+                                }
+                            });
+                            threadImgView[imgtaskcountindex+1].setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    Log.d("threadImgView", "3개 : 2");
+                                    imgCountIntent.putExtra("imgCount", ImageList.size());
+                                    imgCountIntent.putExtra("imgIndex", 2);
+                                    imgCountIntent.putExtra("imgList", ImageList);
+                                    startActivity(imgCountIntent);
+                                }
+                            });
+                            threadImgView[imgtaskcountindex+2].setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    Log.d("threadImgView", "3개 : 3");
+                                    imgCountIntent.putExtra("imgCount", ImageList.size());
+                                    imgCountIntent.putExtra("imgIndex", 3);
+                                    imgCountIntent.putExtra("imgList", ImageList);
+                                    startActivity(imgCountIntent);
+                                }
+                            });
+                            imgtaskcountindex += 3;
+                        }
+                        else if(ImageGrpList.get(i).size() == 2)
+                        {
+                            threadImgView[imgtaskcountindex] = (ImageView)imageLayout[i].findViewById(R.id.pic2Viewer1);
+                            threadImgView[imgtaskcountindex+1] = (ImageView)imageLayout[i].findViewById(R.id.pic2Viewer2);
+
+                            threadImgView[imgtaskcountindex].setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    Log.d("threadImgView", "2개 : 1");
+                                    imgCountIntent.putExtra("imgCount", ImageList.size());
+                                    imgCountIntent.putExtra("imgIndex", 1);
+                                    imgCountIntent.putExtra("imgList", ImageList);
+                                    startActivity(imgCountIntent);
+                                }
+                            });
+                            threadImgView[imgtaskcountindex+1].setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    Log.d("threadImgView", "2개 : 2");
+                                    imgCountIntent.putExtra("imgCount", ImageList.size());
+                                    imgCountIntent.putExtra("imgIndex", 2);
+                                    imgCountIntent.putExtra("imgList", ImageList);
+                                    startActivity(imgCountIntent);
+                                }
+                            });
+                            imgtaskcountindex += 2;
+                        }
+                        else if(ImageGrpList.get(i).size() == 1)
+                        {
+                            threadImgView[imgtaskcountindex] = (ImageView)imageLayout[i].findViewById(R.id.pic1Viewer1);
+                            threadImgView[imgtaskcountindex].setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    Log.d("threadImgView", "1개 : 1");
+                                    imgCountIntent.putExtra("imgCount", ImageList.size());
+                                    imgCountIntent.putExtra("imgIndex", 1);
+                                    imgCountIntent.putExtra("imgList", ImageList);
+                                    startActivity(imgCountIntent);
+                                }
+                            });
+                            imgtaskcountindex++;
+                        }
+                    }
+
+                    for(int i = 0; i<ImageGrpList.size(); i++)
+                    {
+                        threadImageList.addAll(ImageGrpList.get(i));
+                    }
+
+                    for(int i = 0; i < imageTaskCount; i++)
+                    {
+                        ImageLoadingTask task = new ImageLoadingTask();
+                        task.execute(i);
+                    }
                 }
                 catch (JSONException e)
                 {
@@ -592,53 +856,5 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onRetry(int retryNo) {  }
         });
-    }
-
-    class Image
-    {
-        int picture_group_seq;
-        String picture_loc;
-        int seq;
-
-        public Image()
-        {
-        }
-
-        public Image(int picture_group_seq, String picture_loc, int seq)
-        {
-            this.picture_group_seq = picture_group_seq;
-            this.picture_loc = picture_loc;
-            this.seq = seq;
-        }
-
-        public int getPicture_group_seq()
-        {
-            return picture_group_seq;
-        }
-
-        public void setPicture_group_seq(int picture_group_seq)
-        {
-            this.picture_group_seq = picture_group_seq;
-        }
-
-        public String getPicture_loc()
-        {
-            return picture_loc;
-        }
-
-        public void setPicture_loc(String picture_loc)
-        {
-            this.picture_loc = picture_loc;
-        }
-
-        public int getSeq()
-        {
-            return seq;
-        }
-
-        public void setSeq(int seq)
-        {
-            this.seq = seq;
-        }
     }
 }

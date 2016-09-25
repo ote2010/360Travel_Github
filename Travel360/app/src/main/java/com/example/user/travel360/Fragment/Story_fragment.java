@@ -38,17 +38,17 @@ public class Story_fragment extends Fragment {
 
     ScrollView storyFragmentScrollView;
     static int j=0; // 여행기 컨테이너 배열의 인덱스. item이 한번에 두개 들어감
-    View[] storyItemView = new View[50];
-    ImageView[] storyImageView = new ImageView[50]; // 여행기 대표 이미지
-    Button[] storyImageButton = new Button[50]; // 대표 이미지 오른쪽 하단 작은 버튼
-    ImageView[] storyUserImage = new ImageView[50]; // 여행기 게시자 프로필 사진
-    TextView[] storyUserName = new TextView[50]; // 여행기 작성자
-    TextView[] storyTitle = new TextView[50]; // 여행기 제목
-    LinearLayout[] storyBackgroundLayout = new LinearLayout[50]; // 여행기 프로필과 작성자, 제목의 배경이 되는 레이아웃
-    LinearLayout[] storyUserNameTitleLayout = new LinearLayout[50]; // 작성자, 제목을 감싸는 레이아웃
+    View[] storyItemView = new View[100];
+    ImageView[] storyImageView = new ImageView[100]; // 여행기 대표 이미지
+    Button[] storyImageButton = new Button[100]; // 대표 이미지 오른쪽 하단 작은 버튼
+    ImageView[] storyUserImage = new ImageView[100]; // 여행기 게시자 프로필 사진
+    TextView[] storyUserName = new TextView[100]; // 여행기 작성자
+    TextView[] storyTitle = new TextView[100]; // 여행기 제목
+    LinearLayout[] storyBackgroundLayout = new LinearLayout[100]; // 여행기 프로필과 작성자, 제목의 배경이 되는 레이아웃
+    LinearLayout[] storyUserNameTitleLayout = new LinearLayout[100]; // 작성자, 제목을 감싸는 레이아웃
 
     LinearLayout mainStoryContainer; // 여행기 메인 프래그먼트 화면 레이아웃
-    LinearLayout[] storyContainer = new LinearLayout[50]; // 여행기 두 개씩 감싸고 있는 레이아웃
+    LinearLayout[] storyContainer = new LinearLayout[100]; // 여행기 두 개씩 감싸고 있는 레이아웃
 
     boolean oddCheck = false; // oddCheck가 true면 게시글 개수가 홀수. 그러니까 마지막 게시글은 하나만 띄워야한다.
 
@@ -132,7 +132,7 @@ public class Story_fragment extends Fragment {
         RequestParams params = new RequestParams();
         AsyncHttpClient client = new AsyncHttpClient();
         params.put("start_num", start_num);
-        params.put("number", 6);
+        params.put("number", STORYLIST_ONECOUNT);
         Log.d("SUN", "getTravleRecordAll_Server()");
         client.get("http://kibox327.cafe24.com/getTravelRecordList.do", params, new AsyncHttpResponseHandler()
         {
@@ -353,7 +353,7 @@ public class Story_fragment extends Fragment {
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error)
                         {
-                            Log.d("getImage_Server", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+                            //Log.d("getImage_Server", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
                         }
 
                         @Override
