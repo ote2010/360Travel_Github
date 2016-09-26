@@ -1,1 +1,1 @@
-include ':app', ':photopickerdemo', ':PhotoPicker', ':FriendsLink-1.5.10', ':base', ':common', ':commonwidget', ':panowidget'
+include ':app', ':PhotoPicker', ':base', ':common', ':commonwidget', ':panowidget'

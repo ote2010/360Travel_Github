@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.user.travel360.CustomList.CustomAdapter;
 import com.example.user.travel360.CustomList.ItemData;
+import com.example.user.travel360.Navigationdrawer.ApplicationController;
 import com.example.user.travel360.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -59,21 +60,14 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
 
     ArrayList <Integer> sequence = new ArrayList <Integer>(); // 불러올 본문의 순서. 1 : 글 0 : 사진이라고 임의로 가정. 그러니까 글 사진 사진 글 사진과 같은 순서임.
     LinearLayout container; // container에 모든 뷰들이 담긴다. 전체 틀.
-    String storyText;
 
     LinearLayout[] textLayout = new LinearLayout[50]; // 여행기에 추가하는 글 레이아웃 배열.
     LinearLayout[] imageLayout = new LinearLayout[50]; // 여행기에 추가하는 사진 레이아웃 배열.
     int textLayoutTotal = 0; // 글 레이아웃 전체 개수 변수(처음은 0. for문 돌면서 센다)
     int imageLayoutTotal = 0; // 이미지 레이아웃 전체 개수 변수(처음은 0. for문 돌면서 센다)
 
-    int stringLayoutCount, imgLayoutCount; // 여행기에서 글이 몇 개인지. 이미지가 몇 개인지 받아옴.
     int imgCount; // 이미지 레이아웃에서 포함되는 총 이미지 개수 변수. 임의로 일단 단일변수로 가정.
     Intent imgCountIntent; // 버튼 동작을 위한 인텐트
-
-    String[] imgUriArray;
-
-    //쓰레드 작업을 위한 변수 (이미지를 웹에서 받아오는 작업은 백그라운드에서 진행해야해서)
-    Bitmap[] bitmapImg = new Bitmap[10]; // 웹 URL -> 비트맵 으로 저장하기 위한 비트맵 배열
 
     //서버관련 코드
     ArrayList <Image> ImageList = new ArrayList <Image> ();
@@ -97,6 +91,10 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
     public ItemData itemData;
     AlertDialog.Builder aDialog;
     AlertDialog ad;
+
+    int storySeq = -1;
+    int userSeq = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,7 +102,9 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_story_read);
 
         Intent intent = getIntent();
-        int storySeq = intent.getExtras().getInt("seq");
+        storySeq = intent.getExtras().getInt("seq");
+        userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
+
         Log.d("storySeq", String.valueOf(storySeq));
 
         container = (LinearLayout) findViewById(R.id.container);
@@ -130,13 +130,13 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
 
         if (id == R.id.travelerAddButton)
         {
-            Toast.makeText(getApplicationContext(),"add travler",Toast.LENGTH_SHORT).show();
-            addFriend_Server(1,3);
+            Toast.makeText(getApplicationContext(),"친구 추가 되었습니다!",Toast.LENGTH_SHORT).show();
+            addFriend_Server(userSeq, userSeq);
             return true;
         }
 
         if (id == R.id.menuButton) {
-            Toast.makeText(this, "메뉴 버튼 이벤트", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "메뉴 버튼 이벤트", Toast.LENGTH_SHORT).show();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -744,7 +744,7 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
 
         RequestParams params = new RequestParams();
         // 보내는 data는 userSeq 만 있으면 됩니다.
-        params.put("travelSeq", "1");
+        params.put("travelSeq", storySeq);
 
         AsyncHttpClient client = new AsyncHttpClient();
 
@@ -833,8 +833,8 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
         params.put("travel_record_seq", "1");
         params.put("write_date_client",todaydate);
 
-        params.put("UserSeq", "1");
-        params.put("travelSeq", "1");
+        params.put("UserSeq", userSeq);
+        params.put("travelSeq", storySeq);
 
         AsyncHttpClient client = new AsyncHttpClient();
 
@@ -867,8 +867,8 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
 
         RequestParams params = new RequestParams();
         // 보내는 data는 seq, targetSeq 만 있으면 됩니다.
-        params.put("seq",mySeq);
-        params.put("targetSeq",otherSeq);
+        params.put("seq", mySeq);
+        params.put("targetSeq", otherSeq);
 
         AsyncHttpClient client = new AsyncHttpClient();
 

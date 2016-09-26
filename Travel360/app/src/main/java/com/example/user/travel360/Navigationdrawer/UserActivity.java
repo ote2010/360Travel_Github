@@ -61,10 +61,7 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-
-
         LayoutInflater inflater = getLayoutInflater().from(getApplicationContext());
-
 
         // 현재 날짜에 올릴 여행기가 홀수개인지 짝수개인지 판별합니다. 홀수개면 마지막에 하나만 띄워줘야합니다.
         if(storyDayTotal % 2 == 1)
