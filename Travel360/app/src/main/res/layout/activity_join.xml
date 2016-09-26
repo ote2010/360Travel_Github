@@ -3,125 +3,121 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@drawable/join_background"
     android:orientation="vertical"
-    android:weightSum="10"
+
     tools:context=".JoinActivity">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"></View>
+    <LinearLayout
+        android:layout_weight="10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
 
     <LinearLayout
+        android:layout_weight="4"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <ImageButton
+            android:id="@+id/profile"
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_gravity="center"
-            android:id="@+id/profile" />
+            android:visibility="invisible" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingLeft="40dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="13dp"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="계정 정보"
-                    android:textColor="#000000"
-                    android:textSize="15dp" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/editEmail"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorPrimaryDark"
-                        android:hint="e-mail (example@naver.com)"
-                        android:textColorHint="#aaaaaa"
-                        android:inputType="textEmailAddress"
-                        android:textColor="#000000"
-                        android:textSize="13dp" />
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center_horizontal"
                     android:orientation="horizontal">
 
                     <EditText
                         android:id="@+id/editName"
-                        android:layout_width="250dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorPrimaryDark"
-                        android:hint="이름을 입력하세요."
-                        android:textColorHint="#aaaaaa"
-
+                        android:background="@drawable/join_basic_button"
+                        android:hint="이름"
+                        android:paddingLeft="30dp"
                         android:maxLength="4"
                         android:textColor="#000000"
+                        android:textColorHint="#555555"
                         android:textSize="13dp" />
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/join_basic_button"
+                        android:hint="이메일 (example@naver.com)"
+                        android:inputType="textEmailAddress"
+                        android:textColor="#000000"
+                        android:paddingLeft="30dp"
+                        android:textColorHint="#555555"
+                        android:textSize="13dp" />
+
+
+                </LinearLayout>
+
+
+
                 <EditText
                     android:id="@+id/editPw"
-                    android:layout_width="250dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/join_basic_button"
                     android:hint="비밀번호 (4-20자 이내)"
-                    android:textColorHint="#aaaaaa"
                     android:inputType="textPassword"
                     android:maxLength="20"
                     android:textColor="#000000"
+                    android:paddingLeft="30dp"
+                    android:textColorHint="#555555"
                     android:textSize="13dp" />
+
                 <EditText
                     android:id="@+id/editPwCh"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/join_basic_button"
                     android:hint="비밀번호 확인(4-20자 이내)"
-                    android:textColorHint="#aaaaaa"
                     android:inputType="textPassword"
+                    android:paddingLeft="30dp"
                     android:maxLength="20"
                     android:textColor="#000000"
+                    android:textColorHint="#555555"
                     android:textSize="13dp" />
 
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:text="성별 (선택)"
-                    android:textColor="#000000"
-                    android:textSize="15dp" />
 
                 <RadioGroup
                     android:id="@+id/radioGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
                     android:orientation="horizontal">
 
                     <RadioButton
@@ -129,19 +125,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/colorPrimaryDark"
-                        android:text="남성"
                         android:checked="true"
-                        android:textColor="#000000"
+                        android:text="남성"
+                        android:buttonTint="#194766"
+                        android:textColor="#fff"
                         android:textSize="13dp" />
 
                     <RadioButton
                         android:id="@+id/radioBtnFemail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorPrimaryDark"
                         android:layout_marginLeft="30dp"
+                        android:buttonTint="#194766"
+                        android:backgroundTint="@color/colorPrimaryDark"
                         android:text="여성"
-                        android:textColor="#000000"
+                        android:textColor="#fff"
                         android:textSize="13dp" />
                 </RadioGroup>
             </LinearLayout>
@@ -149,25 +147,23 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_weight="3"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="right"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:orientation="horizontal">
+
         <TextView
-            android:gravity="left"
+            android:id="@+id/PWCH"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="left" />
 
-
-            android:id="@+id/PWCH" />
         <Button
-            android:text="등록하기"
             android:id="@+id/btnSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="10dp"
+            android:background="@drawable/join_join_button"
             />
 
 
