@@ -39,6 +39,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
@@ -53,6 +54,8 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
     2) imgCount가 4개 이상, 4개, 3개, 2개, 1개 일 때의 경우에 따라 동적으로 코드에서 만들어준다.
     3) 받아온게 사진인지 그림인지. 판단해서 순차적으로 보여줘야한다.
     */
+    final static int SERVER_CONNECT_ERR_LOOPCOUNT = 200000000;
+
 
     ArrayList <Integer> sequence = new ArrayList <Integer>(); // 불러올 본문의 순서. 1 : 글 0 : 사진이라고 임의로 가정. 그러니까 글 사진 사진 글 사진과 같은 순서임.
     LinearLayout container; // container에 모든 뷰들이 담긴다. 전체 틀.
@@ -75,8 +78,9 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
     //서버관련 코드
     ArrayList <Image> ImageList = new ArrayList <Image> ();
     ArrayList <String> TextList = new ArrayList <String> ();
-    String title;
-    String text;
+    String title, text;
+    long start_date_client, finish_date_client;
+    TextView travelDateTextView;
     int imgGroupIndex = 0;
 
     int [] multiThreading;
@@ -104,6 +108,7 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
         Log.d("storySeq", String.valueOf(storySeq));
 
         container = (LinearLayout) findViewById(R.id.container);
+        travelDateTextView = (TextView) findViewById(R.id.travelDateTextView);
 
         getTravleRecord_Server(storySeq);
 
@@ -347,6 +352,17 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
                     String imagesStr = obj.get("images") + "";
                     JSONArray imagesArr = new JSONArray(imagesStr);
 
+                    String dateStr = obj.get("travelRecordDto") + "";
+                    JSONObject dateStrObj = new JSONObject(dateStr);
+
+                    start_date_client = (long)dateStrObj.get("start_date_client");
+                    finish_date_client = (long)dateStrObj.get("finish_date_client");
+                    Log.d("start_date_client", "start_date_client : " + String.valueOf(start_date_client));
+                    Log.d("finish_date_client", "finish_date_client : " + String.valueOf(finish_date_client));
+
+                    SimpleDateFormat format = new SimpleDateFormat("yy년 MM월 dd일 E요일");
+                    travelDateTextView.setText("여행 시작일 : " + format.format(start_date_client) + "\n여행 종료일 : " + format.format(finish_date_client));
+
                     for (int i = 0; i < imagesArr.length(); i++)
                     {
                         JSONObject imageObj = (JSONObject) imagesArr.get(i);
@@ -454,13 +470,25 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
                     threadImgView = new ImageView [imageTaskCount];
 
                     int imgtaskcountindex = 0;
+                    int count = 0;
                     for(int i = 0; i<ImageGrpList.size(); i++)
                     {
                         while(true)
                         {
                             if(imageLayout[i] != null)
                                 break;
+                            else
+                                count++;
+
+                            if(count == SERVER_CONNECT_ERR_LOOPCOUNT) // 무한루프방지
+                            {
+                                Toast.makeText(getApplicationContext(), "서버와 연결 장애가 발생했습니다!", Toast.LENGTH_LONG).show();
+                                break;
+                            }
                         }
+
+                        if(count == SERVER_CONNECT_ERR_LOOPCOUNT)
+                            break;
 
                         if(ImageGrpList.get(i).size() > 4)
                         {
@@ -672,6 +700,11 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
                         }
                     }
 
+                    if(count == SERVER_CONNECT_ERR_LOOPCOUNT)
+                    {
+                        onDestroy();
+                    }
+
                     for(int i = 0; i<ImageGrpList.size(); i++)
                     {
                         threadImageList.addAll(ImageGrpList.get(i));
@@ -697,7 +730,10 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
 
 
             @Override
-            public void onRetry(int retryNo) {         }
+            public void onRetry(int retryNo)
+            {
+                Log.d("getTravleRecord_Server", "onRetry");
+            }
         });
     }
 

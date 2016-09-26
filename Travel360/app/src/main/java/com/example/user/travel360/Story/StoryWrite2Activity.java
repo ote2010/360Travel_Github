@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.user.travel360.ApplicationController;
+import com.example.user.travel360.Navigationdrawer.ApplicationController;
 import com.example.user.travel360.CustomDialog.MainImgSelectDialog;
 import com.example.user.travel360.R;
 import com.loopj.android.http.AsyncHttpClient;

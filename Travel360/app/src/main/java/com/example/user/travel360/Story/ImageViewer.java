@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.user.travel360.R;
-import com.example.user.travel360.ShowVrActivity;
+import com.example.user.travel360.Vr.ShowVrActivity;
 import com.example.user.travel360.uk.co.senab.photoview.PhotoView;
 
 import java.io.InputStream;

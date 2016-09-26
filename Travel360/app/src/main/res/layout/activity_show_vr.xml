@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.travel360.ShowVrActivity"
+    tools:context=".Navigationdrawer.ShowVrActivity"
                 android:background="#000000">
     <com.google.vr.sdk.widgets.pano.VrPanoramaView
         android:id="@+id/pano_view1"

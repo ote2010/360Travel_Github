@@ -27,7 +27,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.user.travel360.ApplicationController;
+import com.example.user.travel360.Navigationdrawer.ApplicationController;
 import com.example.user.travel360.R;
 import com.example.user.travel360.Story.RecyclerItemClickListener.OnItemClickListener;
 import com.loopj.android.http.AsyncHttpClient;

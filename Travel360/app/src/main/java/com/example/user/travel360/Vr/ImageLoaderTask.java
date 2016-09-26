@@ -1,4 +1,4 @@
-package com.example.user.travel360;
+package com.example.user.travel360.Vr;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;

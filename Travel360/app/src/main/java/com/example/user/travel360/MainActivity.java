@@ -24,7 +24,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.user.travel360.Navigationdrawer.ApplicationController;
+import com.example.user.travel360.Navigationdrawer.FriendActivity;
+import com.example.user.travel360.Navigationdrawer.LoginActivity;
+import com.example.user.travel360.Navigationdrawer.UserActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

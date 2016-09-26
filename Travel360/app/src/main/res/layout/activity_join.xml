@@ -6,7 +6,7 @@
     android:background="#ffffff"
     android:orientation="vertical"
     android:weightSum="10"
-    tools:context=".JoinActivity">
+    tools:context=".Navigationdrawer.JoinActivity">
 
     <View
         android:layout_width="match_parent"

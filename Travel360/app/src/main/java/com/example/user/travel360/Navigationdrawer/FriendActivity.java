@@ -1,4 +1,4 @@
-package com.example.user.travel360;
+package com.example.user.travel360.Navigationdrawer;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -8,14 +8,13 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.travel360.CustomList.CustomAdapter;
 import com.example.user.travel360.CustomList.ItemData;
+import com.example.user.travel360.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
