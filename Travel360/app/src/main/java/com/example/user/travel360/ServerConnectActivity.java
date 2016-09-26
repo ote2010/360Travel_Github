@@ -34,7 +34,6 @@ public class ServerConnectActivity extends AppCompatActivity {
 		0. stroy 쓰기전 확인 : writeStoryRead_Server()
 		1. story 쓰기  : writeStory_Server()
 		2. story 전체 데이터 받아오기 : getTravleRecordAll_Server()
-                    ->  stroy 검색 추가
 		3. story 1개에 대한 데이터 받아오기 : getTravleRecord_Server()
 		4. story 댓글 쓰기 : writeStoryComment_Server()
         5. story 댓글 리스트 : getComment_Server()
@@ -125,35 +124,6 @@ public class ServerConnectActivity extends AppCompatActivity {
     /*****************  story 전체 데이터  **********************/
 
     void getTravleRecordAll_Server() {
-
-        /*
-        //  기간검색
-        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
-        Date start_date = null, finish_date =  null;
-        long start_time = 0,finish_time = 0;
-        try {
-            start_date = df.parse("2016.07.01");
-            start_time = start_date.getTime();
-
-            finish_date = df.parse("2016.10.01");
-            finish_time = finish_date.getTime();
-
-            Log.d("SUN", "start_time : " + start_time + " ,  finish_time : " + finish_time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        params.put("start_date_client", start_time);
-        params.put("finish_date_client", finish_time);
-         */
-
-        /*
-        // 위치 검색
-        double longitude, latitude;
-        params.put("longitude", longitude);
-        params.put("latitude", latitude);
-        params.put("distenceFlag",true);
-         */
-
 
         AsyncHttpClient client = new AsyncHttpClient();
         Log.d("SUN", "getTravleRecordAll_Server()");
