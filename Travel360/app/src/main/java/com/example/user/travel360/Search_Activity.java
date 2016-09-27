@@ -38,7 +38,7 @@ public class Search_Activity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         //팝업 외부 뿌연 효과
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;

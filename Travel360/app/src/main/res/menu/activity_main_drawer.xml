@@ -57,5 +57,10 @@
             android:id="@+id/nav_friend"
             android:icon="@drawable/ic_menu_manage"
             android:title="친구목록"/>
+
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="검색"/>
     </group>
 </menu>
