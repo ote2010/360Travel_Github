@@ -1,7 +1,6 @@
 package com.example.user.travel360.Review;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
@@ -76,8 +75,8 @@ public class ReviewMainReadActivity extends Activity {
         setContentView(R.layout.activity_review_main_read);
 
         init();
-       // getTravleReviewAll_Server();
-         Bestinit();
+        //getTravleReviewAll_Server();
+        Bestinit();
         Normalinit();
         onClickEvent();
 
@@ -115,7 +114,7 @@ public class ReviewMainReadActivity extends Activity {
     }
 
     public void Bestinit() {
-        getTravleReviewAll_Server();
+        getTravelReviewAll_Server();
         LayoutInflater inflater = LayoutInflater.from(getApplication().getApplicationContext());
         for (int i = 0; i < BEST_REVIEW_NUM; i++) {
             BestReviewITem[i] = inflater.inflate(R.layout.review_read_listitem_view, v, false); // 추가할 순위권 여행지 뷰 inflate
@@ -226,7 +225,7 @@ public class ReviewMainReadActivity extends Activity {
 
     }
 
-    void getTravleReviewAll_Server() {
+    void getTravelReviewAll_Server() {
 
         AsyncHttpClient client = new AsyncHttpClient();
         Log.d("SUN", "getTravleReviewAll_Server()");

@@ -70,7 +70,7 @@ public class Story_fragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState)
     {
-        getTravleRecordAll_Server();
+        getTravelRecordAll_Server();
 
         super.onActivityCreated(savedInstanceState);
     }
@@ -89,7 +89,22 @@ public class Story_fragment extends Fragment {
         v = (ViewGroup) inflater.inflate(R.layout.fragment_story_fragment, container, false);
         mainStoryContainer = (LinearLayout)v.findViewById(R.id.mainStoryContainer);
         storyFragmentScrollView = (ScrollView)v.findViewById(R.id.storyFragmentScrollView);
+        scrollViewBottomObserver();
 
+        //글쓰기 버튼 동작 코드
+        FloatingActionButton writeButton = (FloatingActionButton)v.findViewById(R.id.writeButton);
+        writeButton.setOnClickListener(new FloatingActionButton.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                startActivity(new Intent(getActivity(), StoryWriteActivity.class));
+            }
+        });
+        return v;
+    }
+
+    public void scrollViewBottomObserver()
+    {
         storyFragmentScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener()
         {
             @Override
@@ -101,33 +116,17 @@ public class Story_fragment extends Fragment {
                 {
                     if(!data_flag)
                     {
-                        Log.d("TAK", "Hi!!!!!!!!!!!!");
-                        getTravleRecordAll_Server();
+                        Log.d("scrollBottomOb", "scrollViewBottomObserver check");
+                        getTravelRecordAll_Server();
                     }
                 }
-
-                //Log.d("TAK", "Scroll positionY: " + scrollViewPos);
-                //Log.d("TAK", "TextView_lines : " + String.valueOf(TextView_lines));
-                //Log.d("TAK", "start_num : " + String.valueOf(start_num));
             }
         });
-
-        //글쓰기 버튼 동작 코드
-        FloatingActionButton writeButton = (FloatingActionButton)v.findViewById(R.id.writeButton);
-        writeButton.setOnClickListener(new FloatingActionButton.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                //Toast.makeText(getActivity(),"ㅎㅇ",Toast.LENGTH_LONG).show();
-                startActivity(new Intent(getActivity(), StoryWriteActivity.class));
-            }
-        });
-        return v;
     }
 
     /*****************  story 전체 데이터  **********************/
 
-    void getTravleRecordAll_Server()
+    void getTravelRecordAll_Server()
     {
         RequestParams params = new RequestParams();
         AsyncHttpClient client = new AsyncHttpClient();

@@ -47,8 +47,6 @@ public class Review_fragment extends Fragment {
                              Bundle savedInstanceState) {
         v = (ViewGroup)inflater.inflate(R.layout.fragment_review_fragment, container, false);
         mainReviewContainer = (LinearLayout)v.findViewById(R.id.mainReviewContainer);
-
-        init();
         return v;
     }
 
@@ -124,10 +122,6 @@ public class Review_fragment extends Fragment {
         mainReviewContainer.addView(listView);
 
         super.onActivityCreated(savedInstanceState);
-    }
-
-    public void init(){
-
     }
 
     // 리스트 뷰에 적용되는 어댑터 클래스. 이부분에서 리스트 아이템을 적용해준다.

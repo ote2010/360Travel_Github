@@ -14,7 +14,6 @@ public class ApplicationController extends Application {
     String seq;
     Boolean LoginFlag = false;
 
-
     // SharedPreference
     SharedPreferences pref;
     SharedPreferences.Editor edit;

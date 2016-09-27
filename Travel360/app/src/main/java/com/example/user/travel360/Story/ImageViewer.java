@@ -115,7 +115,7 @@ public class ImageViewer extends AppCompatActivity
             Drawable d = Drawable.createFromStream(is, "src name");
             return d;
         } catch (Exception e) {
-            System.out.println("Exc=" + e);
+            e.printStackTrace();
             return null;
         }
     }

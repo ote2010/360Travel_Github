@@ -49,14 +49,8 @@ import cz.msebera.android.httpclient.Header;
  * Created by user on 2016-08-09.
  */
 public class StoryReadActivity extends AppCompatActivity implements View.OnClickListener {
-    /*
-    프로세스 정리
-    1) 표현할 이미지 개수 imgCount를 서버에서 받아온다.
-    2) imgCount가 4개 이상, 4개, 3개, 2개, 1개 일 때의 경우에 따라 동적으로 코드에서 만들어준다.
-    3) 받아온게 사진인지 그림인지. 판단해서 순차적으로 보여줘야한다.
-    */
-    final static int SERVER_CONNECT_ERR_LOOPCOUNT = 200000000;
 
+    final static int SERVER_CONNECT_ERR_LOOPCOUNT = 200000000;
 
     ArrayList <Integer> sequence = new ArrayList <Integer>(); // 불러올 본문의 순서. 1 : 글 0 : 사진이라고 임의로 가정. 그러니까 글 사진 사진 글 사진과 같은 순서임.
     LinearLayout container; // container에 모든 뷰들이 담긴다. 전체 틀.
@@ -77,8 +71,6 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
     TextView travelDateTextView;
     int imgGroupIndex = 0;
 
-    int [] multiThreading;
-    int multiThreadIndex = 0;
     ArrayList <ArrayList <Image>> ImageGrpList = new ArrayList <ArrayList <Image>> ();
     ArrayList <Image> threadImageList = new ArrayList <Image> ();
 
@@ -92,8 +84,7 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
     AlertDialog.Builder aDialog;
     AlertDialog ad;
 
-    int storySeq = -1;
-    int userSeq = -1;
+    int storySeq = -1, userSeq = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,14 +94,13 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
 
         Intent intent = getIntent();
         storySeq = intent.getExtras().getInt("seq");
-        userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
 
         Log.d("storySeq", String.valueOf(storySeq));
 
         container = (LinearLayout) findViewById(R.id.container);
         travelDateTextView = (TextView) findViewById(R.id.travelDateTextView);
 
-        getTravleRecord_Server(storySeq);
+        getTravelRecord_Server(storySeq);
 
         imgCountIntent = new Intent(getApplicationContext(), ImageViewer.class);
 
@@ -122,15 +112,20 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            //onBackPressed();
-            //Toast.makeText(this, "홈 아이콘 이벤트", Toast.LENGTH_SHORT).show();
             finish();
             return true;
         }
 
         if (id == R.id.travelerAddButton)
         {
-            Toast.makeText(getApplicationContext(),"친구 추가 되었습니다!",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"친구 추가 되었습니다!",Toast.LENGTH_SHORT).show();
+
+            if(ApplicationController.getInstance().getSeq() == null)
+                Toast.makeText(getApplicationContext(), "로그인이 필요한 서비스입니다.", Toast.LENGTH_LONG).show();
+            else
+                userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
+
+            //TODO 바꾸기
             addFriend_Server(userSeq, userSeq);
             return true;
         }
@@ -223,12 +218,19 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentBtn:
-                getComment_Server();
+                if(ApplicationController.getInstance().getSeq() == null)
+                    Toast.makeText(getApplicationContext(), "로그인이 필요한 서비스입니다.", Toast.LENGTH_LONG).show();
+                else
+                {
+                    userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
+                    getComment_Server();
+                }
+
                 break;
 
             case R.id.commentSentBtn:
-
-               // writeStoryComment_Server();
+                //TODO 여기 왜 주석?
+                //writeStoryComment_Server();
                 break;
         }
     }
@@ -266,11 +268,8 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
     }
 
     private class ImageLoadingTask extends AsyncTask <Integer, Integer, BitmapAndIndex> {
-        //실제 스레드 작업을 작성하는 곳이며 execute에서 전달한 params 인수를 사용할 수 있다.
-        //백그라운드에서 파라미터로 URL을 받아서 비트맵으로 이미지를 저장한다.
         @Override
         protected BitmapAndIndex doInBackground(Integer... params) {
-            multiThreadIndex = params[0];
             Bitmap bitmap = null;
             try
             {
@@ -294,26 +293,27 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
             return bitmapAndIndex;
         }
 
-        //doInBackground 작업의 리턴값을 파라미터로 받으며 작업이 끝났음을 알리는 작업을 작성한다.
         @Override
-        protected void onPostExecute(BitmapAndIndex bitmapAndIndex) {
-            if(bitmapAndIndex != null)
+        protected void onPostExecute(BitmapAndIndex bitmapAndIndex)
+        {
+            if (bitmapAndIndex != null)
             {
-                threadImgView[bitmapAndIndex.getIndex()].setImageBitmap(bitmapAndIndex.getBitmap());
-                Log.d("ImageLoadingTask", String.valueOf(bitmapAndIndex.getIndex()) + ": setBitmap success");
+                if(threadImgView[bitmapAndIndex.getIndex()] != null)
+                {
+                    threadImgView[bitmapAndIndex.getIndex()].setImageBitmap(bitmapAndIndex.getBitmap());
+                    Log.d("ImageLoadingTask", String.valueOf(bitmapAndIndex.getIndex()) + ": setBitmap success");
+                }
             }
 
             Log.d("multiThreading", String.valueOf(bitmapAndIndex.getIndex()) + "번 쓰레드 작업끝!");
         }
 
-        //doInBackground 시작 전에 호출되어 UI 스레드에서 실행된다. 주로 로딩바나 Progress 같은 동작 중임을 알리는 작업을 작성한다.
         @Override
         protected void onPreExecute()
         {
             super.onPreExecute();
         }
 
-        //publishProgress()를 통해 호출되며 UI 스레드에서 실행된다. 파일 내려받는다고 치면 그때 퍼센티지 표시 작업 같은 걸 작성한다.
         @Override
         protected void onProgressUpdate(Integer... values)
         {
@@ -321,7 +321,7 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    void getTravleRecord_Server(int storySeq) {
+    void getTravelRecord_Server(int storySeq) {
 
         RequestParams params = new RequestParams();
         // 보내는 data는 seq 만 있으면 됩니다.
@@ -334,7 +334,6 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onStart() {
                 Log.d("getTravleRecord_Server", "getData_Server() onStart");
-
             }
 
             @Override
@@ -430,14 +429,6 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
                         {
                             ImageGrpList.add(temp);
                         }
-                    }
-
-                    ////이미지 멀티쓰레드 처리 코드///이부분 해야함
-                    multiThreading = new int[ImageList.size()];
-
-                    for(int i = 0; i < multiThreading.length; i++)
-                    {
-                        multiThreading[i] = 0;
                     }
 
                     for(int i = 0; i<ImageGrpList.size(); i++)
@@ -833,7 +824,7 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
         params.put("travel_record_seq", "1");
         params.put("write_date_client",todaydate);
 
-        params.put("UserSeq", userSeq);
+        params.put("userSeq", userSeq);
         params.put("travelSeq", storySeq);
 
         AsyncHttpClient client = new AsyncHttpClient();

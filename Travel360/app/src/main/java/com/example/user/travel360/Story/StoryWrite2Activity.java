@@ -83,10 +83,6 @@ public class StoryWrite2Activity extends AppCompatActivity
 
         mergeSelectedPhotos();
 
-        //storystring 텍스트 확인 테스트용
-        //TextView textView = (TextView) findViewById(R.id.textView8);
-        //textView.setText(storystring);
-
         mainStoryImgAddButton.setOnClickListener(new View.OnClickListener()
         {
             @Override

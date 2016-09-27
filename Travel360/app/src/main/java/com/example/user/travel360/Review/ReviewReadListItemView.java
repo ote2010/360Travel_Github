@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.user.travel360.R;
@@ -51,8 +50,6 @@ public class ReviewReadListItemView extends LinearLayout {
     public void setStartNum(String num) {
         StartNum.setText(num);
     }
-
-    //TODO 이미지는 어케 받아오는지 모르겠음
     public void setProfile(String name) {
 
     }

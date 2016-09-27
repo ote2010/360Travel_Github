@@ -3,13 +3,10 @@ package com.example.user.travel360.Review;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,8 +16,8 @@ import android.widget.Toast;
 
 import com.example.user.travel360.CustomList.CustomAdapter;
 import com.example.user.travel360.CustomList.ItemData;
+import com.example.user.travel360.Navigationdrawer.ApplicationController;
 import com.example.user.travel360.R;
-import com.example.user.travel360.Story.StoryReadActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -47,27 +44,26 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener {
     Button Detail, Add_Traveler, Close, Comment;
     TextView Name, Date, Review_Text, Star_Num;
     ImageView Star;
+    int userSeq = -1;
     String a = "작년에 파리 갔다 왔습니다. 사실 여권도 없는데 뻥친거에요ㅠㅠ 그냥 리뷰 예시 쓰려구 이러구 있습니다ㅠㅠ 무슨 내용으로 리뷰를 적을까. 360Studio 파이팅!! 임베디드 소프트웨어 경진대회 대상이 목표입니다!!!! 전성일은 파호우 쿰척쿰척!!!!! 동영이는 카톡 답장좀해줘 제발!!!!!!";
 
     public ReviewReadDialog(Context context) {
         super(context);
        this.mContext = context;
-
-
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_read_dialog);
+        userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
 
         init();
         //   Review_Text.setText(a);
         Close.setOnClickListener(this);
         Add_Traveler.setOnClickListener(this);
         Comment.setOnClickListener(this);
-        getTravleReview_Server();
+        getTravelReview_Server();
     }
 
     public void init() {
@@ -141,7 +137,7 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener {
         });
     }
 
-    void getTravleReview_Server() {
+    void getTravelReview_Server() {
 
         RequestParams params = new RequestParams();
         // 보내는 data는 reviewSeq 만 있으면 됩니다.
