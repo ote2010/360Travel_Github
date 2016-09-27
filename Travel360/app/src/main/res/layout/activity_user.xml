@@ -190,7 +190,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/showall"
+                android:id="@+id/show_all"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -203,7 +203,7 @@
                 android:textColor="#000" />
 
             <Button
-                android:id="@+id/button7"
+                android:id="@+id/show_story"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -215,7 +215,7 @@
                 android:textColor="#000" />
 
             <Button
-                android:id="@+id/button8"
+                android:id="@+id/show_review"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -231,24 +231,34 @@
         </LinearLayout>
 
 
-        <!--  내 데이터 리스트 컨테이너 -->
-        <ScrollView
-            android:id="@+id/scrollView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
+        <!--  내 데이터 리스트 뷰 -->
+        <FrameLayout
             android:layout_below="@id/tabback"
-            android:background="#fff"
-            android:fillViewport="false">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/userLogLayout"
+            <ListView
+                android:visibility="visible"
+                android:id="@+id/mywrite_all"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="match_parent">
 
-            </LinearLayout>
-        </ScrollView>
+            </ListView>
+            <ListView
+                android:visibility="gone"
+                android:id="@+id/mywrite_story"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </ListView>
+
+            <ListView
+                android:visibility="gone"
+                android:id="@+id/mywrite_review"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </ListView>
+        </FrameLayout>
     </RelativeLayout>
 </LinearLayout>

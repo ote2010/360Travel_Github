@@ -373,6 +373,9 @@ public class MainActivity extends AppCompatActivity
         }else if (id == R.id.nav_friend) {
             Intent intent = new Intent( MainActivity.this,FriendActivity.class);
             startActivity(intent);
+        }else if(id == R.id.nav_search){
+            Intent intent = new Intent( MainActivity.this,Search_Activity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
