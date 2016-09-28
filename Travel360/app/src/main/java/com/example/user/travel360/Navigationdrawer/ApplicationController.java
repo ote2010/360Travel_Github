@@ -66,18 +66,10 @@ public class ApplicationController extends Application {
 
     }
 
-    public String getPw() {
-        return this.pw;
-    }
-
-    public String getGender() {
-        return gender;
-    }
 
 
-    public int getPoint() {
-        return point;
-    }
+
+
 
 
     public String getSeq() {

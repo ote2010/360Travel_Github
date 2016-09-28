@@ -1,6 +1,7 @@
 package com.example.user.travel360.Review;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
@@ -15,7 +16,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.user.travel360.Navigationdrawer.ApplicationController;
 import com.example.user.travel360.R;
+import com.example.user.travel360.Story.StoryWriteActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -97,9 +100,21 @@ public class ReviewMainReadActivity extends Activity {
             @Override
             public void onClick(View v) {
                 //  Toast.makeText(getApplicationContext(), "글쓰기", Toast.LENGTH_SHORT).show();
-                ReviewWriteActivity reviewWriteActivity = new ReviewWriteActivity(ReviewMainReadActivity.this);
+                String LoginFlag = ApplicationController.getInstance().getEmail();
 
-                reviewWriteActivity.show();
+                boolean check = (LoginFlag + "").equals(null + "");
+
+                if (check) {
+                    Toast.makeText(getApplicationContext(), "로그인 후 이용해주세요.", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    ReviewWriteActivity reviewWriteActivity = new ReviewWriteActivity(ReviewMainReadActivity.this);
+
+                    reviewWriteActivity.show();
+
+                }
+
+
             }
         });
         Up.setOnClickListener(new View.OnClickListener() {
@@ -257,7 +272,7 @@ public class ReviewMainReadActivity extends Activity {
 
 
                      */
-                        Best_text1[i] = (String)obj.get("text");
+                        Best_text1[i] = (String) obj.get("text");
 
                     }
 
