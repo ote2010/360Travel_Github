@@ -1,8 +1,10 @@
 package com.example.user.travel360.Story;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
@@ -244,6 +246,7 @@ public class StoryWrite2Activity extends AppCompatActivity
         recyclerView.add(mainImgRecycler);
     }
 
+    int storyWriteCompleteCheck = 0;
     private void storyWriteComplete()
     {
         RequestParams params = new RequestParams();
@@ -296,12 +299,14 @@ public class StoryWrite2Activity extends AppCompatActivity
             {
                 Log.d("storyWriteComplete", "statusCode : " + statusCode + " , response : " + new String(response));
                 String res = new String(response);
+                storyWriteCompleteCheck = 1;
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error)
             {
                 Log.d("storyWriteComplete", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+                storyWriteCompleteCheck = -1;
             }
 
             @Override
@@ -310,6 +315,62 @@ public class StoryWrite2Activity extends AppCompatActivity
             }
         });
 
+    }
+
+    private class UploadProgressDialog extends AsyncTask<Void, Void, Void>
+    {
+        ProgressDialog asyncDialog = new ProgressDialog(StoryWrite2Activity.this);
+
+        @Override
+        protected void onPreExecute()
+        {
+            asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            asyncDialog.setMessage("여행기를 게시하는 중입니다. 잠시만 기다려주세요.");
+            asyncDialog.setCanceledOnTouchOutside(false);
+
+            asyncDialog.show();
+            storyWriteComplete();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid)
+        {
+            if (storyWriteCompleteCheck == 1)
+            {
+                asyncDialog.dismiss();
+                Toast.makeText(getApplicationContext(), "여행기 게시 성공!", Toast.LENGTH_SHORT).show();
+                storyWriteCompleteCheck = 0;
+
+                StoryWriteActivity activity = (StoryWriteActivity)StoryWriteActivity.write1Activity;
+                activity.finish();
+                finish();
+            }
+            else if (storyWriteCompleteCheck == -1)
+            {
+                asyncDialog.dismiss();
+                Toast.makeText(getApplicationContext(), "여행기 게시에 실패했습니다. 인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show();
+                storyWriteCompleteCheck = 0;
+            }
+            super.onPostExecute(aVoid);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values)
+        {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            while(true)
+            {
+                if(storyWriteCompleteCheck != 0)
+                    break;
+            }
+            return null;
+        }
     }
 
     private int checkList()
@@ -337,10 +398,8 @@ public class StoryWrite2Activity extends AppCompatActivity
             int errorMsg = checkList();
             if(errorMsg == 1)
             {
-                storyWriteComplete();
-                StoryWriteActivity activity = (StoryWriteActivity)StoryWriteActivity.write1Activity;
-                activity.finish();
-                finish();
+                UploadProgressDialog task = new UploadProgressDialog();
+                task.execute();
             }
             else if(errorMsg == -1)
                 Toast.makeText(getApplicationContext(), "여행기 메인 이미지를 하나 선택해주세요!", Toast.LENGTH_LONG).show();
