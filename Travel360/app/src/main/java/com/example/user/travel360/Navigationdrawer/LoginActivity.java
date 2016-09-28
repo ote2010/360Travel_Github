@@ -20,13 +20,6 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-
-//
-//import retrofit.Call;
-//import retrofit.Callback;
-//import retrofit.Response;
-//import retrofit.Retrofit;
-
 public class LoginActivity extends Activity {
     Button BtnJoin, BtnLogin;
     EditText EditEmail, EditPW;
@@ -35,17 +28,14 @@ public class LoginActivity extends Activity {
     SharedPreferences pref;
     SharedPreferences.Editor edit;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         init();
         onClickBtn();
     }
-
 
     public void init() {
         BtnJoin = (Button) findViewById(R.id.btnJoin);
@@ -53,12 +43,9 @@ public class LoginActivity extends Activity {
         EditEmail = (EditText) findViewById(R.id.editEmail);
         EditPW = (EditText) findViewById(R.id.editPw);
         ProfileImg = (ImageView) findViewById(R.id.profile1);
-
     }
 
     public void onClickBtn() {
-
-
         BtnJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,10 +70,7 @@ public class LoginActivity extends Activity {
                         Log.d("@@@", "111");
                         // called before request is started
                         //Toast.makeText(getApplicationContext(), "START!", Toast.LENGTH_SHORT).show();
-
-
                     }
-
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] response) {
@@ -120,8 +104,6 @@ public class LoginActivity extends Activity {
 
     }
 
-
-
     public String JSONP(String a) {
 
         String seq = null;
@@ -138,6 +120,6 @@ public class LoginActivity extends Activity {
 
         return seq;
     }
-
+z
 
 }
