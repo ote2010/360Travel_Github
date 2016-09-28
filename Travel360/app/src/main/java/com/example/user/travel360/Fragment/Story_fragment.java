@@ -30,6 +30,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import cz.msebera.android.httpclient.Header;
 
 
@@ -54,13 +57,14 @@ public class Story_fragment extends Fragment {
 
     //****서버 코드 *****/
     final static int REQUEST_PRESENTATION_IMAGE = 1111, REQUEST_USER_IMAGE = 2222;
-    static int seq;
-    static int user_info_seq;
-    static String presentation_image;
-    static String title;
-    static String name;
-    static String profile_image;
-    static int storyDayTotal = 0; // storyDayTotal : 그 날의 여행기 게시글 개수
+    int seq;
+    int user_info_seq;
+    String presentation_image;
+    String title;
+    String name;
+    String profile_image;
+    long start_date_client, finish_date_client;
+    int storyDayTotal = 0; // storyDayTotal : 그 날의 여행기 게시글 개수
 
     Context context;
     int start_num = 0;
@@ -167,7 +171,8 @@ public class Story_fragment extends Fragment {
                         Log.d("SEQ", String.valueOf(seq));
                         presentation_image = (String) obj.get("presentation_image");
                         title = (String) obj.get("title");
-
+                        start_date_client = (long) obj.get("start_date_client");
+                        finish_date_client = (long) obj.get("finish_date_client");
                         JSONObject obj2 = (JSONObject) obj.get("userinfo");
                         name = (String) obj2.get("name");
                         profile_image = (String) obj2.get("profile_image");
@@ -194,6 +199,12 @@ public class Story_fragment extends Fragment {
                         getImage_Server(profile_image, REQUEST_USER_IMAGE, i);
                         storyUserName[i].setText(name);
                         storyTitle[i].setText(title);
+
+                        //날짜 바꾸기
+                        Date start_date = new Date(start_date_client);
+                        Date finish_date = new Date(finish_date_client);
+                        SimpleDateFormat format = new SimpleDateFormat("yy.MM.dd");
+                        storyDateItem.setText(format.format(start_date)+"~"+format.format(finish_date));
 
                         storyImageView[i].setOnClickListener(new ImageView.OnClickListener()
                         {

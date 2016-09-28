@@ -1,5 +1,6 @@
 package com.example.user.travel360.Story;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,16 +14,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.user.travel360.Navigationdrawer.ApplicationController;
 import com.example.user.travel360.CustomDialog.MainImgSelectDialog;
+import com.example.user.travel360.CustomDialog.TFDatePickerDialog;
+import com.example.user.travel360.Navigationdrawer.ApplicationController;
 import com.example.user.travel360.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -47,6 +53,11 @@ public class StoryWrite2Activity extends AppCompatActivity
     String storystring;
     String title;
     int travelSeq = -1;
+
+    TFDatePickerDialog tfDatePickerDialog;
+    String travelToD;
+    String travelFromD;
+    boolean travelDayCheck = false;
 
     // ****서버에 보낼때 필요한 변수 ****
     static int selectedMainImgSeq = -1;
@@ -108,6 +119,27 @@ public class StoryWrite2Activity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                tfDatePickerDialog = new TFDatePickerDialog(StoryWrite2Activity.this);
+                tfDatePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog)
+                    {
+                        travelToD = tfDatePickerDialog.getToDate();
+                        travelFromD = tfDatePickerDialog.getFromDate();
+                        travelDayLayout.removeView(travelDayAddButton);
+
+                        TextView travelDayText = new TextView(StoryWrite2Activity.this);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        params.setMargins(15,15,15,15);
+                        travelDayText.setLayoutParams(params);
+                        travelDayText.setText("여행 시작일 : " + travelFromD + "\n여행 종료일 : " + travelToD);
+
+                        travelDayLayout.addView(travelDayText);
+                        travelDayCheck = true;
+                        Toast.makeText(getApplicationContext(), travelFromD + "\n" + travelToD, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                tfDatePickerDialog.show();
             }
         });
 
@@ -216,6 +248,23 @@ public class StoryWrite2Activity extends AppCompatActivity
     {
         RequestParams params = new RequestParams();
 
+        SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월 dd일");
+        Date start_date_client = null, finish_date_client = null;
+        try
+        {
+            start_date_client = format.parse(travelFromD);
+            finish_date_client = format.parse(travelToD);
+        }
+        catch(ParseException e)
+        {
+            e.printStackTrace();
+        }
+        long start_date_long = start_date_client.getTime();
+        long finish_date_long = finish_date_client.getTime();
+
+        Log.d("date_client", "start_date_client : " + String.valueOf(start_date_long));
+        Log.d("date_client", "finish_date_client : " + String.valueOf(finish_date_long));
+
         params.put("userSeq", userSeq);
         Log.d("storyWriteComplete", "userSeq : " + String.valueOf(userSeq));
         params.put("seq", travelSeq);
@@ -226,6 +275,11 @@ public class StoryWrite2Activity extends AppCompatActivity
         Log.d("storyWriteComplete", "title : " + title);
         params.put("presentation_image", selectedMainImgSeq);
         Log.d("storyWriteComplete", "presentation_image : " + selectedMainImgSeq);
+        params.put("start_date_client", start_date_long);
+        Log.d("storyWriteComplete", "start_date_long : " + start_date_long);
+        params.put("finish_date_client", finish_date_long);
+        Log.d("storyWriteComplete", "finish_date_long : " + finish_date_long);
+
         AsyncHttpClient client = new AsyncHttpClient();
 
         Log.d("storyWriteComplete", "writeStory_Server()");
@@ -262,6 +316,8 @@ public class StoryWrite2Activity extends AppCompatActivity
     {
         if(mainPhoto.size() < 1)
             return -1;
+        else if(!travelDayCheck)
+            return -2;
 
         return 1;
     }
@@ -288,6 +344,8 @@ public class StoryWrite2Activity extends AppCompatActivity
             }
             else if(errorMsg == -1)
                 Toast.makeText(getApplicationContext(), "여행기 메인 이미지를 하나 선택해주세요!", Toast.LENGTH_LONG).show();
+            else if(errorMsg == -2)
+                Toast.makeText(getApplicationContext(), "여행 시작일과 종료일을 입력해주세요!", Toast.LENGTH_LONG).show();
 
             return true;
         }
