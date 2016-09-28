@@ -105,7 +105,7 @@ public class ReviewWriteActivity extends Dialog {
         RequestParams params = new RequestParams();
         // 기본 데이터
         String WriteText = ReviewWrite.getText().toString();
-        params.put("user_seq","1");
+        params.put("seq","1");
         params.put("text", "wefwefwefef");
          params.put("write_date", "todaydate");
           params.put("location", "korea");
