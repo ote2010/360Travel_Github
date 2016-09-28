@@ -117,9 +117,6 @@ public class LoginActivity extends Activity {
             e.printStackTrace();
         }
 
-
         return seq;
     }
-z
-
 }

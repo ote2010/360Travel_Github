@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -32,7 +33,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
@@ -68,6 +74,10 @@ public class Story_fragment extends Fragment {
     long start_date_client, finish_date_client;
     int storyDayTotal = 0; // storyDayTotal : 그 날의 여행기 게시글 개수
 
+    ArrayList <String> presentation_img_List = new ArrayList <String>();
+    ArrayList <String> profile_img_List = new ArrayList <String> ();
+    boolean uploading_check = false;
+
     Context context;
     int start_num = 0;
     final static int STORYLIST_ONECOUNT = 6;
@@ -97,33 +107,38 @@ public class Story_fragment extends Fragment {
 
         //글쓰기 버튼 동작 코드
         FloatingActionButton writeButton = (FloatingActionButton) v.findViewById(R.id.writeButton);
-        writeButton.setOnClickListener(new FloatingActionButton.OnClickListener() {
-            public void onClick(View v) {
+        writeButton.setOnClickListener(new FloatingActionButton.OnClickListener()
+        {
+            public void onClick(View v)
+            {
                 String LoginFlag = ApplicationController.getInstance().getEmail();
 
                 boolean check = (LoginFlag + "").equals(null + "");
 
-                if (check) {
+                if (check)
+                {
                     Toast.makeText(getContext(), "로그인 후 이용해주세요.", Toast.LENGTH_SHORT).show();
-                } else {
+                } else
+                {
                     startActivity(new Intent(getActivity(), StoryWriteActivity.class));
-
                 }
-
-
             }
         });
         return v;
     }
 
     public void scrollViewBottomObserver() {
-        storyFragmentScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+        storyFragmentScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener()
+        {
             @Override
-            public void onScrollChanged() {
+            public void onScrollChanged()
+            {
                 int scrollViewPos = storyFragmentScrollView.getScrollY();
                 int TextView_lines = storyFragmentScrollView.getChildAt(0).getBottom() - storyFragmentScrollView.getHeight();
-                if (TextView_lines == scrollViewPos && TextView_lines != 0) {
-                    if (!data_flag) {
+                if (TextView_lines == scrollViewPos && TextView_lines != 0)
+                {
+                    if (!data_flag && !uploading_check)
+                    {
                         Log.d("scrollBottomOb", "scrollViewBottomObserver check");
                         getTravelRecordAll_Server();
                     }
@@ -151,6 +166,9 @@ public class Story_fragment extends Fragment {
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                 Log.d("SUN", "statusCode : " + statusCode + " , response : " + new String(response));
                 String res = new String(response);
+                presentation_img_List.clear();
+                profile_img_List.clear();
+                uploading_check = true;
                 try {
                     JSONObject object = new JSONObject(res);
                     String objStr = object.get("travels") + "";
@@ -169,12 +187,14 @@ public class Story_fragment extends Fragment {
                         seq = (Integer) obj.get("seq");
                         Log.d("SEQ", String.valueOf(seq));
                         presentation_image = (String) obj.get("presentation_image");
+                        presentation_img_List.add(presentation_image);
                         title = (String) obj.get("title");
                         start_date_client = (long) obj.get("start_date_client");
                         finish_date_client = (long) obj.get("finish_date_client");
                         JSONObject obj2 = (JSONObject) obj.get("userinfo");
                         name = (String) obj2.get("name");
                         profile_image = (String) obj2.get("profile_image");
+                        profile_img_List.add(profile_image);
 
                         LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
 
@@ -194,8 +214,8 @@ public class Story_fragment extends Fragment {
 
                         //******서버에서 받아온 정보로 수정 **********
                         //storyImageView[i].setImageResource(R.drawable.testimg1);
-                        getImage_Server(presentation_image, REQUEST_PRESENTATION_IMAGE, i);
-                        getImage_Server(profile_image, REQUEST_USER_IMAGE, i);
+                        //getImage_Server(presentation_image, REQUEST_PRESENTATION_IMAGE, i);
+                        //getImage_Server(profile_image, REQUEST_USER_IMAGE, i);
                         storyUserName[i].setText(name);
                         storyTitle[i].setText(title);
 
@@ -258,13 +278,16 @@ public class Story_fragment extends Fragment {
                         }
                     }
 
+                    for(int i = 0; i < storyDayTotal; i++)
+                    {
+                        ImageLoadingTask task = new ImageLoadingTask();
+                        task.execute(i);
+                    }
+
                     start_num += STORYLIST_ONECOUNT;
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Log.d("SUN", "e : " + e.toString());
                 }
-
-
             }
 
             @Override
@@ -293,6 +316,136 @@ public class Story_fragment extends Fragment {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         return px;
+    }
+
+    private class PresentationAndProfile
+    {
+        Bitmap presentationImage;
+        Bitmap profileImage;
+        int index;
+
+        public PresentationAndProfile()
+        {
+        }
+
+        public PresentationAndProfile(Bitmap presentationImage, Bitmap profileImage, int index)
+        {
+            this.presentationImage = presentationImage;
+            this.profileImage = profileImage;
+            this.index = index;
+        }
+
+        public Bitmap getPresentationImage()
+        {
+            return presentationImage;
+        }
+
+        public void setPresentationImage(Bitmap presentationImage)
+        {
+            this.presentationImage = presentationImage;
+        }
+
+        public Bitmap getProfileImage()
+        {
+            return profileImage;
+        }
+
+        public void setProfileImage(Bitmap profileImage)
+        {
+            this.profileImage = profileImage;
+        }
+
+        public int getIndex()
+        {
+            return index;
+        }
+
+        public void setIndex(int index)
+        {
+            this.index = index;
+        }
+    }
+
+    PresentationAndProfile image = null;
+    private class ImageLoadingTask extends AsyncTask <Integer, Void, PresentationAndProfile>
+    {
+        @Override
+        protected void onPostExecute(PresentationAndProfile imagePara)
+        {
+            if(imagePara != null)
+            {
+                storyImageView[imagePara.getIndex()].setImageBitmap(imagePara.getPresentationImage());
+                storyUserImage[imagePara.getIndex()].setImageBitmap(imagePara.getProfileImage());
+                Log.d("TAK", "이미지 적용 끝 : " + String.valueOf(imagePara.getIndex()));
+            }
+            if(imagePara != null && imagePara.getIndex() == 5)
+            {
+                uploading_check = false;
+            }
+
+            image = null;
+        }
+
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values)
+        {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected PresentationAndProfile doInBackground(Integer... params)
+        {
+            Bitmap presentation_bitmap = null;
+            Bitmap profile_bitmap = null;
+
+            DisplayMetrics dm = context.getResources().getDisplayMetrics();
+            int width = dm.widthPixels;
+            int height = dm.heightPixels;
+
+            //******리사이즈 코드*******
+            int presentationImgViewWidth = width / 2;
+            int presentationImgViewHeight = presentationImgViewWidth;
+            int profileImgViewWidth = dpToPx(context, 50);
+            int profileImgViewHeight = dpToPx(context, 50);
+
+            try
+            {
+                URL PresentationUrl = new URL("http://kibox327.cafe24.com/Image.do?imageName=" + presentation_img_List.get(params[0]) + "&resize=true&width="
+                        + presentationImgViewWidth + "&height=" + presentationImgViewHeight);
+                HttpURLConnection conn1 = (HttpURLConnection) PresentationUrl.openConnection();
+                conn1.setDoInput(true);
+                conn1.connect();
+
+                InputStream is1 = conn1.getInputStream();
+
+                presentation_bitmap = BitmapFactory.decodeStream(is1);
+
+                URL ProfileUrl = new URL("http://kibox327.cafe24.com/Image.do?imageName=" + profile_img_List.get(params[0]) + "&resize=true&width="
+                        + profileImgViewWidth + "&height=" + profileImgViewHeight);
+                HttpURLConnection conn2 = (HttpURLConnection) ProfileUrl.openConnection();
+                conn2.setDoInput(true);
+                conn2.connect();
+
+                InputStream is2 = conn2.getInputStream();
+
+                profile_bitmap = BitmapFactory.decodeStream(is2);
+
+                image = new PresentationAndProfile(presentation_bitmap, profile_bitmap, params[0]);
+                Log.d("TAK", "이미지 로딩 끝 : " + String.valueOf(params[0]));
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            return image;
+        }
     }
 
     void getImage_Server(String imageName, final int RequestCode, final int index) {

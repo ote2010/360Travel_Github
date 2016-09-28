@@ -50,7 +50,7 @@ import cz.msebera.android.httpclient.Header;
  */
 public class StoryReadActivity extends AppCompatActivity implements View.OnClickListener {
 
-    final static int SERVER_CONNECT_ERR_LOOPCOUNT = 200000000;
+    final static int SERVER_CONNECT_ERR_LOOPCOUNT = 150000000;
 
     ArrayList <Integer> sequence = new ArrayList <Integer>(); // 불러올 본문의 순서. 1 : 글 0 : 사진이라고 임의로 가정. 그러니까 글 사진 사진 글 사진과 같은 순서임.
     LinearLayout container; // container에 모든 뷰들이 담긴다. 전체 틀.
@@ -99,12 +99,11 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
 
         container = (LinearLayout) findViewById(R.id.container);
         travelDateTextView = (TextView) findViewById(R.id.travelDateTextView);
-
-        getTravelRecord_Server(storySeq);
-
         imgCountIntent = new Intent(getApplicationContext(), ImageViewer.class);
 
         findViewById(R.id.commentBtn).setOnClickListener(this);
+
+        getTravelRecord_Server(storySeq);
     }
 
     @Override
@@ -321,13 +320,14 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    AsyncHttpClient client;
     void getTravelRecord_Server(int storySeq) {
 
         RequestParams params = new RequestParams();
         // 보내는 data는 seq 만 있으면 됩니다.
         params.put("seq", storySeq);
 
-        AsyncHttpClient client = new AsyncHttpClient();
+        client = new AsyncHttpClient();
 
         Log.d("getTravleRecord_Server", "getData_Server()");
         client.get("http://kibox327.cafe24.com/getTravelRecord.do", params, new AsyncHttpResponseHandler() {
@@ -474,12 +474,9 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
                             if(count == SERVER_CONNECT_ERR_LOOPCOUNT) // 무한루프방지
                             {
                                 Toast.makeText(getApplicationContext(), "서버와 연결 장애가 발생했습니다!", Toast.LENGTH_LONG).show();
-                                break;
+                                return;
                             }
                         }
-
-                        if(count == SERVER_CONNECT_ERR_LOOPCOUNT)
-                            break;
 
                         if(ImageGrpList.get(i).size() > 4)
                         {
@@ -689,11 +686,6 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
                             });
                             imgtaskcountindex++;
                         }
-                    }
-
-                    if(count == SERVER_CONNECT_ERR_LOOPCOUNT)
-                    {
-                        onDestroy();
                     }
 
                     for(int i = 0; i<ImageGrpList.size(); i++)
