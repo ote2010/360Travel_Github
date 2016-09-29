@@ -84,10 +84,11 @@
                 android:paddingRight="20dp">
 
                 <ImageButton
+                    android:id="@+id/userHeartBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="#000000ff"
-                    android:src="@drawable/heart" />
+                    android:src="@drawable/empty_heart" />
 
                 <TextView
                     android:layout_width="wrap_content"
