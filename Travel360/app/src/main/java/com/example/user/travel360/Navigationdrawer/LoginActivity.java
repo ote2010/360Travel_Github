@@ -93,6 +93,7 @@ public class LoginActivity extends Activity {
                         // called when response HTTP status is "200 OK"
                         //   Toast.makeText(getApplicationContext(), new String(response), Toast.LENGTH_LONG).show();
                         //   Log.d("seq&&", JSONP(new String(response)));
+                        Log.d("SUN@@", "success");
                         String seq = JSONP(new String(response));
                         ApplicationController.getInstance().setSeq(seq);
                         //   Log.d("seq@@", ApplicationController.getInstance().getSeq());
@@ -105,6 +106,7 @@ public class LoginActivity extends Activity {
                     public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
                         // called when response HTTP status is "4XX" (eg. 401, 403, 404)
                         //  Toast.makeText(getApplicationContext(), new String(errorResponse), Toast.LENGTH_LONG).show();
+                        Log.d("SUN@@", "Fail");
                         Toast.makeText(getApplicationContext(), "아이디 또는 패스워트가 정확하지 않습니다.", Toast.LENGTH_LONG).show();
                     }
 

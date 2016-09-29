@@ -34,8 +34,6 @@ public class MainImgSelectDialog extends Activity
 
     int selectedMainImgSeq = -1; // 선택된 대표이미지의 ImgSeq 값
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

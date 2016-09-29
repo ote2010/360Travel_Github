@@ -1,18 +1,14 @@
-package com.example.user.travel360.uk.co.senab.photoview;
+package com.example.user.travel360.CustomDialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.example.user.travel360.R;
-import com.example.user.travel360.Search_Activity;
 
 public class TFDatePickerDialog extends Dialog {
     DatePicker ToDate, FromDate;
@@ -58,8 +54,20 @@ public class TFDatePickerDialog extends Dialog {
 
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        ToDateS = year + "년" + (monthOfYear + 1) + "월" + dayOfMonth + "일";
-
+                        String month, day;
+                        if(monthOfYear+1 < 10)
+                        {
+                            month = "0" + (monthOfYear+1);
+                        }
+                        else
+                            month = "" + (monthOfYear+1);
+                        if(dayOfMonth < 10)
+                        {
+                            day = "0" + dayOfMonth;
+                        }
+                        else
+                            day = "" + dayOfMonth;
+                        ToDateS = year + "년 " + month + "월 " + day + "일";
                     }
                 });
 
@@ -71,8 +79,20 @@ public class TFDatePickerDialog extends Dialog {
 
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        FromDateS = year + "년" + (monthOfYear + 1) + "월" + dayOfMonth + "일";
-
+                        String month, day;
+                        if(monthOfYear+1 < 10)
+                        {
+                            month = "0" + (monthOfYear+1);
+                        }
+                        else
+                            month = "" + (monthOfYear+1);
+                        if(dayOfMonth < 10)
+                        {
+                            day = "0" + dayOfMonth;
+                        }
+                        else
+                            day = "" + dayOfMonth;
+                        FromDateS = year + "년 " + month + "월 " + day + "일";
                     }
                 });
 

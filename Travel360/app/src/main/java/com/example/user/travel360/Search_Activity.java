@@ -1,31 +1,20 @@
 package com.example.user.travel360;
 
 import android.app.Activity;
-
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.example.user.travel360.Review.SelectCityDialog;
-import com.example.user.travel360.uk.co.senab.photoview.TFDatePickerDialog;
+import com.example.user.travel360.CustomDialog.TFDatePickerDialog;
+import com.example.user.travel360.Navigationdrawer.ApplicationController;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -83,8 +72,6 @@ public class Search_Activity extends Activity implements View.OnClickListener {
 
 
         SearchText = (EditText) findViewById(R.id.edit_search);
-
-
     }
 
 
@@ -134,6 +121,7 @@ public class Search_Activity extends Activity implements View.OnClickListener {
                 } else if (checkList[2] == 1) {
                     checkList[2] = 0;
                     New_turn.setText("최신순");
+
                 }
                 break;
             //index 3

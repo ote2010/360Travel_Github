@@ -14,7 +14,6 @@ public class ApplicationController extends Application {
     String seq;
     Boolean LoginFlag = false;
 
-
     // SharedPreference
     SharedPreferences pref;
     SharedPreferences.Editor edit;
@@ -67,18 +66,10 @@ public class ApplicationController extends Application {
 
     }
 
-    public String getPw() {
-        return this.pw;
-    }
-
-    public String getGender() {
-        return gender;
-    }
 
 
-    public int getPoint() {
-        return point;
-    }
+
+
 
 
     public String getSeq() {

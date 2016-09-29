@@ -42,8 +42,6 @@ public class Main_fragment extends Fragment {
     //추천여행가 본문 & 유저정보 받아서 저장할 배열
     String[] Reco_Traveler_Text = new String[2];
     String[] Reco_Traveler_UserName = new String[2];
-    //이미지 받아오는거 선언해야함
-
 
     //추천 여행기 본문 받아서 저장할 배열
     String[] Reco_Place_Text = new String[2];
@@ -147,16 +145,16 @@ public class Main_fragment extends Fragment {
   public void putDate(){
       //추천 여행가는 아직
       // TODO >> 추천 여행가 서버에서 받아와서 넣어줘야함
-      getTravleRecordAll_Server();
+      getTravelRecordAll_Server();
       Reco_story_text1.setText(Today_Reco_Story_Text[0]);
       Reco_story_text2.setText(Today_Reco_Story_Text[1]);
 
-      getTravleReviewAll_Server();
+      getTravelReviewAll_Server();
       Reco_place_text1.setText(Reco_Place_Text[0]);
       Reco_place_text2.setText(Reco_Place_Text[1]);
   }
 
-    void getTravleRecordAll_Server() {
+    void getTravelRecordAll_Server() {
 
         AsyncHttpClient client = new AsyncHttpClient();
         Log.d("SUN", "getTravleRecordAll_Server()");
@@ -200,11 +198,11 @@ public class Main_fragment extends Fragment {
             public void onRetry(int retryNo) {          }
         });
     }
-    void getTravleReviewAll_Server() {
+    void getTravelReviewAll_Server() {
 
         AsyncHttpClient client = new AsyncHttpClient();
         Log.d("SUN", "getTravleReviewAll_Server()");
-        client.get("http://kibox327.cafe24.com//travelReviewList.do", new AsyncHttpResponseHandler() {
+        client.get("http://kibox327.cafe24.com/travelReviewList.do", new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {         }
 

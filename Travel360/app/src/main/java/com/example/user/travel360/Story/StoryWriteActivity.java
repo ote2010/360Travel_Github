@@ -458,8 +458,7 @@ public class StoryWriteActivity extends AppCompatActivity {
             if (photos != null) // 업로드를 성공적으로 추가하고 돌아온 경우
             {
                 selectedPhotos.get(recyclerView.size()-1).addAll(photos);
-                //!!!!!!!!!!!!!!!!!!!!!!!!!!서버 코드!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                //************테스트할때는 주석처리. 과도한 트래픽 막기위해*********
+                //서버 코드 : 테스트 시에는 과도한 트래픽 막기위해 주석처리
                 UploadProgressDialog task = new UploadProgressDialog();
                 task.execute();
 

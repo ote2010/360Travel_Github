@@ -1,14 +1,23 @@
 package com.example.user.travel360.Navigationdrawer;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -17,13 +26,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.user.travel360.Navigationdrawer.ApplicationController;
 import com.example.user.travel360.R;
+import com.example.user.travel360.Story.PhotoAdapter;
+import com.example.user.travel360.Story.RecyclerItemClickListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -32,8 +45,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import cz.msebera.android.httpclient.Header;
+import me.iwf.photopicker.PhotoPicker;
+import me.iwf.photopicker.PhotoPreview;
 
 //import retrofit.Call;
 //import retrofit.Callback;
@@ -53,6 +69,7 @@ public class JoinActivity extends Activity {
     SharedPreferences.Editor edit;
     ImageButton ProfileImg;
     Uri uri = null;
+    String path;
 
 
     @Override
@@ -96,11 +113,11 @@ public class JoinActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                    if (!checkEditBoxInput()) {
-                        return;
-                    }
+                if (!checkEditBoxInput()) {
+                    return;
+                }
 
-                    Join_Server();
+                Join_Server();
 
 
             }
@@ -157,7 +174,7 @@ public class JoinActivity extends Activity {
         edit = pref.edit();
     }
 
-    private boolean checkEditBoxInput()  {
+    private boolean checkEditBoxInput() {
         if (TextUtils.isEmpty(EditEmail.getText().toString())) {
             Toast.makeText(getApplicationContext(), "이메일을 입력하세요.", Toast.LENGTH_SHORT).show();
             return false;
@@ -185,7 +202,8 @@ public class JoinActivity extends Activity {
                     //Uri에서 이미지 이름을 얻어온다.
                     //String name_Str = getImageNameToUri(data.getData());
                     uri = data.getData();
-                    //  Log.d("@URI@", uri+"");
+                    path = getPath(uri);
+                    Log.d("@URI@", uri + "");
 
                     //이미지 데이터를 비트맵으로 받아온다.
                     Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
@@ -195,7 +213,7 @@ public class JoinActivity extends Activity {
                     //Toast.makeText(getBaseContext(), "name_Str : "+name_Str , Toast.LENGTH_SHORT).show();
 
 
-                }  catch (IOException e) {
+                } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 } catch (Exception e) {
@@ -206,7 +224,17 @@ public class JoinActivity extends Activity {
 
     }
 
-    void Join_Server()   {
+    public String getPath(Uri uri) {
+
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        startManagingCursor(cursor);
+        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(columnIndex);
+    }
+
+    void Join_Server() {
         //   long todaydate = System.currentTimeMillis(); // long 형의 현재시간
         RequestParams params = new RequestParams();
         // 기본 데이터
@@ -215,19 +243,19 @@ public class JoinActivity extends Activity {
         String name1 = EditName.getText().toString();
 
 
-        File myFile = new File(String.valueOf(uri));
+        // File myFile = new File(uri+"");
+        File myFile = new File(path);
+        Log.d("SUN@@U", path);
+        //  Log.d("SUN@@F", myFile.exists() + "");
 
         params.put("password", PW1);
         params.put("email", email1);
         params.put("id", email1);
         params.put("name", name1);
-        params.put("permission", true);
-        try
-        {
-            params.put("profile_image", myFile);
-        }
-        catch (FileNotFoundException e)
-        {
+        // params.put("permission", true);
+        try {
+            params.put("image", myFile);
+        } catch (FileNotFoundException e) {
 
         }
 
@@ -262,7 +290,7 @@ public class JoinActivity extends Activity {
                 edit.commit();
                 ApplicationController.getInstance().initSharedPreference();
                 //    Toast.makeText(getApplicationContext(), ApplicationController.getInstance().getEmail() + "/" +ApplicationController.getInstance().getGender() + "/" + ApplicationController.getInstance().getPw(), Toast.LENGTH_SHORT).show();
-
+                finish();
 
             }
 

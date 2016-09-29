@@ -37,6 +37,7 @@ public class FriendActivity extends AppCompatActivity {
     AlertDialog ad;
 
     EditText friendSearchEt;
+    int userSeq = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +45,9 @@ public class FriendActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friend);
 
         friendSearchEt = (EditText) findViewById(R.id.friendSearchEt);
-
         listView = (ListView) findViewById(R.id.friendList);
         adapter = new CustomAdapter(itemDatas, FriendActivity.this);
+        userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
 
         getFriendsList_Server();
         adapter.clear();
@@ -86,7 +87,7 @@ public class FriendActivity extends AppCompatActivity {
         adapter.clear();
         RequestParams params = new RequestParams();
         // 보내는 data는 seq 만 있으면 됩니다.
-        params.put("seq", "1");
+        params.put("seq", userSeq);
 
         AsyncHttpClient client = new AsyncHttpClient();
 
@@ -139,7 +140,7 @@ public class FriendActivity extends AppCompatActivity {
         adapter.clear();
         RequestParams params = new RequestParams();
         // 보내는 data는 seq 만 있으면 됩니다.
-        params.put("seq", "1");
+        params.put("seq", userSeq);
 
         AsyncHttpClient client = new AsyncHttpClient();
         Log.d("SUN", "getFriendsList_Server(String friendID)");

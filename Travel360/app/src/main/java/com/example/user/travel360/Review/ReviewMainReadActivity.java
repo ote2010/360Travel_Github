@@ -1,6 +1,8 @@
 package com.example.user.travel360.Review;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,7 +18,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.user.travel360.Navigationdrawer.ApplicationController;
+import com.example.user.travel360.Navigationdrawer.LoginActivity;
 import com.example.user.travel360.R;
+import com.example.user.travel360.Story.StoryWriteActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -76,8 +81,8 @@ public class ReviewMainReadActivity extends Activity {
         setContentView(R.layout.activity_review_main_read);
 
         init();
-       // getTravleReviewAll_Server();
-         Bestinit();
+        //getTravleReviewAll_Server();
+        Bestinit();
         Normalinit();
         onClickEvent();
 
@@ -98,9 +103,38 @@ public class ReviewMainReadActivity extends Activity {
             @Override
             public void onClick(View v) {
                 //  Toast.makeText(getApplicationContext(), "글쓰기", Toast.LENGTH_SHORT).show();
-                ReviewWriteActivity reviewWriteActivity = new ReviewWriteActivity(ReviewMainReadActivity.this);
+                String LoginFlag = ApplicationController.getInstance().getEmail();
 
-                reviewWriteActivity.show();
+                boolean check = (LoginFlag + "").equals(null + "");
+
+                if (check) {
+                    AlertDialog.Builder dialogB = new AlertDialog.Builder(ReviewMainReadActivity.this);
+                    dialogB.setMessage("로그인 하시겠습니까?").setCancelable(false).setPositiveButton("Yes",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(ReviewMainReadActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                }
+                            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog alert =dialogB.create();
+
+                    alert.show();
+                }
+                else {
+
+                    ReviewWriteActivity reviewWriteActivity = new ReviewWriteActivity(ReviewMainReadActivity.this);
+
+                    reviewWriteActivity.show();
+
+                }
+
+
             }
         });
         Up.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +149,7 @@ public class ReviewMainReadActivity extends Activity {
     }
 
     public void Bestinit() {
-        getTravleReviewAll_Server();
+        getTravelReviewAll_Server();
         LayoutInflater inflater = LayoutInflater.from(getApplication().getApplicationContext());
         for (int i = 0; i < BEST_REVIEW_NUM; i++) {
             BestReviewITem[i] = inflater.inflate(R.layout.review_read_listitem_view, v, false); // 추가할 순위권 여행지 뷰 inflate
@@ -226,7 +260,7 @@ public class ReviewMainReadActivity extends Activity {
 
     }
 
-    void getTravleReviewAll_Server() {
+    void getTravelReviewAll_Server() {
 
         AsyncHttpClient client = new AsyncHttpClient();
         Log.d("SUN", "getTravleReviewAll_Server()");
@@ -258,7 +292,7 @@ public class ReviewMainReadActivity extends Activity {
 
 
                      */
-                        Best_text1[i] = (String)obj.get("text");
+                        Best_text1[i] = (String) obj.get("text");
 
                     }
 
