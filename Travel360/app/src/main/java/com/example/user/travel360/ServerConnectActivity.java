@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
@@ -52,6 +53,7 @@ public class ServerConnectActivity extends AppCompatActivity {
 		14. review 쓰기 :  writeReview_Server()
 		15. review 댓글 쓰기 : writeReviewComment_Server()
 		16. review 댓글 리스트 : getReviewComment_Server()
+		17. review 랭킹 : showReviewRanking_Server();
 	*/
 
     /************** stroy 쓰기전 확인 ******************/
@@ -664,16 +666,21 @@ public class ServerConnectActivity extends AppCompatActivity {
     void writeReview_Server() {
         long todaydate = System.currentTimeMillis(); // long 형의 현재시간
         RequestParams params = new RequestParams();
+       /*
         // 기본 데이터
-        params.put("user_seq","3");
-        params.put("text", "review text");
-        params.put("write_date_client", todaydate);
-        //  params.put("location", "korea");
+        String WriteText = ReviewWrite.getText().toString();
+        String seq = ApplicationController.getInstance().getSeq();
+        String text1 =  ReviewWrite.getText().toString();
 
+        params.put("userSeq", seq);
+        params.put("text", text1);
+        params.put("write_date_client", todaydate);
+        params.put("location", "Paris");
+        */
         AsyncHttpClient client = new AsyncHttpClient();
 
         Log.d("SUN", "writeStory_Server()");
-        client.get("http://kibox327.cafe24.com/writeTravelReview.do", params, new AsyncHttpResponseHandler() {
+        client.post("http://kibox327.cafe24.com/writeTravelReview.do", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
 
@@ -681,17 +688,18 @@ public class ServerConnectActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                Log.d("SUN_확인", "Success // statusCode : " + statusCode + " , response : " + new String(response));
                 String res = new String(response);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+                Log.d("SUN@@", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
             }
 
             @Override
-            public void onRetry(int retryNo) {        }
+            public void onRetry(int retryNo) {
+            }
         });
     }
 
@@ -787,6 +795,55 @@ public class ServerConnectActivity extends AppCompatActivity {
     }
 
 
+    /************************  리뷰 랭킹  *********************/
+    void showReviewRanking_Server() {
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "writeStory_Server()");
+        client.get("http://kibox327.cafe24.com/travelReviewRankingList.do",  new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+
+                try {
+                    JSONObject object = new JSONObject(res);
+                    String objStr =  object.get("reviews") + "";
+                    JSONArray arr = new JSONArray(objStr);
+                    for(int i=0; i<arr.length(); i++ ) {
+                        JSONObject obj = (JSONObject)arr.get(i);
+                        //float evaluation = (float)obj.get("evaluation");
+                        String location = (String)obj.get("location");
+                        String text  = (String)obj.get("text");
+                        int userseq  = (int)obj.get("seq");
+                        long start_date = (long)obj.get("write_date_client");
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
+                        String start = df.format(start_date);
+                        Log.d("SUN", "evaluation : "+ " " + " , location : " + location + " , text : " + text + " , userseq : "+ userseq + " , start : "+start  );
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("SUN",  "e : " + e.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {        }
+        });
+    }
 
 
 

@@ -138,6 +138,7 @@ public class StoryWriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.action_bar1));
         setContentView(R.layout.activity_story_write);
 
         write1Activity = StoryWriteActivity.this;

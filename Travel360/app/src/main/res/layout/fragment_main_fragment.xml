@@ -1,264 +1,242 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <ScrollView
-        android:fillViewport="true"
-        android:layout_weight="1"
+        android:id="@+id/scrollView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/scrollView"
-        >
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
-
-            android:background="#fff6d4"
-            android:weightSum="100"
-            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            android:background="#e6e6e6"
+            android:orientation="vertical"
+            android:weightSum="100">
 
-            <TextView
-                android:background="#1abc9c"
-                android:textColor="#ffffff"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="2.5dp"
-                android:layout_weight="1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="오늘의 추천 여행기"
-                android:id="@+id/textView7" />
 
             <LinearLayout
-                android:weightSum="100"
-                android:layout_weight="29"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bottom_line"
+                android:orientation="vertical"
+                android:padding="10dp">
 
-                android:layout_gravity="center_horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="@drawable/today_travel" />
 
                 <FrameLayout
                     android:id="@+id/reco_storybtn1"
-                    android:background="#dedede"
-                    android:layout_marginTop="2.5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="2.5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_weight="50"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_marginTop="2.5dp">
 
                     <TextView
-
+                        android:id="@+id/reco_storytext1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="New Text"
-                        android:id="@+id/reco_storytext1"
-                        android:layout_gravity="left|top" />
+                        android:layout_gravity="left|top"
+                        android:background="#fff"
+                        android:text="New Text" />
+
                     <Button
-
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+"
-
-                        android:layout_gravity="right|bottom"/>
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/more_button" />
                     />
                 </FrameLayout>
 
                 <FrameLayout
                     android:id="@+id/reco_storybtn2"
-                    android:background="#dedede"
-                    android:layout_marginTop="2.5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="2.5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_weight="50"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="New Text"
-                        android:id="@+id/reco_storytext2"
-                        android:layout_gravity="left|top" />
+                    android:layout_marginTop="2.5dp">
 
                     <Button
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/more_button" />
 
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+"
-
-                        android:layout_gravity="right|bottom" />
+                    <TextView
+                        android:id="@+id/reco_storytext2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="left|top"
+                        android:text="New Text" />
                 </FrameLayout>
             </LinearLayout>
 
-            <TextView
-                android:background="#1abc9c"
-                android:textColor="#ffffff"
-                android:layout_marginTop="2.5dp"
-                android:layout_marginBottom="2.5dp"
-                android:layout_weight="1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="추천 여행가"
-                android:id="@+id/textView11" />
 
             <LinearLayout
 
-                android:weightSum="100"
-                android:layout_weight="29"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bottom_line"
+                android:orientation="vertical"
+                android:padding="10dp">
 
-
-                android:layout_gravity="center_horizontal">
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/today_traveler" />
 
                 <FrameLayout
-                    android:background="#dedede"
-                    android:layout_marginTop="2.5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="2.5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-
-                    android:layout_weight="50"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal">
+                    android:layout_marginTop="2.5dp"
+                    android:orientation="horizontal">
 
                     <ImageView
 
-                        android:scaleType="fitStart"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:id="@+id/reco_travelerImg1"
-                        android:src="@drawable/img1"
-                        android:layout_gravity="left|center_vertical" />
-
-                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="New Text"
+                        android:layout_gravity="left|center_vertical"
+                        android:scaleType="fitStart"
+                        android:src="@drawable/profile_deco" />
+
+                    <TextView
                         android:id="@+id/reco_travelertext1"
-                        android:layout_gravity="center_horizontal|top" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|top"
+                        android:text="New Text" />
                 </FrameLayout>
 
                 <FrameLayout
-                    android:background="#dedede"
-                    android:layout_marginTop="2.5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="2.5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
+                    android:layout_marginTop="2.5dp"
                     android:layout_weight="50"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal">
+                    android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/reco_travelertext2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="New Text"
-                        android:id="@+id/reco_travelertext2"
-                        android:layout_gravity="center_horizontal" />
+                        android:layout_gravity="center_horizontal"
+                        android:text="New Text" />
 
                     <ImageView
-
-                        android:scaleType="fitStart"
-                        android:src="@drawable/img1"
+                        android:id="@+id/reco_travelerImg2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/reco_travelerImg2"
-                        android:layout_gravity="left|center_vertical" />
+                        android:layout_gravity="left|center_vertical"
+                        android:scaleType="fitStart"
+                        android:src="@drawable/profile_deco" />
                 </FrameLayout>
 
             </LinearLayout>
 
-            <TextView
-                android:background="#1abc9c"
-                android:textColor="#ffffff"
-                android:layout_marginTop="2.5dp"
-                android:layout_marginBottom="2.5dp"
-                android:layout_weight="1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="추천 여행지"
-                android:id="@+id/textView9" />
 
             <LinearLayout
-                android:layout_weight="39"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bottom_line"
+                android:orientation="vertical"
+                android:padding="10dp">
 
-                android:layout_gravity="right">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2.5dp"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/today_place"
+                    android:text="추천 여행지"
+                    android:textColor="#ffffff" />
 
                 <FrameLayout
                     android:id="@+id/reco_placebtn1"
-                    android:background="#dedede"
-                    android:layout_marginTop="2.5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="2.5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_weight="50"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_marginTop="2.5dp">
 
+                    <ImageView
+                        android:background="@drawable/place_marker"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="wrap_content" />
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="New Text"
                         android:id="@+id/reco_placeText1"
-                        android:layout_gravity="left|top" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:text="New Text" />
+
                     <Button
 
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+"
-
-                        android:layout_gravity="right|bottom"
-                        />
+                        android:layout_margin="5dp"
+                        android:background="@drawable/more_button"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="right|center_vertical"
+ />
                 </FrameLayout>
 
                 <FrameLayout
                     android:id="@+id/reco_placebtn2"
-                    android:background="#dedede"
-                    android:layout_marginTop="2.5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="2.5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_weight="50"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_marginTop="2.5dp">
 
+                    <ImageView
+                        android:background="@drawable/place_marker"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="wrap_content" />
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="New Text"
                         android:id="@+id/reco_placeText2"
-                        android:layout_gravity="left|top" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:text="New Text" />
 
                     <Button
-
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+"
-
-                        android:layout_gravity="right|bottom" />
+                        android:layout_margin="5dp"
+                        android:background="@drawable/more_button"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="right|center_vertical"
+ />
                 </FrameLayout>
 
             </LinearLayout>

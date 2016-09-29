@@ -3,6 +3,7 @@ package com.example.user.travel360;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -23,6 +24,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.example.user.travel360.Navigationdrawer.ApplicationController;
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity
     Fragment timeLabelFragment; // 프래그먼트 참조 변수
 
     public static Activity AActivity;//메인 액티비티를 Splash 화면에서 종료시키기 위해 선언
-
+    TabLayout tabLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,13 +61,52 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position)
+                {
+                    case 0:
+                        tabLayout.getTabAt(0).setIcon(getResources().getDrawable(R.drawable.home_button));
+                        tabLayout.getTabAt(1).setIcon(getResources().getDrawable(R.drawable.travel_button_grey));
+                        tabLayout.getTabAt(2).setIcon(getResources().getDrawable(R.drawable.review_button_grey));
+                        break;
+                    case 1:
+                        tabLayout.getTabAt(0).setIcon(getResources().getDrawable(R.drawable.home_button_grey));
+                        tabLayout.getTabAt(1).setIcon(getResources().getDrawable(R.drawable.travel_button));
+                        tabLayout.getTabAt(2).setIcon(getResources().getDrawable(R.drawable.review_button_grey));
+                        break;
+                    case 2:
+                        tabLayout.getTabAt(0).setIcon(getResources().getDrawable(R.drawable.home_button_grey));
+                        tabLayout.getTabAt(1).setIcon(getResources().getDrawable(R.drawable.travel_button_grey));
+                        tabLayout.getTabAt(2).setIcon(getResources().getDrawable(R.drawable.review_button));
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
         tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.getTabAt(0).setIcon(getResources().getDrawable(R.drawable.home_button));
+        tabLayout.getTabAt(1).setIcon(getResources().getDrawable(R.drawable.travel_button_grey));
+        tabLayout.getTabAt(2).setIcon(getResources().getDrawable(R.drawable.review_button_grey));
+        tabLayout.setBackgroundColor(Color.WHITE);
+        tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.tabscroll));
+        //viewPager.setCurrentItem(tab.getPosition());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -241,18 +282,22 @@ public class MainActivity extends AppCompatActivity
             return 3;
         }
 
+
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
+                /*
                 case 0:
                     return "메인";
                 case 1:
                     return "여행기";
                 case 2:
-                    return "리뷰";
+                    return "리뷰";*/
             }
             return null;
         }
+
+
     }
 
     @Override

@@ -40,5 +40,4 @@
         <item name="actionBarSize">@dimen/actionBarSize</item>
         <item name="colorPrimaryDark">#CCa500</item>
     </style>
-
 </resources>
