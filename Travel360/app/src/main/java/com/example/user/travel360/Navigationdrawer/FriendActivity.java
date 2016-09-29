@@ -47,7 +47,15 @@ public class FriendActivity extends AppCompatActivity {
         friendSearchEt = (EditText) findViewById(R.id.friendSearchEt);
         listView = (ListView) findViewById(R.id.friendList);
         adapter = new CustomAdapter(itemDatas, FriendActivity.this);
-        userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
+
+        try{
+            userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
+        }catch (Exception e){
+            Log.d("SUN", "userSeq is null");
+            // 임시 (로그인 안했을 때)
+            userSeq = 1;
+        }
+
 
         getFriendsList_Server();
         adapter.clear();

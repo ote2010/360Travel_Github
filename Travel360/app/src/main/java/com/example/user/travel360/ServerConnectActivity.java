@@ -398,7 +398,20 @@ public class ServerConnectActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                 Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
                 String res = new String(response);
+                try{
+                    JSONObject object = new JSONObject(res);
+                    String objStr =  object.get("userDto") + "";
+                    JSONObject obj = new JSONObject(objStr);
 
+                    String id = (String)obj.get("id");
+                    String name = (String)obj.get("name");
+                    String profile_image = (String)obj.get("profile_image");
+                    Log.d("SUN", "profile_image : "+profile_image);
+
+
+                }catch (JSONException e){
+
+                }
             }
 
             @Override
