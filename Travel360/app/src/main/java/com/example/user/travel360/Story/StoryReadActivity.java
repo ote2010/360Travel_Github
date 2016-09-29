@@ -110,7 +110,8 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == android.R.id.home) {
+        if (id == android.R.id.home)
+        {
             finish();
             return true;
         }
@@ -808,7 +809,7 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
      * 여행기 댓글 쓰기
      *************************/
     void writeStoryComment_Server(String comment) {
-           long todaydate = System.currentTimeMillis(); // long 형의 현재시간
+        long todaydate = System.currentTimeMillis(); // long 형의 현재시간
 
         RequestParams params = new RequestParams();
         params.put("comment", comment);
@@ -818,6 +819,8 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
 
         params.put("userSeq", userSeq);
         params.put("travelSeq", storySeq);
+        //params.put("userSeq", 1);
+        //params.put("travelSeq", 1);
 
         AsyncHttpClient client = new AsyncHttpClient();
 

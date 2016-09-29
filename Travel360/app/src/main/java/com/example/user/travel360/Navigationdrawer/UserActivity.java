@@ -1,25 +1,18 @@
 package com.example.user.travel360.Navigationdrawer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.user.travel360.CustomList.CustomAdapter;
-import com.example.user.travel360.CustomList.ItemData;
 import com.example.user.travel360.CustomList.MyWriteCustomAdapter;
 import com.example.user.travel360.CustomList.MyWriteItemData;
 import com.example.user.travel360.R;
-import com.example.user.travel360.Story.StoryReadActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -38,11 +31,17 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     public ArrayList<MyWriteItemData> itemDatas_story = new ArrayList<MyWriteItemData>();
     public ArrayList<MyWriteItemData> itemDatas_review = new ArrayList<MyWriteItemData>();
 
+    int seq = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(android.R.style.Theme_Holo_Light_NoActionBar_TranslucentDecor);
         setContentView(R.layout.activity_user);
+
+        //전달받는 seq
+        Intent intent = getIntent();
+        seq = intent.getExtras().getInt("seq");
 
         show_all = (Button)findViewById(R.id.show_all);
         show_all.setOnClickListener(this);
@@ -80,7 +79,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 addFriend_Server(1, 4);
             }
         });
-
     }
 
     /**************

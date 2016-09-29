@@ -81,7 +81,6 @@ public class Main_fragment extends Fragment {
         //image 선언
         Reco_traveler_img1 = (ImageView) v.findViewById(R.id.reco_travelerImg1);
         Reco_traveler_img2 = (ImageView) v.findViewById(R.id.reco_travelerImg2);
-
     }
 
     public void onClickBtn1() {
@@ -89,6 +88,7 @@ public class Main_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), StoryReadActivity.class);
+                intent.putExtra("seq", 1);
                 startActivity(intent);
             }
         });
@@ -96,6 +96,7 @@ public class Main_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), StoryReadActivity.class);
+                intent.putExtra("seq", 2);
                 startActivity(intent);
             }
         });
@@ -103,6 +104,7 @@ public class Main_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), UserActivity.class);
+                intent.putExtra("userSeq", 1);
                 startActivity(intent);
             }
         });
@@ -110,6 +112,7 @@ public class Main_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), UserActivity.class);
+                intent.putExtra("userSeq", 2);
                 startActivity(intent);
             }
         });
@@ -117,6 +120,7 @@ public class Main_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ReviewMainReadActivity.class);
+                intent.putExtra("seq", 1);
                 startActivity(intent);
             }
         });
@@ -124,6 +128,7 @@ public class Main_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ReviewMainReadActivity.class);
+                intent.putExtra("seq", 2);
                 startActivity(intent);
             }
         });

@@ -62,16 +62,9 @@
                         android:layout_height="match_parent"
                         android:text="New Text"
                         android:id="@+id/reco_storytext1"
-                        android:layout_gravity="left|top" />
-                    <Button
-
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+"
-
-                        android:layout_gravity="right|bottom"/>
+                        android:layout_gravity="left|top" /><![CDATA[
                     />
+                ]]>
                 </FrameLayout>
 
                 <FrameLayout
@@ -92,14 +85,6 @@
                         android:id="@+id/reco_storytext2"
                         android:layout_gravity="left|top" />
 
-                    <Button
-
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+"
-
-                        android:layout_gravity="right|bottom" />
                 </FrameLayout>
             </LinearLayout>
 
@@ -222,15 +207,6 @@
                         android:text="New Text"
                         android:id="@+id/reco_placeText1"
                         android:layout_gravity="left|top" />
-                    <Button
-
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+"
-
-                        android:layout_gravity="right|bottom"
-                        />
                 </FrameLayout>
 
                 <FrameLayout
@@ -251,14 +227,6 @@
                         android:id="@+id/reco_placeText2"
                         android:layout_gravity="left|top" />
 
-                    <Button
-
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+"
-
-                        android:layout_gravity="right|bottom" />
                 </FrameLayout>
 
             </LinearLayout>

@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -49,17 +48,16 @@ public class Story_fragment extends Fragment {
 
     ScrollView storyFragmentScrollView;
     static int j = 0; // 여행기 컨테이너 배열의 인덱스. item이 한번에 두개 들어감
-    View[] storyItemView = new View[100];
-    ImageView[] storyImageView = new ImageView[100]; // 여행기 대표 이미지
-    Button[] storyImageButton = new Button[100]; // 대표 이미지 오른쪽 하단 작은 버튼
-    ImageView[] storyUserImage = new ImageView[100]; // 여행기 게시자 프로필 사진
-    TextView[] storyUserName = new TextView[100]; // 여행기 작성자
-    TextView[] storyTitle = new TextView[100]; // 여행기 제목
-    LinearLayout[] storyBackgroundLayout = new LinearLayout[100]; // 여행기 프로필과 작성자, 제목의 배경이 되는 레이아웃
-    LinearLayout[] storyUserNameTitleLayout = new LinearLayout[100]; // 작성자, 제목을 감싸는 레이아웃
+    View[] storyItemView = new View[50];
+    ImageView[] storyImageView = new ImageView[50]; // 여행기 대표 이미지
+    ImageView[] storyUserImage = new ImageView[50]; // 여행기 게시자 프로필 사진
+    TextView[] storyUserName = new TextView[50]; // 여행기 작성자
+    TextView[] storyTitle = new TextView[50]; // 여행기 제목
+    LinearLayout[] storyBackgroundLayout = new LinearLayout[50]; // 여행기 프로필과 작성자, 제목의 배경이 되는 레이아웃
+    LinearLayout[] storyUserNameTitleLayout = new LinearLayout[50]; // 작성자, 제목을 감싸는 레이아웃
 
     LinearLayout mainStoryContainer; // 여행기 메인 프래그먼트 화면 레이아웃
-    LinearLayout[] storyContainer = new LinearLayout[100]; // 여행기 두 개씩 감싸고 있는 레이아웃
+    LinearLayout[] storyContainer = new LinearLayout[50]; // 여행기 두 개씩 감싸고 있는 레이아웃
 
     boolean oddCheck = false; // oddCheck가 true면 게시글 개수가 홀수. 그러니까 마지막 게시글은 하나만 띄워야한다.
 
@@ -84,9 +82,9 @@ public class Story_fragment extends Fragment {
     boolean data_flag = false;
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState)
+    {
         getTravelRecordAll_Server();
-
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -203,7 +201,6 @@ public class Story_fragment extends Fragment {
 
                         // Id를 받아옵니다. 버튼으로 사용하는 것들 1)storyImageView 2)storyImageButton 3)storyUserImage
                         storyImageView[i] = (ImageView) storyItemView[i].findViewById(R.id.storyImageView); // 클릭시 여행기 본문
-                        storyImageButton[i] = (Button) storyItemView[i].findViewById(R.id.storyImageButton); // 클릭시 간략화된 여행기 정보
                         storyBackgroundLayout[i] = (LinearLayout) storyItemView[i].findViewById(R.id.storyBackgroundLayout);
                         storyUserImage[i] = (ImageView) storyItemView[i].findViewById(R.id.storyUserImage); // 클릭시 트레블러 프로필
                         storyUserNameTitleLayout[i] = (LinearLayout) storyItemView[i].findViewById(R.id.storyUserNameTitleLayout);
@@ -212,10 +209,7 @@ public class Story_fragment extends Fragment {
                         TextView storyDateItem = (TextView) storyItemView[i].findViewById(R.id.storyDate);
                         storyImageView[i].setTag(seq);
 
-                        //******서버에서 받아온 정보로 수정 **********
-                        //storyImageView[i].setImageResource(R.drawable.testimg1);
-                        //getImage_Server(presentation_image, REQUEST_PRESENTATION_IMAGE, i);
-                        //getImage_Server(profile_image, REQUEST_USER_IMAGE, i);
+                        //서버에서 받아온 name, title로 수정
                         storyUserName[i].setText(name);
                         storyTitle[i].setText(title);
 
@@ -225,11 +219,10 @@ public class Story_fragment extends Fragment {
                         SimpleDateFormat format = new SimpleDateFormat("yy.MM.dd");
                         storyDateItem.setText(format.format(start_date) + "~" + format.format(finish_date));
 
+                        //***서버에서 정보를 받아오는 코드를 작성하고, StoryReadActivity로 전달한다.***
                         storyImageView[i].setOnClickListener(new ImageView.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                //***서버에서 정보를 받아오는 코드를 작성하고, StoryReadActivity로 전달한다.***
-
                                 int storySeq = (int) v.getTag();
                                 Intent intent = new Intent(getActivity(), StoryReadActivity.class);
                                 intent.putExtra("seq", storySeq);
@@ -498,7 +491,7 @@ public class Story_fragment extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                //Log.d("getImage_Server", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+                //Log.d("getImage_Server", "onFailure // statusCode : " + statusCode + ", headers : " + headers.toString() + " , error : " + error.toString());
             }
 
             @Override
