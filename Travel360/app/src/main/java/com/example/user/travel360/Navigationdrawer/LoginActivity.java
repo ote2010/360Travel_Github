@@ -20,6 +20,13 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
+
+//
+//import retrofit.Call;
+//import retrofit.Callback;
+//import retrofit.Response;
+//import retrofit.Retrofit;
+
 public class LoginActivity extends Activity {
     Button BtnJoin, BtnLogin;
     EditText EditEmail, EditPW;
@@ -28,14 +35,17 @@ public class LoginActivity extends Activity {
     SharedPreferences pref;
     SharedPreferences.Editor edit;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         init();
         onClickBtn();
     }
+
 
     public void init() {
         BtnJoin = (Button) findViewById(R.id.btnJoin);
@@ -43,9 +53,12 @@ public class LoginActivity extends Activity {
         EditEmail = (EditText) findViewById(R.id.editEmail);
         EditPW = (EditText) findViewById(R.id.editPw);
         ProfileImg = (ImageView) findViewById(R.id.profile1);
+
     }
 
     public void onClickBtn() {
+
+
         BtnJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,13 +83,17 @@ public class LoginActivity extends Activity {
                         Log.d("@@@", "111");
                         // called before request is started
                         //Toast.makeText(getApplicationContext(), "START!", Toast.LENGTH_SHORT).show();
+
+
                     }
+
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                         // called when response HTTP status is "200 OK"
                         //   Toast.makeText(getApplicationContext(), new String(response), Toast.LENGTH_LONG).show();
                         //   Log.d("seq&&", JSONP(new String(response)));
+                        Log.d("SUN@@", "success");
                         String seq = JSONP(new String(response));
                         ApplicationController.getInstance().setSeq(seq);
                         //   Log.d("seq@@", ApplicationController.getInstance().getSeq());
@@ -89,6 +106,7 @@ public class LoginActivity extends Activity {
                     public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
                         // called when response HTTP status is "4XX" (eg. 401, 403, 404)
                         //  Toast.makeText(getApplicationContext(), new String(errorResponse), Toast.LENGTH_LONG).show();
+                        Log.d("SUN@@", "Fail");
                         Toast.makeText(getApplicationContext(), "아이디 또는 패스워트가 정확하지 않습니다.", Toast.LENGTH_LONG).show();
                     }
 
@@ -104,6 +122,8 @@ public class LoginActivity extends Activity {
 
     }
 
+
+
     public String JSONP(String a) {
 
         String seq = null;
@@ -117,6 +137,9 @@ public class LoginActivity extends Activity {
             e.printStackTrace();
         }
 
+
         return seq;
     }
+
+
 }
