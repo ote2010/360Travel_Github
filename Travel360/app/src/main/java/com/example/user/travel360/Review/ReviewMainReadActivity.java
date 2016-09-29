@@ -1,6 +1,8 @@
 package com.example.user.travel360.Review;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.travel360.Navigationdrawer.ApplicationController;
+import com.example.user.travel360.Navigationdrawer.LoginActivity;
 import com.example.user.travel360.R;
 import com.example.user.travel360.Story.StoryWriteActivity;
 import com.loopj.android.http.AsyncHttpClient;
@@ -105,8 +108,25 @@ public class ReviewMainReadActivity extends Activity {
                 boolean check = (LoginFlag + "").equals(null + "");
 
                 if (check) {
-                    Toast.makeText(getApplicationContext(), "로그인 후 이용해주세요.", Toast.LENGTH_SHORT).show();
-                } else {
+                    AlertDialog.Builder dialogB = new AlertDialog.Builder(ReviewMainReadActivity.this);
+                    dialogB.setMessage("로그인 하시겠습니까?").setCancelable(false).setPositiveButton("Yes",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(ReviewMainReadActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                }
+                            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog alert =dialogB.create();
+
+                    alert.show();
+                }
+                else {
 
                     ReviewWriteActivity reviewWriteActivity = new ReviewWriteActivity(ReviewMainReadActivity.this);
 

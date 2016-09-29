@@ -3,118 +3,101 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="10"
-    android:orientation="vertical"
-    android:background="#ffffff"
+    android:background="@drawable/background"
     android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:weightSum="10"
     tools:context=".Navigationdrawer.LoginActivity">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5">
-    </View>
+    <ImageView
+        android:id="@+id/profile1"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/img1"
+        android:visibility="gone"
+
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="200dp"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:id="@+id/profile1"
-            android:src="@drawable/img1"
 
-            />
-
-        <RelativeLayout
+        <EditText
+            android:id="@+id/editEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_gravity="center_horizontal">
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/join_basic_button"
+            android:gravity="center_vertical"
+            android:hint="아이디"
+            android:textCursorDrawable="@null"
+              android:paddingLeft="30dp"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:fontFamily="sans-serif"
+            android:textColorHint="#777777" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/id"/>
-            <EditText
-                android:id="@+id/editEmail"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:textColor="#000000"
-                android:textColorHint="#000000"
-                android:singleLine="true"
-                android:backgroundTint="#000000"/>
-        </RelativeLayout>
 
-        <RelativeLayout
+        <EditText
+            android:id="@+id/editPw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center_horizontal">
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/join_basic_button"
+            android:gravity="center_vertical"
+            android:textCursorDrawable="@null"
+            android:hint="비밀번호"
+            android:inputType="textPassword"
+            android:paddingLeft="30dp"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:fontFamily="sans-serif"
+            android:textColorHint="#777777" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/pw"/>
-            <EditText
-                android:id="@+id/editPw"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:inputType="textPassword"
-                android:textColor="#000000"
-                android:textColorHint="#000000"
-                android:singleLine="true"
-                android:backgroundTint="#000000"/>
-        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/login_button" />
 
         <LinearLayout
-            android:layout_width="250dp"
-            android:weightSum="2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp">
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnLogin"
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="40dp"
-                android:text="login"/>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_weight="0.2"
-                android:layout_height="40dp">
-            </View>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="Travel360 회원이 아니십니까? "
+                android:textSize="15sp"
+                android:textColor="#fff" />
 
             <Button
                 android:id="@+id/btnJoin"
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="40dp"
-                android:text="sign up"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#000000ff"
+                android:text="@string/join"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif"
+                android:textColor="#fff" />
 
         </LinearLayout>
 
-
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5">
-    </View>
 
 </LinearLayout>

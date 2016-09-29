@@ -201,8 +201,8 @@ public class JoinActivity extends Activity {
                 try {
                     //Uri에서 이미지 이름을 얻어온다.
                     //String name_Str = getImageNameToUri(data.getData());
-                    uri = data.getData() ;
-                    path =  getPath(uri);
+                    uri = data.getData();
+                    path = getPath(uri);
                     Log.d("@URI@", uri + "");
 
                     //이미지 데이터를 비트맵으로 받아온다.
@@ -290,7 +290,7 @@ public class JoinActivity extends Activity {
                 edit.commit();
                 ApplicationController.getInstance().initSharedPreference();
                 //    Toast.makeText(getApplicationContext(), ApplicationController.getInstance().getEmail() + "/" +ApplicationController.getInstance().getGender() + "/" + ApplicationController.getInstance().getPw(), Toast.LENGTH_SHORT).show();
-
+                finish();
 
             }
 

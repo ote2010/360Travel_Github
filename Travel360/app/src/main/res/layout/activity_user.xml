@@ -84,10 +84,11 @@
                 android:paddingRight="20dp">
 
                 <ImageButton
+                    android:id="@+id/userHeartBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="#000000ff"
-                    android:src="@drawable/heart" />
+                    android:src="@drawable/empty_heart" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -108,10 +109,11 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="120dp"
             android:layout_weight="1"
-            android:src="@drawable/testback" />
+            android:src="@drawable/man1" />
 
         <TextView
-            android:text="Moomin"
+            android:id="@+id/userId"
+            android:text=""
             android:textSize="20sp"
             android:textColor="#000"
             android:fontFamily="sans-serif"
@@ -189,18 +191,6 @@
             android:layout_marginBottom="5dp"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/show_all"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@+id/button7"
-                android:layout_weight="1"
-                android:background="#ADACAC"
-                android:fontFamily="sans-serif"
-                android:text="전체보기"
-                android:textColor="#000" />
 
             <Button
                 android:id="@+id/show_story"
@@ -237,15 +227,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
             <ListView
                 android:visibility="visible"
-                android:id="@+id/mywrite_all"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </ListView>
-            <ListView
-                android:visibility="gone"
                 android:id="@+id/mywrite_story"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

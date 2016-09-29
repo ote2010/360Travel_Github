@@ -50,7 +50,7 @@ public class ReviewWriteActivity extends Dialog {
         init();
         onClickEvent();
         SelectGrade();
-      //  writeReview_Server();
+        //  writeReview_Server();
     }
 
     public void init() {
@@ -101,14 +101,14 @@ public class ReviewWriteActivity extends Dialog {
     }
 
     void writeReview_Server() {
-        //   long todaydate = System.currentTimeMillis(); // long 형의 현재시간
+        long todaydate = System.currentTimeMillis(); // long 형의 현재시간
         RequestParams params = new RequestParams();
         // 기본 데이터
         String WriteText = ReviewWrite.getText().toString();
-        params.put("seq","1");
+        params.put("user_seq", "1");
         params.put("text", "wefwefwefef");
-         params.put("write_date", "todaydate");
-          params.put("location", "korea");
+        params.put("write_date", todaydate);
+        params.put("location", "korea");
 
         AsyncHttpClient client = new AsyncHttpClient();
 
@@ -121,7 +121,7 @@ public class ReviewWriteActivity extends Dialog {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                Log.d("SUN@@", "Success // statusCode : " + statusCode + " , response : " +  new String(response));
+                Log.d("SUN@@", "Success // statusCode : " + statusCode + " , response : " + new String(response));
                 String res = new String(response);
             }
 
@@ -131,12 +131,10 @@ public class ReviewWriteActivity extends Dialog {
             }
 
             @Override
-            public void onRetry(int retryNo) {        }
+            public void onRetry(int retryNo) {
+            }
         });
     }
-
-
-
 
 
 }

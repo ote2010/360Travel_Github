@@ -3,6 +3,8 @@ package com.example.user.travel360.Review;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import com.example.user.travel360.CustomList.CustomAdapter;
 import com.example.user.travel360.CustomList.ItemData;
 import com.example.user.travel360.Navigationdrawer.ApplicationController;
+import com.example.user.travel360.Navigationdrawer.LoginActivity;
 import com.example.user.travel360.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -44,19 +47,19 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener {
     Button Detail, Add_Traveler, Close, Comment;
     TextView Name, Date, Review_Text, Star_Num;
     ImageView Star;
-    int userSeq = -1;
+    String userSeq = ApplicationController.getInstance().getSeq();
     String a = "작년에 파리 갔다 왔습니다. 사실 여권도 없는데 뻥친거에요ㅠㅠ 그냥 리뷰 예시 쓰려구 이러구 있습니다ㅠㅠ 무슨 내용으로 리뷰를 적을까. 360Studio 파이팅!! 임베디드 소프트웨어 경진대회 대상이 목표입니다!!!! 전성일은 파호우 쿰척쿰척!!!!! 동영이는 카톡 답장좀해줘 제발!!!!!!";
 
     public ReviewReadDialog(Context context) {
         super(context);
-       this.mContext = context;
+        this.mContext = context;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_read_dialog);
-        userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
+        //  userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
 
         init();
         //   Review_Text.setText(a);
@@ -95,7 +98,7 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener {
                 break;
             case R.id.ReviewComment:
                 Toast.makeText(getContext(), "wefwefwefwef", Toast.LENGTH_SHORT).show();
-                getComment_Server();
+                getReviewComment_Server();
                 break;
         }
     }
@@ -189,7 +192,7 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener {
         });
     }
 
-    void writeStoryComment_Server(String comment) {
+    void  writeReviewComment_Server(String comment) {
         //   long todaydate = System.currentTimeMillis(); // long 형의 현재시간
 
         RequestParams params = new RequestParams();
@@ -205,7 +208,7 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener {
         AsyncHttpClient client = new AsyncHttpClient();
 
         Log.d("SUN", "writeStoryComment_Server()");
-        client.get("http://kibox327.cafe24.com/writeComment.do", params, new AsyncHttpResponseHandler() {
+        client.get("http://kibox327.cafe24.com/writeReviewComment.do", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
             }
@@ -228,7 +231,7 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener {
         });
     }
 
-    void getComment_Server() {
+    void getReviewComment_Server(){
 
         RequestParams params = new RequestParams();
         // 보내는 data는 userSeq 만 있으면 됩니다.
@@ -237,7 +240,7 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener {
         AsyncHttpClient client = new AsyncHttpClient();
 
         Log.d("SUN", "getComment_Server()");
-        client.get("http://kibox327.cafe24.com/getTravelCommentList.do", params, new AsyncHttpResponseHandler() {
+        client.get("http://kibox327.cafe24.com/getReviewCommentList.do", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
             }
@@ -257,9 +260,30 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener {
                 layout.findViewById(R.id.commentSentBtn).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        writeStoryComment_Server(commentEt.getText().toString());
-                        commentEt.setText("");
+                        boolean check = (userSeq + "").equals(null + "");
 
+                        if (check) {
+                            AlertDialog.Builder dialogB = new AlertDialog.Builder(getContext());
+                            dialogB.setMessage("로그인 하시겠습니까?").setCancelable(false).setPositiveButton("Yes",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(getContext(), LoginActivity.class);
+                                            getContext().startActivity(intent);
+                                        }
+                                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            AlertDialog alert =dialogB.create();
+
+                            alert.show();
+                        }else {
+                            writeReviewComment_Server(commentEt.getText().toString());
+                            commentEt.setText("");
+                        }
                     }
                 });
                 listView = (ListView) layout.findViewById(R.id.commnetList);

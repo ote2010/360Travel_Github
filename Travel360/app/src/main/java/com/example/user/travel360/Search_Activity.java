@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.user.travel360.CustomDialog.TFDatePickerDialog;
+import com.example.user.travel360.Navigationdrawer.ApplicationController;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -120,6 +121,7 @@ public class Search_Activity extends Activity implements View.OnClickListener {
                 } else if (checkList[2] == 1) {
                     checkList[2] = 0;
                     New_turn.setText("최신순");
+
                 }
                 break;
             //index 3
