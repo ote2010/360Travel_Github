@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.user.travel360.CustomDialog.TFDatePickerDialog;
-import com.example.user.travel360.Navigationdrawer.ApplicationController;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -64,12 +63,9 @@ public class Search_Activity extends Activity implements View.OnClickListener {
         Detail_date = (Button) findViewById(R.id.Detail_date);
         Review = (Button) findViewById(R.id.Review);
 
-
         Btn_List1 = (LinearLayout) findViewById(R.id.BtnList1);
 
-
         GregorianCalendar calendar = new GregorianCalendar();
-
 
         SearchText = (EditText) findViewById(R.id.edit_search);
     }
@@ -86,8 +82,6 @@ public class Search_Activity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.FilterButton:
-
-
                 break;
             //index 0
             case R.id.Tstory:

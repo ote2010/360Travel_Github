@@ -23,7 +23,6 @@ public class Review_fragment extends Fragment {
 
     LinearLayout mainReviewContainer; // 추가할 리뷰 프레그먼트 레이아웃
     ImageView[] reviewMainImage = new ImageView[10]; // 리뷰 순위권 메인 이미지 뷰 - 버튼 동작 설정해야함
-    Button[] reviewImageButton = new Button[10]; // 리뷰의 간략화 정보 버튼 - 버튼 동작 설정해야함
     ImageView[] medalIcon = new ImageView[10]; // 메달 아이콘 이미지뷰
     TextView[] rankPlaceTextView = new TextView[10]; // 순위권 여행지 리뷰의 장소 텍스트뷰
     TextView[] rankEvaluationTextView = new TextView[10]; // 순위권 장소의 별점 텍스트뷰
@@ -64,7 +63,6 @@ public class Review_fragment extends Fragment {
             rankPlaceTextView[i] = (TextView) rankItem[i].findViewById(R.id.rankPlaceTextview);
             rankEvaluationTextView[i] = (TextView) rankItem[i].findViewById(R.id.rankEvaluationTextview);
             reviewMainImage[i] = (ImageView) rankItem[i].findViewById(R.id.reviewMainImage);
-            reviewImageButton[i] = (Button) rankItem[i].findViewById(R.id.reviewImageButton);
 
             // i가 0이면 1등, 1이면 2등, 2이면 3등
             if(i==0)

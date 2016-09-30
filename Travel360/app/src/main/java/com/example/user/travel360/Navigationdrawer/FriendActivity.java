@@ -2,6 +2,7 @@ package com.example.user.travel360.Navigationdrawer;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -43,6 +44,8 @@ public class FriendActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("친구 목록");
 
         friendSearchEt = (EditText) findViewById(R.id.friendSearchEt);
         listView = (ListView) findViewById(R.id.friendList);

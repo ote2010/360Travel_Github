@@ -239,31 +239,28 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) // 네비게이션 항목이 선택되면 불리는 함수
     {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.message) {
-            // Handle the camera action
+        if (id == R.id.nav_search) {
+            Intent intent = new Intent(MainActivity.this, Search_Activity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_friend) {
+            Intent intent = new Intent(MainActivity.this, FriendActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.message) {
+
         } else if (id == R.id.scrap) {
 
         } else if (id == R.id.mytext) {
 
         } else if (id == R.id.myreply) {
 
-        }
-        // 여기서부터 추가한 사항들입니다. 그냥 그대로 추가했습니다.
-        else if (id == R.id.setting) {
+        } else if (id == R.id.setting) {
 
-        } else if (id == R.id.notice) {
+        }else if (id == R.id.notice) {
 
-        } else if (id == R.id.vr) {
+        }else if(id == R.id.vr){
 
-        }else if (id == R.id.nav_friend) {
-            Intent intent = new Intent( MainActivity.this,FriendActivity.class);
-            startActivity(intent);
-        }else if(id == R.id.nav_search){
-            Intent intent = new Intent( MainActivity.this,Search_Activity.class);
-            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

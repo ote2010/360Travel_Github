@@ -1,9 +1,11 @@
 package com.example.user.travel360.Navigationdrawer;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -394,14 +397,21 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
-
-
     void widgetInit(){
         userIdTv= (TextView) findViewById(R.id.userId);
 
         userProfileImg = (ImageView) findViewById(R.id.userProfileImg);
-        userProfileImg.setOnClickListener(this);
+        userProfileImg.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 1001);
+            }
+        });
 
         addTravlerBtn = (ImageButton) findViewById(R.id.addTravlerBtn);
         addTravlerBtn.setOnClickListener(this);
@@ -420,7 +430,25 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         show_story.setOnClickListener(this);
         show_review = (Button)findViewById(R.id.show_review);
         show_review.setOnClickListener(this);
+    }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == 1001)
+        {
+            if(resultCode == Activity.RESULT_OK)
+            {
+                try
+                {
+                    Bitmap image = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                    userProfileImg.setImageBitmap(image);
+                }
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

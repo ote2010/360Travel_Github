@@ -1,8 +1,6 @@
 package com.example.user.travel360.Navigationdrawer;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -10,14 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.OrientationHelper;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -26,17 +18,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.example.user.travel360.Navigationdrawer.ApplicationController;
 import com.example.user.travel360.R;
-import com.example.user.travel360.Story.PhotoAdapter;
-import com.example.user.travel360.Story.RecyclerItemClickListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -45,11 +32,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 import cz.msebera.android.httpclient.Header;
-import me.iwf.photopicker.PhotoPicker;
-import me.iwf.photopicker.PhotoPreview;
 
 //import retrofit.Call;
 //import retrofit.Callback;
@@ -209,7 +193,6 @@ public class JoinActivity extends Activity {
                     Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
                     ProfileImg.setImageBitmap(image_bitmap);
 
-
                     //Toast.makeText(getBaseContext(), "name_Str : "+name_Str , Toast.LENGTH_SHORT).show();
 
 
@@ -253,12 +236,14 @@ public class JoinActivity extends Activity {
         params.put("id", email1);
         params.put("name", name1);
         // params.put("permission", true);
-        try {
+        try
+        {
             params.put("image", myFile);
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e)
+        {
 
         }
-
 
         AsyncHttpClient client = new AsyncHttpClient();
 
