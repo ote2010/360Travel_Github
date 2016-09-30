@@ -3,9 +3,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".StoryReadctivity">
-      <item android:id="@+id/travelerAddButton"
-            android:title="+트레블러추가"
-            app:showAsAction="always|withText"/>
 
     <item android:id="@+id/menuButton"
           android:title="메뉴"

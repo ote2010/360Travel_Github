@@ -6,26 +6,112 @@
     android:orientation="vertical"
     tools:context=".Story.StoryReadActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="여행 시작일 :\n여행 종료일 :"
-        android:id="@+id/travelDateTextView"
-        android:layout_margin="10dp"
-        android:textColor="#000000"
-        android:textSize="15dp"/>
-
-    <ScrollView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <com.example.user.travel360.CircleImageView.CircularImageView
+                android:id="@+id/travelerProfileImg"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/man1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom">
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:id="@+id/userProfileImg">
+
+                    <TextView
+                        android:id="@+id/travelReadUserID"
+                        android:text="userID"
+                        android:textSize="20sp"
+                        android:textColor="#000"
+                        android:fontFamily="sans-serif"
+                        android:layout_below="@id/travelerProfileImg"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:layout_gravity="center_horizontal"
+                    >
+
+                    <ImageButton
+                        android:id="@+id/travelerAddBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#000000ff"
+                        android:paddingTop="10dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/traveler_button"
+                        android:layout_gravity="bottom"/>
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#000000ff"
+                        android:paddingTop="10dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/message_button"
+                        android:id="@+id/messageBtn"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="여행 시작일 :\n여행 종료일 :"
+            android:id="@+id/travelDateTextView"
+            android:layout_margin="10dp"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif"/>
 
         <LinearLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:orientation="vertical"></LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.30">
+
     </ScrollView>
 
     <Button

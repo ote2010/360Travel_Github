@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -67,6 +68,8 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
     ArrayList <Image> ImageList = new ArrayList <Image> ();
     ArrayList <String> TextList = new ArrayList <String> ();
     String title, text;
+    String id, name, profile_image;
+    int writerSeq = -1;
     long start_date_client, finish_date_client;
     TextView travelDateTextView;
     int imgGroupIndex = 0;
@@ -83,6 +86,11 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
     public ItemData itemData;
     AlertDialog.Builder aDialog;
     AlertDialog ad;
+
+    //유저정보
+    ImageView travelerProfileImg;
+    ImageButton travelerAddBtn, messageBtn;
+    TextView travelReadUserID;
 
     int storySeq = -1, userSeq = -1;
 
@@ -101,6 +109,40 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
         travelDateTextView = (TextView) findViewById(R.id.travelDateTextView);
         imgCountIntent = new Intent(getApplicationContext(), ImageViewer.class);
 
+        travelerProfileImg = (ImageView)findViewById(R.id.travelerProfileImg);
+        travelerAddBtn = (ImageButton)findViewById(R.id.travelerAddBtn);
+        messageBtn = (ImageButton)findViewById(R.id.messageBtn);
+        travelReadUserID = (TextView)findViewById(R.id.travelReadUserID);
+
+        travelerAddBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                String LoginFlag = ApplicationController.getInstance().getEmail();
+
+                boolean check = (LoginFlag + "").equals(null + "");
+
+                if (check)
+                {
+                    Toast.makeText(getApplicationContext(), "로그인 후 이용해주세요.", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    if(writerSeq == -1)
+                    {
+                        Toast.makeText(getApplicationContext(), "아직 서버에서 정보를 불러오지 못했습니다!", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
+                        Toast.makeText(getApplicationContext(), "친구 등록이 완료되었습니다!", Toast.LENGTH_LONG).show();
+                        addFriend_Server(userSeq, writerSeq);
+                    }
+                }
+            }
+        });
+
         findViewById(R.id.commentBtn).setOnClickListener(this);
 
         getTravelRecord_Server(storySeq);
@@ -113,20 +155,6 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
         if (id == android.R.id.home)
         {
             finish();
-            return true;
-        }
-
-        if (id == R.id.travelerAddButton)
-        {
-            //Toast.makeText(getApplicationContext(),"친구 추가 되었습니다!",Toast.LENGTH_SHORT).show();
-
-            if(ApplicationController.getInstance().getSeq() == null)
-                Toast.makeText(getApplicationContext(), "로그인이 필요한 서비스입니다.", Toast.LENGTH_LONG).show();
-            else
-                userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
-
-            //TODO 바꾸기
-            addFriend_Server(userSeq, userSeq);
             return true;
         }
 
@@ -360,6 +388,7 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
                     Log.d("start_date_client", "start_date_client : " + String.valueOf(start_date_client));
                     Log.d("finish_date_client", "finish_date_client : " + String.valueOf(finish_date_client));
 
+
                     SimpleDateFormat format = new SimpleDateFormat("yy년 MM월 dd일 E요일");
                     travelDateTextView.setText("여행 시작일 : " + format.format(start_date_client) + "\n여행 종료일 : " + format.format(finish_date_client));
 
@@ -383,6 +412,18 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
 
                     title = (String)travelStrObj.get("title");
                     text = (String)travelStrObj.get("text");
+
+                    String userinfo = travelStrObj.get("userinfo") + "";
+                    JSONObject userinfoObj = new JSONObject(userinfo);
+
+                    id = (String)userinfoObj.get("email");
+                    name = (String)userinfoObj.get("name");
+                    profile_image = (String)userinfoObj.get("profile_image");
+                    writerSeq = (int)userinfoObj.get("seq");
+
+                    travelReadUserID.setText(id+" ("+name+")");
+                    getImage_Server(profile_image);
+
                     Log.d("travelStrObj", "title : " + title);
                     Log.d("travelStrObj", "text : " + text);
 
@@ -804,6 +845,41 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
         });
     }
 
+    public Bitmap byteArrayToBitmap(byte[] byteArray ) {  // byte -> bitmap 변환 및 반환
+        Bitmap bitmap = BitmapFactory.decodeByteArray( byteArray, 0, byteArray.length ) ;
+        return bitmap ;
+    }
+
+
+    void getImage_Server(String imageName) {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 imageName 만 있으면 됩니다.
+        params.put("imageName", imageName);
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getImage_Server()");
+        client.get("http://kibox327.cafe24.com/Image.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                // byteArrayToBitmap 를 통해 reponse로 받은 이미지 데이터 bitmap으로 변환
+                Bitmap bitmap = byteArrayToBitmap(response);
+                travelerProfileImg.setImageBitmap(bitmap);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {    }
+        });
+    }
+
 
     /****************************
      * 여행기 댓글 쓰기
@@ -855,6 +931,8 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
         // 보내는 data는 seq, targetSeq 만 있으면 됩니다.
         params.put("seq", mySeq);
         params.put("targetSeq", otherSeq);
+        Log.d("SUN", "mySeq : " + String.valueOf(mySeq));
+        Log.d("SUN", "otherSeq : " + String.valueOf(otherSeq));
 
         AsyncHttpClient client = new AsyncHttpClient();
 

@@ -152,7 +152,7 @@ public class StoryWriteActivity extends AppCompatActivity {
         storystring = new String();
         contentsSequence = new ArrayList <Integer> ();
 
-        if(ApplicationController.getInstance().getSeq() != null)
+        if(!ApplicationController.getInstance().getSeq().equals(null))
         {
             userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
             Log.d("userSeq", String.valueOf(userSeq));
