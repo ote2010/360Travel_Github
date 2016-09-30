@@ -24,6 +24,7 @@ import com.example.user.travel360.R;
 import com.example.user.travel360.Story.StoryWriteActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +40,8 @@ public class ReviewMainReadActivity extends Activity {
 
 
     ScrollView mScroll;
+    TextView place_name;
+    TextView star_num1;
 
     ViewGroup v;
     LinearLayout BestReview, NormalReview;
@@ -69,28 +72,48 @@ public class ReviewMainReadActivity extends Activity {
     TextView[] NDate = new TextView[10]; //리뷰 날짜
     TextView[] NStarNum = new TextView[10]; //별점 점수
     ImageView[] NStar = new ImageView[10]; //별점 이미지
-
-
+    String Location;
+    float Evaluation;
+    String Start;
     //플로팅 버튼
     FloatingActionButton WriteReview, Up;
+    String[] Text_bump = new String[1000];
+    int arr_len = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_review_main_read);
-
+        Intent intent = getIntent();
+        Location = intent.getStringExtra("Location");
+        Evaluation = intent.getFloatExtra("Evaluation", 0);
+        Start = intent.getStringExtra("Start");
+        Log.d("SUN_h", Location + "location" + Evaluation + "/" + Start);
         init();
-        //getTravleReviewAll_Server();
-        Bestinit();
-        Normalinit();
+        getTravelReviewAll_Server();
+        //   getTravleReviewAll_Server();
+        // Bestinit();
+        //Normalinit();
         onClickEvent();
 
     }
 
+    @Override
+    protected void onResume() {
+        // Bestinit();
+        super.onResume();
+    }
+
     public void init() {
+        place_name = (TextView) findViewById(R.id.place_name);
+        place_name.setText(Location);
+
+        star_num1 = (TextView) findViewById(R.id.star_num);
+        star_num1.setText(Evaluation + "");
+
         BestReview = (LinearLayout) findViewById(R.id.best_review);
-        NormalReview = (LinearLayout) findViewById(R.id.normal_review);
+        //    NormalReview = (LinearLayout) findViewById(R.id.normal_review);
         WriteReview = (FloatingActionButton) findViewById(R.id.write_review_btn);
         Up = (FloatingActionButton) findViewById(R.id.up);
         mScroll = (ScrollView) findViewById(R.id.read_review_scroll);
@@ -114,6 +137,7 @@ public class ReviewMainReadActivity extends Activity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     Intent intent = new Intent(ReviewMainReadActivity.this, LoginActivity.class);
+                                    intent.putExtra("Location", Location);
                                     startActivity(intent);
                                 }
                             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -122,11 +146,10 @@ public class ReviewMainReadActivity extends Activity {
                             dialog.cancel();
                         }
                     });
-                    AlertDialog alert =dialogB.create();
+                    AlertDialog alert = dialogB.create();
 
                     alert.show();
-                }
-                else {
+                } else {
 
                     ReviewWriteActivity reviewWriteActivity = new ReviewWriteActivity(ReviewMainReadActivity.this);
 
@@ -149,9 +172,9 @@ public class ReviewMainReadActivity extends Activity {
     }
 
     public void Bestinit() {
-        getTravelReviewAll_Server();
+
         LayoutInflater inflater = LayoutInflater.from(getApplication().getApplicationContext());
-        for (int i = 0; i < BEST_REVIEW_NUM; i++) {
+        for (int i = 0; i < ApplicationController.getInstance().getArr_len(); i++) {
             BestReviewITem[i] = inflater.inflate(R.layout.review_read_listitem_view, v, false); // 추가할 순위권 여행지 뷰 inflate
 
             // 메달 아이콘, 여행지 장소 텍스트, 여행지 별점 ID 불러오기
@@ -169,7 +192,8 @@ public class ReviewMainReadActivity extends Activity {
             BUser_name[i].setText("오탁은");
             BStarNum[i].setText("4.8");
 
-            BText1[i].setText(Best_text1[i]);
+            BText1[i].setText(ApplicationController.getInstance().getText_bump(i));
+            Log.d("SUN_SUN", ApplicationController.getInstance().getText_bump(i));
             BDate[i].setText("2016.08.23");
 
             BestReviewITem[i].setOnClickListener(new View.OnClickListener() {
@@ -242,6 +266,14 @@ public class ReviewMainReadActivity extends Activity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        // Bestinit();
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.review_main_read, menu);
         return true;
@@ -261,38 +293,72 @@ public class ReviewMainReadActivity extends Activity {
     }
 
     void getTravelReviewAll_Server() {
-
+        RequestParams params = new RequestParams();
         AsyncHttpClient client = new AsyncHttpClient();
+        params.put("location", Location);
         Log.d("SUN", "getTravleReviewAll_Server()");
-        client.get("http://kibox327.cafe24.com//travelReviewList.do", new AsyncHttpResponseHandler() {
+        client.get("http://kibox327.cafe24.com//travelReviewList.do", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-
-                Log.d("SUN", "statusCode : " + statusCode + " , response : " + new String(response));
+                //  LayoutInflater inflater = LayoutInflater.from(getApplication().getApplicationContext());
+                Log.d("SUN_jj", "statusCode : " + statusCode + " , response : " + new String(response));
 
                 String res = new String(response);
                 try {
                     JSONObject object = new JSONObject(res);
                     String objStr = object.get("reviews") + "";
                     JSONArray arr = new JSONArray(objStr);
+                    // Log.d("SUN_a", arr.length()+"길이");
                     LayoutInflater inflater = LayoutInflater.from(getApplication().getApplicationContext());
                     for (int i = 0; i < arr.length(); i++) {
-
-
+                        arr_len = arr.length();
+                        Log.d("SUN_a", "efwefwfefwfef");
                         JSONObject obj = (JSONObject) arr.get(i);
-/*
-                        int seq  = (Integer)obj.get("seq");
-                        int user_info_seq = (Integer)obj.get("user_info_seq");
-                        String presentation_image = (String)obj.get("presentation_image");
-                        String text = (String)obj.get("text");
+
+                        int seq = (Integer) obj.get("seq");
+                        // Log.d("SUN_a", seq+"");
+                        int user_info_seq = (Integer) obj.get("user_info_seq");
+                        //     String presentation_image = (String) obj.get("presentation_image");
+                        Text_bump[i] = (String) obj.get("text");
+                        //   Log.d("SUN_a", Text_bump[i]+"/범프");
+                        // Log.d("SUN_a", text + "/text");
+                        // Log.d("SUN_a", "seq : " + seq + " " + " , text : " + text + " , userseq : " + user_info_seq + " , start : ");
+                        //----------------------------------------------------------------------------------------------------------------------------
+                        BestReviewITem[i] = inflater.inflate(R.layout.review_read_listitem_view, v, false); // 추가할 순위권 여행지 뷰 inflate
+
+                        // 메달 아이콘, 여행지 장소 텍스트, 여행지 별점 ID 불러오기
+                        BUser_profile[i] = (ImageView) BestReviewITem[i].findViewById(R.id.Review_read_user_img);
+                        BStar[i] = (ImageView) BestReviewITem[i].findViewById(R.id.Review_read_star);
+                        BUser_name[i] = (TextView) BestReviewITem[i].findViewById(R.id.Review_read_user_name);
+                        BText1[i] = (TextView) BestReviewITem[i].findViewById(R.id.Review_read_text);
+                        BDate[i] = (TextView) BestReviewITem[i].findViewById(R.id.Review_read_date);
+                        BStarNum[i] = (TextView) BestReviewITem[i].findViewById(R.id.Review_read_starnum);
 
 
-                     */
-                        Best_text1[i] = (String) obj.get("text");
+                        //***********이 부분에서 서버에서 받아와서 바꿔주면 된다!!!!!***********
+                        BUser_profile[i].setImageResource(R.drawable.img1);
+                        BStar[i].setImageResource(R.drawable.star);
+                        BUser_name[i].setText("오탁은");
+                        BStarNum[i].setText("4.8");
+
+                        BText1[i].setText(Text_bump[i]);
+                        Log.d("SUN_1", Text_bump[i]+"Location : "+Location);
+                        BDate[i].setText("2016.08.23");
+
+                        BestReviewITem[i].setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ReviewReadDialog reviewReadDialog = new ReviewReadDialog(ReviewMainReadActivity.this);
+                                reviewReadDialog.show();
+                            }
+                        });
+                        //*******************************************************************
+
+                        BestReview.addView(BestReviewITem[i]); // 추가해주기
 
                     }
 
