@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.user.travel360.Navigationdrawer.ApplicationController;
 import com.example.user.travel360.Navigationdrawer.FriendActivity;
@@ -182,13 +183,20 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),UserActivity.class);
-                //TODO이부분 고치기!!!!!!
-                if(ApplicationController.getInstance().getSeq() != null)
+
+                String LoginFlag = ApplicationController.getInstance().getEmail();
+
+                boolean check = (LoginFlag + "").equals(null + "");
+
+                if (check)
+                {
+                    Toast.makeText(getApplicationContext(), "로그인 후 이용해주세요.", Toast.LENGTH_SHORT).show();
+                } else
                 {
                     userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
+                    intent.putExtra("seq", userSeq);
+                    startActivity(intent);
                 }
-                intent.putExtra("seq", userSeq);
-                startActivity(intent);
             }
         });
     }

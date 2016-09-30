@@ -1,28 +1,23 @@
 package com.example.user.travel360.Navigationdrawer;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.user.travel360.CustomList.CustomAdapter;
-import com.example.user.travel360.CustomList.ItemData;
 import com.example.user.travel360.CustomList.MyWriteCustomAdapter;
 import com.example.user.travel360.CustomList.MyWriteItemData;
 import com.example.user.travel360.R;
-import com.example.user.travel360.Story.StoryReadActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -30,9 +25,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.EOFException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -41,7 +34,7 @@ import cz.msebera.android.httpclient.Header;
 public class UserActivity extends AppCompatActivity implements View.OnClickListener{
 
     ImageView userProfileImg; // 사용자 프로필 이미지
-   ImageButton addTravlerBtn, userHeartBtn;
+    ImageButton addTravlerBtn, userHeartBtn;
     Button  show_story, show_review;
     TextView userIdTv;
 
@@ -51,8 +44,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     public ArrayList<MyWriteItemData> itemDatas_review = new ArrayList<MyWriteItemData>();
 
     boolean heart_flag = false;
-    int MY_SEQ;
-    int HERE_SEQ = 4;
+    int MY_SEQ = -1;
+    int HERE_SEQ = -1;
     int ONSELF_FLAG = -1; // 본인확인 플래그
 
     @Override
@@ -60,6 +53,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setTheme(android.R.style.Theme_Holo_Light_NoActionBar_TranslucentDecor);
         setContentView(R.layout.activity_user);
+
+        Intent intent = getIntent();
+        HERE_SEQ = intent.getExtras().getInt("userSeq", -1);
 
         // 본인확인
         try{
