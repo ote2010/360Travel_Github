@@ -70,6 +70,7 @@ public class StoryWrite2Activity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.action_bar1));
         setContentView(R.layout.activity_story_write2);
 
         uploadImgLayout = (LinearLayout) findViewById(R.id.uploadImgLayout);

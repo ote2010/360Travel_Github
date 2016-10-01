@@ -6,14 +6,19 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.travel360.Navigationdrawer.ApplicationController;
@@ -21,6 +26,9 @@ import com.example.user.travel360.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -38,9 +46,12 @@ public class ReviewWriteActivity extends Dialog {
     ImageView PlaceImg;
     ArrayAdapter<CharSequence> grade;
     String Location;
-
+    Context mContext;
+    LinearLayout starlayout;
+    TextView dateTv;
     public ReviewWriteActivity(Context context) {
         super(context);
+        mContext = context;
     }
 
     @Override
@@ -52,10 +63,22 @@ public class ReviewWriteActivity extends Dialog {
         // Intent intent=
         // Location = intent.getStringExtra("Location");
         setContentView(R.layout.activity_review_write);
+
+        WindowManager.LayoutParams lp = getWindow().getAttributes( ) ;
+        WindowManager wm = ((WindowManager)mContext.getApplicationContext().getSystemService(mContext.getApplicationContext().WINDOW_SERVICE)) ;
+        lp.width =  (int)( wm.getDefaultDisplay().getWidth( ) * 0.95 );
+        lp.height =  (int)( wm.getDefaultDisplay().getHeight( ) * 0.8 );
+
+        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,25, getContext().getResources().getDisplayMetrics());
+
+        lp.y = px;
+        getWindow().setGravity(Gravity.CENTER);
+        getWindow().setAttributes( lp ) ;
         init();
         onClickEvent();
         SelectGrade();
         //  writeReview_Server();
+
     }
 
     public void init() {
@@ -65,6 +88,16 @@ public class ReviewWriteActivity extends Dialog {
 
         EnterBtn = (Button) findViewById(R.id.enter_btn);
         CancelBtn = (Button) findViewById(R.id.cancel_btn);
+
+        starlayout = (LinearLayout)findViewById(R.id.starlayout);
+
+        dateTv = (TextView)findViewById(R.id.review_write_date);
+
+        long todaydate = System.currentTimeMillis(); // long 형의 현재시간
+        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
+        String datestr = df.format(todaydate);
+
+        dateTv.setText(datestr);
     }
 
     public void onClickEvent() {
@@ -95,6 +128,28 @@ public class ReviewWriteActivity extends Dialog {
 
                 Grade = grade.getItem(position) + "";
                 Toast.makeText(getContext(), Grade, Toast.LENGTH_SHORT).show();
+                starlayout.removeAllViews();
+
+                int mok = (int)(Double.parseDouble(Grade) / 1.0) ;
+                double mod = Double.parseDouble(Grade) % 1.0 ;
+
+                for(int i=0; i<mok; i++) // 별표 동적생성
+                {
+                    LinearLayout layout = new LinearLayout(mContext);
+                    layout.setOrientation(LinearLayout.HORIZONTAL);
+                    ImageView review_star = new ImageView(mContext);
+                    review_star.setImageDrawable(mContext.getResources().getDrawable(R.drawable.star));
+                    layout.addView(review_star);
+                    starlayout.addView(layout);
+                }
+                if(mod > 0){
+                    LinearLayout layout = new LinearLayout(mContext);
+                    layout.setOrientation(LinearLayout.HORIZONTAL);
+                    ImageView review_star = new ImageView(mContext);
+                    review_star.setImageDrawable(mContext.getResources().getDrawable(R.drawable.half_star));
+                    layout.addView(review_star);
+                    starlayout.addView(layout);
+                }
             }
 
             @Override

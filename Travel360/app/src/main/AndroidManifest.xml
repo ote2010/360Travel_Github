@@ -90,7 +90,9 @@
             android:name=".CustomDialog.MainImgSelectDialog"
             android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".Story.VideoPickerActivity" />
-        <activity android:name=".Navigationdrawer.FriendActivity" />
+        <activity android:name=".Navigationdrawer.FriendActivity"
+            android:label="친구 목록"
+            />
         <activity android:name=".Vr.ShowVrActivity" />
 
         <meta-data

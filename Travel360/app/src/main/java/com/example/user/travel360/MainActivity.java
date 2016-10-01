@@ -3,6 +3,8 @@ package com.example.user.travel360;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +37,14 @@ import com.example.user.travel360.Navigationdrawer.ApplicationController;
 import com.example.user.travel360.Navigationdrawer.FriendActivity;
 import com.example.user.travel360.Navigationdrawer.LoginActivity;
 import com.example.user.travel360.Navigationdrawer.UserActivity;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -231,7 +241,8 @@ public class MainActivity extends AppCompatActivity
             UserIDTextView.setText(LoginFlag);
             LayoutNoLogin.setVisibility(View.INVISIBLE);
             LayoutLogin.setVisibility(View.VISIBLE);
-
+            String user_seq = ApplicationController.getInstance().getSeq();
+            getUserInfo_Server(user_seq);
         }
     }
 
@@ -385,4 +396,93 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         isLoginned();
     }
+
+
+    /************* 사용자 정보 **************/
+    void getUserInfo_Server(String user_seq) {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 seq 만 있으면 됩니다.
+        params.put("seq",user_seq);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getUserInfo_Server()");
+        client.get("http://kibox327.cafe24.com/getUserInfo.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {  }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+                try{
+                    JSONObject object = new JSONObject(res);
+                    String objStr =  object.get("userDto") + "";
+                    JSONObject obj = new JSONObject(objStr);
+
+                    String id = (String)obj.get("id");
+                    String name = (String)obj.get("name");
+                    String profile_image = (String)obj.get("profile_image");
+                    getImage_Server(profile_image);
+
+                    Log.d("FRAG_ACIT", "profile_image : "+profile_image);
+
+
+                }catch (JSONException e){
+
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {  }
+        });
+    }
+
+
+    /***************  image 가져오기  *********************/
+
+    public Bitmap byteArrayToBitmap(byte[] byteArray ) {  // byte -> bitmap 변환 및 반환
+        Bitmap bitmap = BitmapFactory.decodeByteArray( byteArray, 0, byteArray.length ) ;
+        return bitmap ;
+    }
+
+
+    void getImage_Server(String imgname) {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 imageName 만 있으면 됩니다.
+        params.put("imageName", imgname);
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getImage_Server()");
+        client.get("http://kibox327.cafe24.com/Image.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                // byteArrayToBitmap 를 통해 reponse로 받은 이미지 데이터 bitmap으로 변환
+                Bitmap bitmap = byteArrayToBitmap(response);
+                UserProfileImg.setImageBitmap(bitmap);
+
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {    }
+        });
+    }
+
 }

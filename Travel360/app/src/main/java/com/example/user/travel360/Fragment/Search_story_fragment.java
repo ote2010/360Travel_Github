@@ -112,7 +112,7 @@ public class Search_story_fragment extends Fragment {
                     getTravelRecordAll_Server(params);
                 } else if (cateDetail.equals("1"))// 기간
                 {
-                    Log.d("FRAG_ACIT", "기간");
+
                     SimpleDateFormat df = new SimpleDateFormat("yyyy년 MM월 dd일");
                     long start_time = 0,finish_time = 0;
                     Date start_date = null, finish_date =  null;
@@ -122,12 +122,13 @@ public class Search_story_fragment extends Fragment {
 
                         finish_date = df.parse(eDate);
                     finish_time = finish_date.getTime();
+                        Log.d("FRAG_ACIT", "기간 : " +  start_time + " , " + finish_time);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                     RequestParams params = new RequestParams();
-                    params.put("start_date_client", sDate);
-                    params.put("finish_date_client", eDate);
+                    params.put("start_date_client", start_time);
+                    params.put("finish_date_client", finish_time);
                 }
             }
     }
@@ -165,21 +166,6 @@ public class Search_story_fragment extends Fragment {
      **********************/
 
     void getTravelRecordAll_Server(RequestParams params ) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
-        Date start_date = null, finish_date =  null;
-        long start_time = 0,finish_time = 0;
-        try {
-            start_date = df.parse("2016.05.01");
-            start_time = start_date.getTime();
-
-            finish_date = df.parse("2016.10.30");
-            finish_time = finish_date.getTime();
-
-            Log.d("FRAG_ACIT", "# my  start_time : " + start_time + " ,  finish_time : " + finish_time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
 
         //RequestParams params = new RequestParams();
         AsyncHttpClient client = new AsyncHttpClient();

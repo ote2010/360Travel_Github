@@ -158,7 +158,7 @@ public class ReviewMainReadActivity extends AppCompatActivity {
                 } else {
 
                     ReviewWriteActivity reviewWriteActivity = new ReviewWriteActivity(ReviewMainReadActivity.this);
-
+                    reviewWriteActivity.requestWindowFeature(getWindow().FEATURE_NO_TITLE);
                     reviewWriteActivity.show();
 
                 }

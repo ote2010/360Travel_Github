@@ -98,6 +98,7 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.action_bar1));
         setContentView(R.layout.activity_story_read);
 
         Intent intent = getIntent();

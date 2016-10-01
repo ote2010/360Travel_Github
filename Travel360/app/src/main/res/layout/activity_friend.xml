@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     android:orientation="vertical"
+    android:padding="15dp"
     tools:context=".Navigationdrawer.FriendActivity">
 
     <LinearLayout
@@ -12,6 +14,8 @@
         android:orientation="horizontal">
 
         <EditText
+            android:paddingLeft="10dp"
+            android:background="@drawable/search_box"
             android:id="@+id/friendSearchEt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

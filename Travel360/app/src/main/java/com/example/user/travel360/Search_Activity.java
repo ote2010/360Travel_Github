@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -66,7 +67,7 @@ public class Search_Activity extends Activity implements View.OnClickListener , 
         switch (v.getId())
         {
             case R.id.searchOkBtn: // 검색 버튼
-                if(Integer.parseInt(cate)>-1 &&  Integer.parseInt(cate)>-1) {
+                if(Integer.parseInt(cate)>-1  &&  Integer.parseInt(cateDetail)>-1) {
                     intent.putExtra("searchCate", cate);
                     intent.putExtra("searchCateDetail", cateDetail);
                     intent.putExtra("searchStartDate", sDate);
