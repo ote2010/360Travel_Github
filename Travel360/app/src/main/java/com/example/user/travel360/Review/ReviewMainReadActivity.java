@@ -24,10 +24,7 @@ import com.example.user.travel360.R;
 import com.example.user.travel360.Story.StoryWriteActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-<<<<<<< .merge_file_a09472
-=======
 import com.loopj.android.http.RequestParams;
->>>>>>> .merge_file_a06036
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,11 +40,8 @@ public class ReviewMainReadActivity extends Activity {
 
 
     ScrollView mScroll;
-<<<<<<< .merge_file_a09472
-=======
     TextView place_name;
     TextView star_num1;
->>>>>>> .merge_file_a06036
 
     ViewGroup v;
     LinearLayout BestReview, NormalReview;
@@ -78,12 +72,6 @@ public class ReviewMainReadActivity extends Activity {
     TextView[] NDate = new TextView[10]; //리뷰 날짜
     TextView[] NStarNum = new TextView[10]; //별점 점수
     ImageView[] NStar = new ImageView[10]; //별점 이미지
-<<<<<<< .merge_file_a09472
-
-
-    //플로팅 버튼
-    FloatingActionButton WriteReview, Up;
-=======
     String Location;
     float Evaluation;
     String Start;
@@ -91,20 +79,12 @@ public class ReviewMainReadActivity extends Activity {
     FloatingActionButton WriteReview, Up;
     String[] Text_bump = new String[1000];
     int arr_len = 0;
->>>>>>> .merge_file_a06036
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_review_main_read);
-<<<<<<< .merge_file_a09472
-
-        init();
-        //getTravleReviewAll_Server();
-        Bestinit();
-        Normalinit();
-=======
         Intent intent = getIntent();
         Location = intent.getStringExtra("Location");
         Evaluation = intent.getFloatExtra("Evaluation", 0);
@@ -115,16 +95,10 @@ public class ReviewMainReadActivity extends Activity {
         //   getTravleReviewAll_Server();
         // Bestinit();
         //Normalinit();
->>>>>>> .merge_file_a06036
         onClickEvent();
 
     }
 
-<<<<<<< .merge_file_a09472
-    public void init() {
-        BestReview = (LinearLayout) findViewById(R.id.best_review);
-        NormalReview = (LinearLayout) findViewById(R.id.normal_review);
-=======
     @Override
     protected void onResume() {
         // Bestinit();
@@ -140,7 +114,6 @@ public class ReviewMainReadActivity extends Activity {
 
         BestReview = (LinearLayout) findViewById(R.id.best_review);
         //    NormalReview = (LinearLayout) findViewById(R.id.normal_review);
->>>>>>> .merge_file_a06036
         WriteReview = (FloatingActionButton) findViewById(R.id.write_review_btn);
         Up = (FloatingActionButton) findViewById(R.id.up);
         mScroll = (ScrollView) findViewById(R.id.read_review_scroll);
@@ -164,10 +137,7 @@ public class ReviewMainReadActivity extends Activity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     Intent intent = new Intent(ReviewMainReadActivity.this, LoginActivity.class);
-<<<<<<< .merge_file_a09472
-=======
                                     intent.putExtra("Location", Location);
->>>>>>> .merge_file_a06036
                                     startActivity(intent);
                                 }
                             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -176,18 +146,10 @@ public class ReviewMainReadActivity extends Activity {
                             dialog.cancel();
                         }
                     });
-<<<<<<< .merge_file_a09472
-                    AlertDialog alert =dialogB.create();
-
-                    alert.show();
-                }
-                else {
-=======
                     AlertDialog alert = dialogB.create();
 
                     alert.show();
                 } else {
->>>>>>> .merge_file_a06036
 
                     ReviewWriteActivity reviewWriteActivity = new ReviewWriteActivity(ReviewMainReadActivity.this);
 
@@ -210,15 +172,9 @@ public class ReviewMainReadActivity extends Activity {
     }
 
     public void Bestinit() {
-<<<<<<< .merge_file_a09472
-        getTravelReviewAll_Server();
-        LayoutInflater inflater = LayoutInflater.from(getApplication().getApplicationContext());
-        for (int i = 0; i < BEST_REVIEW_NUM; i++) {
-=======
 
         LayoutInflater inflater = LayoutInflater.from(getApplication().getApplicationContext());
         for (int i = 0; i < ApplicationController.getInstance().getArr_len(); i++) {
->>>>>>> .merge_file_a06036
             BestReviewITem[i] = inflater.inflate(R.layout.review_read_listitem_view, v, false); // 추가할 순위권 여행지 뷰 inflate
 
             // 메달 아이콘, 여행지 장소 텍스트, 여행지 별점 ID 불러오기
@@ -236,12 +192,8 @@ public class ReviewMainReadActivity extends Activity {
             BUser_name[i].setText("오탁은");
             BStarNum[i].setText("4.8");
 
-<<<<<<< .merge_file_a09472
-            BText1[i].setText(Best_text1[i]);
-=======
             BText1[i].setText(ApplicationController.getInstance().getText_bump(i));
             Log.d("SUN_SUN", ApplicationController.getInstance().getText_bump(i));
->>>>>>> .merge_file_a06036
             BDate[i].setText("2016.08.23");
 
             BestReviewITem[i].setOnClickListener(new View.OnClickListener() {
@@ -287,6 +239,8 @@ public class ReviewMainReadActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     ReviewReadDialog reviewReadDialog = new ReviewReadDialog(ReviewMainReadActivity.this);
+
+                    reviewReadDialog.requestWindowFeature(getWindow().FEATURE_NO_TITLE);
                     reviewReadDialog.show();
                 }
             });
@@ -314,8 +268,6 @@ public class ReviewMainReadActivity extends Activity {
     }
 
     @Override
-<<<<<<< .merge_file_a09472
-=======
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         // Bestinit();
@@ -324,7 +276,6 @@ public class ReviewMainReadActivity extends Activity {
     }
 
     @Override
->>>>>>> .merge_file_a06036
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.review_main_read, menu);
         return true;
@@ -344,53 +295,25 @@ public class ReviewMainReadActivity extends Activity {
     }
 
     void getTravelReviewAll_Server() {
-<<<<<<< .merge_file_a09472
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        Log.d("SUN", "getTravleReviewAll_Server()");
-        client.get("http://kibox327.cafe24.com//travelReviewList.do", new AsyncHttpResponseHandler() {
-=======
         RequestParams params = new RequestParams();
         AsyncHttpClient client = new AsyncHttpClient();
         params.put("location", Location);
         Log.d("SUN", "getTravleReviewAll_Server()");
         client.get("http://kibox327.cafe24.com//travelReviewList.do", params, new AsyncHttpResponseHandler() {
->>>>>>> .merge_file_a06036
             @Override
             public void onStart() {
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-<<<<<<< .merge_file_a09472
-
-                Log.d("SUN", "statusCode : " + statusCode + " , response : " + new String(response));
-=======
                 //  LayoutInflater inflater = LayoutInflater.from(getApplication().getApplicationContext());
                 Log.d("SUN_jj", "statusCode : " + statusCode + " , response : " + new String(response));
->>>>>>> .merge_file_a06036
 
                 String res = new String(response);
                 try {
                     JSONObject object = new JSONObject(res);
                     String objStr = object.get("reviews") + "";
                     JSONArray arr = new JSONArray(objStr);
-<<<<<<< .merge_file_a09472
-                    LayoutInflater inflater = LayoutInflater.from(getApplication().getApplicationContext());
-                    for (int i = 0; i < arr.length(); i++) {
-
-
-                        JSONObject obj = (JSONObject) arr.get(i);
-/*
-                        int seq  = (Integer)obj.get("seq");
-                        int user_info_seq = (Integer)obj.get("user_info_seq");
-                        String presentation_image = (String)obj.get("presentation_image");
-                        String text = (String)obj.get("text");
-
-
-                     */
-                        Best_text1[i] = (String) obj.get("text");
-=======
                     // Log.d("SUN_a", arr.length()+"길이");
                     LayoutInflater inflater = LayoutInflater.from(getApplication().getApplicationContext());
                     for (int i = 0; i < arr.length(); i++) {
@@ -432,13 +355,14 @@ public class ReviewMainReadActivity extends Activity {
                             @Override
                             public void onClick(View v) {
                                 ReviewReadDialog reviewReadDialog = new ReviewReadDialog(ReviewMainReadActivity.this);
+
+                                reviewReadDialog.requestWindowFeature(getWindow().FEATURE_NO_TITLE);
                                 reviewReadDialog.show();
                             }
                         });
                         //*******************************************************************
 
                         BestReview.addView(BestReviewITem[i]); // 추가해주기
->>>>>>> .merge_file_a06036
 
                     }
 

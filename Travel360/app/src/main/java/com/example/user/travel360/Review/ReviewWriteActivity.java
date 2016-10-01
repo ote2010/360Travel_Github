@@ -2,10 +2,7 @@ package com.example.user.travel360.Review;
 
 import android.app.Dialog;
 import android.content.Context;
-<<<<<<< .merge_file_a00460
-=======
 import android.content.Intent;
->>>>>>> .merge_file_a09876
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,10 +16,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-<<<<<<< .merge_file_a00460
-=======
 import com.example.user.travel360.Navigationdrawer.ApplicationController;
->>>>>>> .merge_file_a09876
 import com.example.user.travel360.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -43,10 +37,7 @@ public class ReviewWriteActivity extends Dialog {
     String Grade;
     ImageView PlaceImg;
     ArrayAdapter<CharSequence> grade;
-<<<<<<< .merge_file_a00460
-=======
     String Location;
->>>>>>> .merge_file_a09876
 
     public ReviewWriteActivity(Context context) {
         super(context);
@@ -58,11 +49,8 @@ public class ReviewWriteActivity extends Dialog {
         dialog = new ReviewWriteActivity(getContext());
         dialog.requestWindowFeature(Window.FEATURE_ACTION_BAR);
 
-<<<<<<< .merge_file_a00460
-=======
         // Intent intent=
         // Location = intent.getStringExtra("Location");
->>>>>>> .merge_file_a09876
         setContentView(R.layout.activity_review_write);
         init();
         onClickEvent();
@@ -122,12 +110,6 @@ public class ReviewWriteActivity extends Dialog {
         RequestParams params = new RequestParams();
         // 기본 데이터
         String WriteText = ReviewWrite.getText().toString();
-<<<<<<< .merge_file_a00460
-        params.put("user_seq", "1");
-        params.put("text", "wefwefwefef");
-        params.put("write_date", todaydate);
-        params.put("location", "korea");
-=======
         String seq = ApplicationController.getInstance().getSeq();
         String text1 = ReviewWrite.getText().toString();
         String Location = ApplicationController.getInstance().getLocation1();
@@ -135,7 +117,6 @@ public class ReviewWriteActivity extends Dialog {
         params.put("text", text1);
         params.put("write_date_client", todaydate);
         params.put("location", Location);
->>>>>>> .merge_file_a09876
 
         AsyncHttpClient client = new AsyncHttpClient();
 
@@ -148,11 +129,7 @@ public class ReviewWriteActivity extends Dialog {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-<<<<<<< .merge_file_a00460
-                Log.d("SUN@@", "Success // statusCode : " + statusCode + " , response : " + new String(response));
-=======
                 Log.d("SUN_확인", "Success // statusCode : " + statusCode + " , response : " + new String(response));
->>>>>>> .merge_file_a09876
                 String res = new String(response);
             }
 

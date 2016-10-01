@@ -4,13 +4,6 @@ package com.example.user.travel360.Navigationdrawer;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.util.Log;
-<<<<<<< .merge_file_a04944
-
-public class ApplicationController extends Application {
-    // 사용자 속성 저장
-    String email=null;
-    String pw=null;
-=======
 import android.view.LayoutInflater;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -31,14 +24,10 @@ public class ApplicationController extends Application {
     String[] Text_bump = new String[1000];
     String email = null;
     String pw = null;
->>>>>>> .merge_file_a09720
     String gender;
     int point;
     String seq;
     Boolean LoginFlag = false;
-<<<<<<< .merge_file_a04944
-
-=======
     String[] location = new String[1000];
     int[] userseq = new int[1000];
     long[] start_date = new long[1000];
@@ -46,7 +35,6 @@ public class ApplicationController extends Application {
     float[] evaluation = new float[1000];
     String start[] = new String[1000];
     String Location;
->>>>>>> .merge_file_a09720
     // SharedPreference
     SharedPreferences pref;
     SharedPreferences.Editor edit;
@@ -65,12 +53,8 @@ public class ApplicationController extends Application {
 
     /* public void setLoginFlag(boolean a) {
          this.LoginFlag = a;
-
      }
-
  */
-<<<<<<< .merge_file_a04944
-=======
     public int getArr_len() {
         return arr_len;
     }
@@ -79,23 +63,15 @@ public class ApplicationController extends Application {
         return Text_bump[i];
     }
 
->>>>>>> .merge_file_a09720
     public Boolean getLoginFlag() {
         pref = getSharedPreferences("login", 0);
         edit = pref.edit();
 
         this.email = pref.getString("email", email);
-<<<<<<< .merge_file_a04944
-        if(email.equals(null) == true){
-            return false;
-        }else
-            return  true;
-=======
         if (email.equals(null) == true) {
             return false;
         } else
             return true;
->>>>>>> .merge_file_a09720
     }
 
     public String getEmail() {
@@ -116,14 +92,6 @@ public class ApplicationController extends Application {
         editor.commit();
 
     }
-<<<<<<< .merge_file_a04944
-
-
-
-
-
-
-=======
     public void setLocation(String Lo){
         this.Location = Lo;
         SharedPreferences.Editor editor = pref.edit();
@@ -141,7 +109,6 @@ public class ApplicationController extends Application {
 
         return Location;
     }
->>>>>>> .merge_file_a09720
 
     public String getSeq() {
 
@@ -175,10 +142,6 @@ public class ApplicationController extends Application {
         ApplicationController.instance = this;
 
         this.initSharedPreference();
-<<<<<<< .merge_file_a04944
-    }
-
-=======
         this.showReviewRanking_Server();
     }
 
@@ -193,7 +156,6 @@ public class ApplicationController extends Application {
     public String getStartDate(int i) {
         return start[i];
     }
->>>>>>> .merge_file_a09720
 
     public void initSharedPreference() {
         pref = getSharedPreferences("login", 0);
@@ -210,8 +172,6 @@ public class ApplicationController extends Application {
 
     }
 
-<<<<<<< .merge_file_a04944
-=======
     void showReviewRanking_Server() {
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -278,6 +238,5 @@ public class ApplicationController extends Application {
 
 
 
->>>>>>> .merge_file_a09720
 
 }
