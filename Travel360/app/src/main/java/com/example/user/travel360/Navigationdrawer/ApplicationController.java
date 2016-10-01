@@ -4,16 +4,49 @@ package com.example.user.travel360.Navigationdrawer;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.util.Log;
+<<<<<<< .merge_file_a04944
 
 public class ApplicationController extends Application {
     // 사용자 속성 저장
     String email=null;
     String pw=null;
+=======
+import android.view.LayoutInflater;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+
+import cz.msebera.android.httpclient.Header;
+
+public class ApplicationController extends Application {
+    // 사용자 속성 저장
+    int arr_len;
+    String[] Text_bump = new String[1000];
+    String email = null;
+    String pw = null;
+>>>>>>> .merge_file_a09720
     String gender;
     int point;
     String seq;
     Boolean LoginFlag = false;
+<<<<<<< .merge_file_a04944
 
+=======
+    String[] location = new String[1000];
+    int[] userseq = new int[1000];
+    long[] start_date = new long[1000];
+    // Float [] evaluation = new Float[10];
+    float[] evaluation = new float[1000];
+    String start[] = new String[1000];
+    String Location;
+>>>>>>> .merge_file_a09720
     // SharedPreference
     SharedPreferences pref;
     SharedPreferences.Editor edit;
@@ -36,15 +69,33 @@ public class ApplicationController extends Application {
      }
 
  */
+<<<<<<< .merge_file_a04944
+=======
+    public int getArr_len() {
+        return arr_len;
+    }
+
+    public String getText_bump(int i) {
+        return Text_bump[i];
+    }
+
+>>>>>>> .merge_file_a09720
     public Boolean getLoginFlag() {
         pref = getSharedPreferences("login", 0);
         edit = pref.edit();
 
         this.email = pref.getString("email", email);
+<<<<<<< .merge_file_a04944
         if(email.equals(null) == true){
             return false;
         }else
             return  true;
+=======
+        if (email.equals(null) == true) {
+            return false;
+        } else
+            return true;
+>>>>>>> .merge_file_a09720
     }
 
     public String getEmail() {
@@ -65,12 +116,32 @@ public class ApplicationController extends Application {
         editor.commit();
 
     }
+<<<<<<< .merge_file_a04944
 
 
 
 
 
 
+=======
+    public void setLocation(String Lo){
+        this.Location = Lo;
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+        edit.putString("Location", Location);
+        editor.commit();
+    }
+    public String getLocation1() {
+        pref = getSharedPreferences("login", 0);
+        edit = pref.edit();
+
+        this.Location = pref.getString("Location", Location);
+//        Log.d("@seq@", seq);
+
+        return Location;
+    }
+>>>>>>> .merge_file_a09720
 
     public String getSeq() {
 
@@ -104,8 +175,25 @@ public class ApplicationController extends Application {
         ApplicationController.instance = this;
 
         this.initSharedPreference();
+<<<<<<< .merge_file_a04944
     }
 
+=======
+        this.showReviewRanking_Server();
+    }
+
+    public String getLocation(int i) {
+        return location[i];
+    }
+
+    public float getEvalucation(int i) {
+        return evaluation[i];
+    }
+
+    public String getStartDate(int i) {
+        return start[i];
+    }
+>>>>>>> .merge_file_a09720
 
     public void initSharedPreference() {
         pref = getSharedPreferences("login", 0);
@@ -122,5 +210,74 @@ public class ApplicationController extends Application {
 
     }
 
+<<<<<<< .merge_file_a04944
+=======
+    void showReviewRanking_Server() {
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "writeStory_Server()");
+        client.get("http://kibox327.cafe24.com/travelReviewRankingList.do", new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN_h", "statusCode : " + statusCode + " , response : " + new String(response));
+                String res = new String(response);
+
+                try {
+                    JSONObject object = new JSONObject(res);
+                    String objStr = object.get("reviews") + "";
+                    JSONArray arr = new JSONArray(objStr);
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject obj = (JSONObject) arr.get(i);
+                        //     Float a   = (float)obj.get("evaluation");
+                        //   evaluation[i] = a;
+                        location[i] = (String) obj.get("location");
+                        String b = (String) obj.get("location");
+                        location[i] = b;
+                        // String text  = (String)obj.get("text");
+                        int c = (int) obj.get("seq");
+                        userseq[i] = c;
+                        long d = (long) obj.get("write_date_client");
+                        //start_date[i]=d;
+                        // long finish_date = (long)obj.get("finish_date_client");
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
+                        start[i] = df.format(d);
+                        // String finish = df.format(finish_date);
+                        Log.d("SUN_h", "evaluation : " + evaluation[i] + " " + " , location : " + location[i] + " , text : " + " , userseq : " + userseq[i] + " , start : " + start[i]);
+                        if (i < 3) {
+//                           rankPlaceTextView[i].setText(location[i] + "");
+                            //                         rankEvaluationTextView[i].setText(evaluation[i] + "");
+                        } else {
+                            //  view.setPlace(location[i]);
+                            //   view.setEvaluation(evaluation[i]+"");
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("SUN_h", "e : " + e.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN_확인", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {
+            }
+        });
+        //  Log.d("SUN_h", "lenth" + location.length);
+    }
+
+
+
+>>>>>>> .merge_file_a09720
 
 }

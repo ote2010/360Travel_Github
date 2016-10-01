@@ -5,6 +5,10 @@
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+<<<<<<< .merge_file_a06312
+=======
+        <option name="gradleHome" value="C:\Program Files\Android\Android Studio\gradle\gradle-2.14.1" />
+>>>>>>> .merge_file_a04976
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -16,7 +20,21 @@
             <option value="$PROJECT_DIR$/panowidget" />
           </set>
         </option>
+<<<<<<< .merge_file_a06312
         <option name="resolveModulePerSourceSet" value="false" />
+=======
+        <option name="myModules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/PhotoPicker" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/base" />
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/commonwidget" />
+            <option value="$PROJECT_DIR$/panowidget" />
+          </set>
+        </option>
+>>>>>>> .merge_file_a04976
       </GradleProjectSettings>
     </option>
   </component>
