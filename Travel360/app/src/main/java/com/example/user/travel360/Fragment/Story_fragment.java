@@ -105,7 +105,6 @@ public class Story_fragment extends Fragment {
 
         //글쓰기 버튼 동작 코드
         FloatingActionButton writeButton = (FloatingActionButton) v.findViewById(R.id.writeButton);
-        writeButton.setImageDrawable(getResources().getDrawable(R.drawable.floating_button));
         writeButton.setOnClickListener(new FloatingActionButton.OnClickListener()
         {
             public void onClick(View v)

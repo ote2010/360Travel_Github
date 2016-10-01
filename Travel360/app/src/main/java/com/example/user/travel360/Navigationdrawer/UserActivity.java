@@ -75,7 +75,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         widgetInit();
         getTravleRecordAll_Server();
         getTravleReviewAll_Server();
-        getUserInfo_Server(MY_SEQ);
+        getUserInfo_Server(HERE_SEQ);
 
 
 
