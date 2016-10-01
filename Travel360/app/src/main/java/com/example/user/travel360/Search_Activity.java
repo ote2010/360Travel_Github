@@ -3,42 +3,47 @@ package com.example.user.travel360;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.user.travel360.CustomDialog.TFDatePickerDialog;
+import com.example.user.travel360.CustomList.GpsInfo;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class Search_Activity extends Activity implements View.OnClickListener {
+public class Search_Activity extends Activity implements View.OnClickListener , CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener{
+
+
 
     TFDatePickerDialog tfDatePickerDialog;
-    EditText SearchText;
-    Button FilterButton, Tstory, Review, New_turn, Detail_date;
-    LinearLayout Btn_List1;
-
-    int chk = 0;
-    boolean Lo_Tag = true;
-    LocationManager l_manager;
-    //사용자 위치 좌표
-    public double latitude, longitude;
     int Year, Month, Day;
-    // 버튼이 선택 됐는지 확인 하는 배열
-    int[] checkList = {0, 0, 0, 0};
+    final int RESULT_SEARCH = 1000;
+    CheckBox storyCheck, reviewCheck;
+    LinearLayout cateLayout, dateLayout;
+    RadioGroup radioGroup;
+    EditText startDate, endDate;
+    String cate="-1", cateDetail="-1" ,sDate="-1", eDate="-1";
+    Button searchOkBtn, searchCancleBtn;
+
+    GpsInfo gps;
 
 
-    @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         //팝업 외부 뿌연 효과
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
@@ -48,28 +53,43 @@ public class Search_Activity extends Activity implements View.OnClickListener {
         getWindow().setAttributes(layoutParams);
 
 
-        setContentView(R.layout.activity_search_);
+        setContentView(R.layout.activity_search);
 
         init();
 
     }
 
+    @Override
+    public void onClick(View v) {
 
-    public void init() {
-        FilterButton = (Button) findViewById(R.id.FilterButton);
-        Tstory = (Button) findViewById(R.id.Tstory);
+        Intent intent = getIntent();
+        switch (v.getId())
+        {
+            case R.id.searchOkBtn: // 검색 버튼
+                if(Integer.parseInt(cate)>-1 &&  Integer.parseInt(cate)>-1) {
+                    intent.putExtra("searchCate", cate);
+                    intent.putExtra("searchCateDetail", cateDetail);
+                    intent.putExtra("searchStartDate", sDate);
+                    intent.putExtra("searchEndDate", eDate);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+                else
+                    Toast.makeText(getApplicationContext(),"조건을 선택해주세요",Toast.LENGTH_SHORT).show();
+                break;
 
-        New_turn = (Button) findViewById(R.id.New_turn);
-        Detail_date = (Button) findViewById(R.id.Detail_date);
-        Review = (Button) findViewById(R.id.Review);
+            case R.id.searchCancleBtn:
+                intent.putExtra("searchCate", "-1");
+                intent.putExtra("searchCateDetail", "-1");
+                intent.putExtra("searchStartDate",  "-1");
+                intent.putExtra("searchEndDate",  "-1");
+                setResult(RESULT_CANCELED, intent);
+                finish();
+                break;
 
-        Btn_List1 = (LinearLayout) findViewById(R.id.BtnList1);
 
-        GregorianCalendar calendar = new GregorianCalendar();
-
-        SearchText = (EditText) findViewById(R.id.edit_search);
+        }
     }
-
 
     private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -79,99 +99,96 @@ public class Search_Activity extends Activity implements View.OnClickListener {
     };
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.FilterButton:
-                break;
-            //index 0
-            case R.id.Tstory:
-                if (checkList[0] == 0) {
-                    checkList[0] = 1;
-                    Tstory.setText("선택");
-                } else if (checkList[0] == 1) {
-                    checkList[0] = 0;
-                    Tstory.setText("여행기");
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                }
+        if(!storyCheck.isChecked() && !reviewCheck.isChecked()){
+            cateLayout.setVisibility(View.GONE);
+            cate = "-1";
+        }
+        else {
+            cateLayout.setVisibility(View.VISIBLE);
+            if (storyCheck.isChecked() && reviewCheck.isChecked()) { // 여행기 , 리뷰 검색 둘다
+                cate = "2";
+            } else if (!storyCheck.isChecked() && reviewCheck.isChecked()) { // 리뷰 검색만
+                cate = "1";
+            } else if (storyCheck.isChecked() && !reviewCheck.isChecked()) { // 여행기 검색만
+                cate = "0";
+            }
+        }
+    }
 
-                break;
-            //index 1
-            case R.id.Review:
-                if (checkList[1] == 0) {
-                    checkList[1] = 1;
-                    Review.setText("선택");
-                    Review.setText("");
-                } else if (checkList[1] == 1) {
-                    checkList[1] = 0;
-                    Review.setText("리뷰");
-                }
-                break;
-            //index 2
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId){
+            case R.id.radioNear:
+                cateDetail = "0";
+                dateLayout.setVisibility(View.GONE);
+                gps = new GpsInfo(this);
+                if (gps.isGetLocation()) {
 
-            case R.id.New_turn:
-                if (checkList[2] == 0) {
-                    checkList[2] = 1;
-                    New_turn.setText("선택");
-                } else if (checkList[2] == 1) {
-                    checkList[2] = 0;
-                    New_turn.setText("최신순");
+                    double latitude = gps.getLatitude();
+                    double longitude = gps.getLongitude();
 
-                }
-                break;
-            //index 3
-            case R.id.Detail_date:
-                if (checkList[0] == 0) {
-                    checkList[0] = 1;
-                    Detail_date.setText("선택");
+                    sDate = String.valueOf(latitude);
+                    eDate = String.valueOf(longitude);
 
-                    //Dialog_DatePicker();
-                    tfDatePickerDialog = new TFDatePickerDialog(this);
-                    tfDatePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            //TODO >>시작 날짜 끝날짜 받아오는거 했음 이걸 가지고 서버에 연동해서 해야함!
-                            String ToD = tfDatePickerDialog.getToDate();
-                            String FromD = tfDatePickerDialog.getFromDate();
-                            Toast.makeText(getApplicationContext(), FromD + "\n" + ToD, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    tfDatePickerDialog.show();
-
-
-                } else if (checkList[0] == 1) {
-                    checkList[0] = 0;
-                    Detail_date.setText("세부날짜선택");
-
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "위도: " + latitude + "\n경도: " + longitude,
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    // GPS 를 사용할수 없으므로
+                    gps.showSettingsAlert();
                 }
                 break;
 
-            case R.id.search_btn:
-                //TODO 앞에서 클릭했던 조건들 그리고 edittext로 받아온 string값을 이용해서 검색해야함 (서버필요 ㅠㅡㅠ)
+            case R.id.radioDate:
+                cateDetail = "1";
+                dateLayout.setVisibility(View.VISIBLE);
+                tfDatePickerDialog = new TFDatePickerDialog(this);
+                tfDatePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        //TODO >>시작 날짜 끝날짜 받아오는거 했음 이걸 가지고 서버에 연동해서 해야함!
+                        String ToD = tfDatePickerDialog.getToDate();
+                        String FromD = tfDatePickerDialog.getFromDate();
+                        startDate.setText(FromD);
+                        endDate.setText(ToD);
+                        sDate = FromD;
+                        eDate = ToD;
+                        //Toast.makeText(getApplicationContext(), FromD + "\n" + ToD, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                tfDatePickerDialog.show();
+
                 break;
         }
     }
 
+    public void init() {
+        cateLayout = (LinearLayout)findViewById(R.id.cateLayout);
+        dateLayout = (LinearLayout)findViewById(R.id.dateLayout);
 
-    private void Dialog_DatePicker() {
-        Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        storyCheck = (CheckBox)findViewById(R.id.storyCheck);
+        reviewCheck = (CheckBox)findViewById(R.id.reviewCheck);
 
-        DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Year = year;
-                Month = monthOfYear + 1;
-                Day = dayOfMonth;
-                Detail_date.setText(Year + "/" + Month + "/" + Day);
+        radioGroup = (RadioGroup)findViewById(R.id.radioGroup);
+        startDate = (EditText)findViewById(R.id.startDate);
+        endDate = (EditText)findViewById(R.id.endDate);
 
-            }
-        };
-        DatePickerDialog alert = new DatePickerDialog(this, mDateSetListener, year, month, day);
+        searchOkBtn = (Button)findViewById(R.id.searchOkBtn);
 
-        alert.show();
+        storyCheck.setOnCheckedChangeListener(this);
+        reviewCheck.setOnCheckedChangeListener(this);
+        radioGroup.setOnCheckedChangeListener(this);
+        searchOkBtn.setOnClickListener(this);
+
+
+        searchCancleBtn = (Button)findViewById(R.id.searchCancleBtn);
+        searchCancleBtn.setOnClickListener(this);
     }
 
+    void getGPS(){
 
+    }
 }

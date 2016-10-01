@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -17,9 +18,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -54,10 +58,24 @@ public class MainActivity extends AppCompatActivity
     TabLayout tabLayout;
 
     int userSeq = -1;
+
+
+    public  String searchCate="-1", searchCateDetail="-1",searchStartDate="-1", searchEndDate="-1";
+    final static int REQUEST_SEARCH = 1000;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+       // getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+       //setTheme(android.R.style.Theme_Holo_Light_NoActionBar_TranslucentDecor);
+
         setContentView(R.layout.activity_main);
+
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // 툴바
         setSupportActionBar(toolbar);
@@ -227,7 +245,8 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.search) {
             Intent intent = new Intent(getApplicationContext(), Search_Activity.class);
-            startActivity(intent);
+            startActivityForResult(intent,REQUEST_SEARCH);
+            //startActivity(intent);
 
             // Toast.makeText(getApplicationContext(),"search click", Toast.LENGTH_SHORT).show();
         }
@@ -266,6 +285,45 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_SEARCH:
+
+                if (resultCode == RESULT_OK) {
+                    searchCate = data.getStringExtra("searchCate");
+                    searchCateDetail = data.getStringExtra("searchCateDetail");
+                    searchStartDate = data.getStringExtra("searchStartDate");
+                    searchEndDate = data.getStringExtra("searchEndDate");
+                    Log.d("SAERCH", "검색확인 : " + searchCate + " " + searchCateDetail + " " + searchStartDate + " " + searchEndDate);
+                    //mViewPager.setAdapter(mSectionsPagerAdapter);
+
+                    Toast.makeText(MainActivity.this, "검색확인", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(getApplicationContext(), SearchResultActivity.class);
+                    intent.putExtra("searchCate", searchCate);
+                    intent.putExtra("searchCateDetail", searchCateDetail);
+                    intent.putExtra("searchStartDate", searchStartDate);
+                    intent.putExtra("searchEndDate", searchEndDate);
+                    startActivity(intent);
+                }
+                else{
+                    searchCate="-1";
+                    searchCateDetail="-1";
+                    searchStartDate="-1";
+                    searchEndDate="-1";
+                    //mViewPager.setAdapter(mSectionsPagerAdapter);
+                    Log.d("SAERCH", "검색취소 : " +searchCate + " " + searchCateDetail + " " + searchStartDate + " " + searchEndDate);
+                    Toast.makeText(MainActivity.this, "검색취소", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+
+        }
     }
 
     //--------------------------------------------------------fragment tab 추가

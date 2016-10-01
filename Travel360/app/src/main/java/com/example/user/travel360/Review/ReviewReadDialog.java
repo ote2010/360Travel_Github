@@ -43,28 +43,46 @@ import cz.msebera.android.httpclient.Header;
 
 public class ReviewReadDialog extends Dialog implements View.OnClickListener {
 
-    Context mContext;
-    // String userSeq = ApplicationController.getInstance().getSeq();
+    // 위젯
     ImageButton add_travler, dialog_close;
-   // ImageView review_star;
     LinearLayout starlayout;
+    TextView review_dateTV, user_nameTV, review_evTV, review_contextTV;
+
+    // 넘어오는 데이터
+    Context mContext;
+    double writeEvl;
+    int userSeq;
+    String wrteDate, writeText;
 
     public ReviewReadDialog(Context context) {
         super(context);
         this.mContext = context;
     }
 
+
+    public ReviewReadDialog(Context context, int user_info_seq, String write_date, String text, double evl) {
+        super(context);
+        this.mContext = context;
+        userSeq = user_info_seq;
+        wrteDate = write_date;
+        writeText = text;
+        writeEvl = evl;
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //  userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
+
 
         WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
         lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         lpWindow.dimAmount = 0.8f;
         getWindow().setAttributes(lpWindow);
+
         setContentView(R.layout.activity_review_read_dialog);
-        //  userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
 
         WindowManager.LayoutParams lp = getWindow().getAttributes( ) ;
         WindowManager wm = ((WindowManager)mContext.getApplicationContext().getSystemService(mContext.getApplicationContext().WINDOW_SERVICE)) ;
@@ -79,7 +97,9 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener {
 
 
         init();
-        getTravleReview_Server();
+        getUserInfo_Server(userSeq);
+
+
     }
 
     public void init() {
@@ -99,6 +119,12 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener {
             layout.addView(review_star);
             starlayout.addView(layout);
         }
+
+        review_dateTV = (TextView) findViewById(R.id.review_dateTV);
+        user_nameTV = (TextView) findViewById(R.id.user_nameTV);
+        review_evTV = (TextView) findViewById(R.id.review_evTV);
+        review_contextTV = (TextView) findViewById(R.id.review_contextTV);
+
 
     }
 
@@ -154,40 +180,42 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener {
         });
     }
 
-
-    /*****************  review 1개 데이터  **********************/
-
-    void getTravleReview_Server() {
+    /************* 사용자 정보 **************/
+    void getUserInfo_Server(int seq) {
 
         RequestParams params = new RequestParams();
-        // 보내는 data는 reviewSeq 만 있으면 됩니다.
-        params.put("reviewSeq", 1);
+        // 보내는 data는 seq 만 있으면 됩니다.
+        params.put("seq",seq);
 
         AsyncHttpClient client = new AsyncHttpClient();
 
-        Log.d("SUN", "getTravleReview_Server()");
-        client.get("http://kibox327.cafe24.com/getTravelReview.do", params, new AsyncHttpResponseHandler() {
+        Log.d("SUN", "getUserInfo_Server()");
+        client.get("http://kibox327.cafe24.com/getUserInfo.do", params, new AsyncHttpResponseHandler() {
             @Override
-            public void onStart() {   }
+            public void onStart() {  }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                 Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
                 String res = new String(response);
+                try{
+                    JSONObject object = new JSONObject(res);
+                    String objStr =  object.get("userDto") + "";
+                    JSONObject obj = new JSONObject(objStr);
 
-                try {
-                    JSONObject obj = new JSONObject(res);
-                    String objStr =  obj.get("review") + "";
-                    JSONObject review = new JSONObject(objStr);
-                    String location = (String)review.get("location");
-                    String text = (String)review.get("text");
-                    // String user = (String)review.get("user");
-                    long write_date_client = (long)review.get("write_date_client");
+                    String id = (String)obj.get("id");
+                    String name = (String)obj.get("name");
+                    String profile_image = (String)obj.get("profile_image");
+                    Log.d("SUN", "profile_image : "+profile_image);
 
-                    Log.d("SUN",  "location : " +location);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.d("SUN",  "e : " + e.toString());
+                    review_dateTV.setText(wrteDate);
+                    user_nameTV.setText(name);
+                    review_evTV .setText(writeEvl+"");
+                    review_contextTV .setText(writeText);
+
+
+                }catch (JSONException e){
+
                 }
             }
 
@@ -196,10 +224,8 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener {
                 Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
             }
 
-
             @Override
-            public void onRetry(int retryNo) {         }
+            public void onRetry(int retryNo) {  }
         });
     }
-
 }
