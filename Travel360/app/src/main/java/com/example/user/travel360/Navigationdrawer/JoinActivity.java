@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -46,7 +47,8 @@ public class JoinActivity extends Activity {
     RadioGroup radioGroup;
     SharedPreferences pref;
     SharedPreferences.Editor edit;
-    ImageButton ProfileImg;
+    ImageButton   selectProfile;
+    ImageView ProfileImg;
     Uri uri = null;
     String path;
 
@@ -72,12 +74,13 @@ public class JoinActivity extends Activity {
         PWCH = (TextView) findViewById(R.id.PWCH);
         //  EditBirth = (EditText) findViewById(R.id.editBirth);
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-        ProfileImg = (ImageButton) findViewById(R.id.profile);
+        ProfileImg = (ImageView) findViewById(R.id.profile);
+        selectProfile = (ImageButton) findViewById(R.id.selectProfile);
     }
 
 
     public void onClickBtn() {
-        ProfileImg.setOnClickListener(new View.OnClickListener() {
+        selectProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
