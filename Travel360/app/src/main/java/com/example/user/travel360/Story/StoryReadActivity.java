@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.example.user.travel360.CustomList.CustomAdapter;
 import com.example.user.travel360.CustomList.ItemData;
 import com.example.user.travel360.Navigationdrawer.ApplicationController;
+import com.example.user.travel360.Navigationdrawer.UserActivity;
 import com.example.user.travel360.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -114,6 +115,24 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
         travelerAddBtn = (ImageButton)findViewById(R.id.travelerAddBtn);
         messageBtn = (ImageButton)findViewById(R.id.messageBtn);
         travelReadUserID = (TextView)findViewById(R.id.travelReadUserID);
+
+        travelerProfileImg.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(writerSeq == -1)
+                {
+                    Toast.makeText(getApplicationContext(), "아직 서버에서 정보를 불러오지 못했습니다!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                    intent.putExtra("userSeq", writerSeq);
+                    startActivity(intent);
+                }
+            }
+        });
 
         travelerAddBtn.setOnClickListener(new View.OnClickListener()
         {
