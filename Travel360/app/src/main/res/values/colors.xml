@@ -6,4 +6,5 @@
     <color name="selectColor">#ADACAC</color>
     <color name="noSelectColor">#F7F7F7</color>
     <color name="tabscroll">#4d6a92</color>
+    <color name="statuscolor">#000000ff</color>
 </resources>

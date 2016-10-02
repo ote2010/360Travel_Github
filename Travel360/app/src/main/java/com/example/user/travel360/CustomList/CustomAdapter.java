@@ -68,7 +68,7 @@ public class CustomAdapter extends BaseAdapter {
 
         ItemData itemData = itemDatas.get(position);
        // viewHolder.comment_img.setImageBitmap(itemData.comment_img);
-        viewHolder.comment_img.setImageDrawable(contexts.getResources().getDrawable(R.drawable.man1));
+        viewHolder.comment_img.setImageDrawable(contexts.getResources().getDrawable(R.drawable.profile_basic));
         viewHolder.comment_id.setText(itemData.comment_id);
         viewHolder.comment_txt.setText(itemData.comment_txt);
 

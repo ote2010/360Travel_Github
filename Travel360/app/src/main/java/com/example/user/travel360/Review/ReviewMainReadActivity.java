@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,13 +31,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+
 import cz.msebera.android.httpclient.Header;
 
 
 /**
  * Created by user on 2016-08-10.
  */
-public class ReviewMainReadActivity extends Activity {
+public class ReviewMainReadActivity extends AppCompatActivity {
 
 
     ScrollView mScroll;
@@ -83,7 +86,10 @@ public class ReviewMainReadActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setIcon(getResources().getDrawable(R.drawable.back_button));
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.action_bar1));
+
         setContentView(R.layout.activity_review_main_read);
         Intent intent = getIntent();
         Location = intent.getStringExtra("Location");
@@ -152,7 +158,7 @@ public class ReviewMainReadActivity extends Activity {
                 } else {
 
                     ReviewWriteActivity reviewWriteActivity = new ReviewWriteActivity(ReviewMainReadActivity.this);
-
+                    reviewWriteActivity.requestWindowFeature(getWindow().FEATURE_NO_TITLE);
                     reviewWriteActivity.show();
 
                 }
@@ -200,6 +206,8 @@ public class ReviewMainReadActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     ReviewReadDialog reviewReadDialog = new ReviewReadDialog(ReviewMainReadActivity.this);
+
+                    reviewReadDialog.requestWindowFeature(getWindow().FEATURE_NO_TITLE);
                     reviewReadDialog.show();
                 }
             });
@@ -322,14 +330,14 @@ public class ReviewMainReadActivity extends Activity {
                         JSONObject obj = (JSONObject) arr.get(i);
 
                         int seq = (Integer) obj.get("seq");
-                        // Log.d("SUN_a", seq+"");
-                        int user_info_seq = (Integer) obj.get("user_info_seq");
-                        //     String presentation_image = (String) obj.get("presentation_image");
-                        Text_bump[i] = (String) obj.get("text");
-                        //   Log.d("SUN_a", Text_bump[i]+"/범프");
-                        // Log.d("SUN_a", text + "/text");
-                        // Log.d("SUN_a", "seq : " + seq + " " + " , text : " + text + " , userseq : " + user_info_seq + " , start : ");
-                        //----------------------------------------------------------------------------------------------------------------------------
+                        final int user_info_seq = (Integer) obj.get("user_info_seq");
+                        // evaluation
+                        long write_date_client = (long) obj.get("write_date_client");
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
+                        final String write_date = df.format(write_date_client);
+                        final String text = (String) obj.get("text");
+                        Text_bump[i] = text;
+                         //----------------------------------------------------------------------------------------------------------------------------
                         BestReviewITem[i] = inflater.inflate(R.layout.review_read_listitem_view, v, false); // 추가할 순위권 여행지 뷰 inflate
 
                         // 메달 아이콘, 여행지 장소 텍스트, 여행지 별점 ID 불러오기
@@ -354,8 +362,8 @@ public class ReviewMainReadActivity extends Activity {
                         BestReviewITem[i].setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ReviewReadDialog reviewReadDialog = new ReviewReadDialog(ReviewMainReadActivity.this);
-
+                                //int user_info_seq, String write_date, String text
+                                ReviewReadDialog reviewReadDialog = new ReviewReadDialog(ReviewMainReadActivity.this, user_info_seq, write_date,text, 3.5); // 사용자 seq, 작성날짜, 작성내용, 별점
                                 reviewReadDialog.requestWindowFeature(getWindow().FEATURE_NO_TITLE);
                                 reviewReadDialog.show();
                             }

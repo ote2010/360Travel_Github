@@ -112,7 +112,7 @@ public class Main_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), UserActivity.class);
-                intent.putExtra("userSeq", 2);
+                intent.putExtra("userSeq", 3);
                 startActivity(intent);
             }
         });

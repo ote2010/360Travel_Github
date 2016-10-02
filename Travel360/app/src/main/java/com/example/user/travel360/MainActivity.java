@@ -3,7 +3,10 @@ package com.example.user.travel360;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -17,9 +20,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,6 +37,14 @@ import com.example.user.travel360.Navigationdrawer.ApplicationController;
 import com.example.user.travel360.Navigationdrawer.FriendActivity;
 import com.example.user.travel360.Navigationdrawer.LoginActivity;
 import com.example.user.travel360.Navigationdrawer.UserActivity;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -54,10 +68,24 @@ public class MainActivity extends AppCompatActivity
     TabLayout tabLayout;
 
     int userSeq = -1;
+
+
+    public  String searchCate="-1", searchCateDetail="-1",searchStartDate="-1", searchEndDate="-1";
+    final static int REQUEST_SEARCH = 1000;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+       // getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+       //setTheme(android.R.style.Theme_Holo_Light_NoActionBar_TranslucentDecor);
+
         setContentView(R.layout.activity_main);
+
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // 툴바
         setSupportActionBar(toolbar);
@@ -213,7 +241,8 @@ public class MainActivity extends AppCompatActivity
             UserIDTextView.setText(LoginFlag);
             LayoutNoLogin.setVisibility(View.INVISIBLE);
             LayoutLogin.setVisibility(View.VISIBLE);
-
+            String user_seq = ApplicationController.getInstance().getSeq();
+            getUserInfo_Server(user_seq);
         }
     }
 
@@ -227,7 +256,8 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.search) {
             Intent intent = new Intent(getApplicationContext(), Search_Activity.class);
-            startActivity(intent);
+            startActivityForResult(intent,REQUEST_SEARCH);
+            //startActivity(intent);
 
             // Toast.makeText(getApplicationContext(),"search click", Toast.LENGTH_SHORT).show();
         }
@@ -266,6 +296,45 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_SEARCH:
+
+                if (resultCode == RESULT_OK) {
+                    searchCate = data.getStringExtra("searchCate");
+                    searchCateDetail = data.getStringExtra("searchCateDetail");
+                    searchStartDate = data.getStringExtra("searchStartDate");
+                    searchEndDate = data.getStringExtra("searchEndDate");
+                    Log.d("SAERCH", "검색확인 : " + searchCate + " " + searchCateDetail + " " + searchStartDate + " " + searchEndDate);
+                    //mViewPager.setAdapter(mSectionsPagerAdapter);
+
+                    Toast.makeText(MainActivity.this, "검색확인", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(getApplicationContext(), SearchResultActivity.class);
+                    intent.putExtra("searchCate", searchCate);
+                    intent.putExtra("searchCateDetail", searchCateDetail);
+                    intent.putExtra("searchStartDate", searchStartDate);
+                    intent.putExtra("searchEndDate", searchEndDate);
+                    startActivity(intent);
+                }
+                else{
+                    searchCate="-1";
+                    searchCateDetail="-1";
+                    searchStartDate="-1";
+                    searchEndDate="-1";
+                    //mViewPager.setAdapter(mSectionsPagerAdapter);
+                    Log.d("SAERCH", "검색취소 : " +searchCate + " " + searchCateDetail + " " + searchStartDate + " " + searchEndDate);
+                    Toast.makeText(MainActivity.this, "검색취소", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+
+        }
     }
 
     //--------------------------------------------------------fragment tab 추가
@@ -327,4 +396,93 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         isLoginned();
     }
+
+
+    /************* 사용자 정보 **************/
+    void getUserInfo_Server(String user_seq) {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 seq 만 있으면 됩니다.
+        params.put("seq",user_seq);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getUserInfo_Server()");
+        client.get("http://kibox327.cafe24.com/getUserInfo.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {  }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                String res = new String(response);
+                try{
+                    JSONObject object = new JSONObject(res);
+                    String objStr =  object.get("userDto") + "";
+                    JSONObject obj = new JSONObject(objStr);
+
+                    String id = (String)obj.get("id");
+                    String name = (String)obj.get("name");
+                    String profile_image = (String)obj.get("profile_image");
+                    getImage_Server(profile_image);
+
+                    Log.d("FRAG_ACIT", "profile_image : "+profile_image);
+
+
+                }catch (JSONException e){
+
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {  }
+        });
+    }
+
+
+    /***************  image 가져오기  *********************/
+
+    public Bitmap byteArrayToBitmap(byte[] byteArray ) {  // byte -> bitmap 변환 및 반환
+        Bitmap bitmap = BitmapFactory.decodeByteArray( byteArray, 0, byteArray.length ) ;
+        return bitmap ;
+    }
+
+
+    void getImage_Server(String imgname) {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 imageName 만 있으면 됩니다.
+        params.put("imageName", imgname);
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getImage_Server()");
+        client.get("http://kibox327.cafe24.com/Image.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                // byteArrayToBitmap 를 통해 reponse로 받은 이미지 데이터 bitmap으로 변환
+                Bitmap bitmap = byteArrayToBitmap(response);
+                UserProfileImg.setImageBitmap(bitmap);
+
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {    }
+        });
+    }
+
 }

@@ -43,9 +43,13 @@ public class FriendActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.action_bar1));
+
         setContentView(R.layout.activity_friend);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("친구 목록");
+       // ActionBar actionBar = getSupportActionBar();
+       // actionBar.setTitle("친구 목록");
 
         friendSearchEt = (EditText) findViewById(R.id.friendSearchEt);
         listView = (ListView) findViewById(R.id.friendList);
