@@ -73,8 +73,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         widgetInit();
-        getTravleRecordAll_Server();
-        getTravleReviewAll_Server();
+        getTravelRecordAll_Server();
+        getTravelReviewAll_Server();
         getUserInfo_Server(MY_SEQ);
 
 
@@ -161,7 +161,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
 
     /*****************  story 전체 데이터  **********************/
-    void getTravleRecordAll_Server() {
+    void getTravelRecordAll_Server() {
         adapter_story.clear();
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -214,7 +214,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /*****************  review 전체 데이터  **********************/
-    void getTravleReviewAll_Server() {
+    void getTravelReviewAll_Server() {
         adapter_review.clear();
          RequestParams params = new RequestParams();
          params.put("location", "Paris");

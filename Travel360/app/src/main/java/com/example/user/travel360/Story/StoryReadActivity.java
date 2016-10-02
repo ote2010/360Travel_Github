@@ -257,7 +257,6 @@ public class StoryReadActivity extends AppCompatActivity implements View.OnClick
                 break;
 
             case R.id.commentSentBtn:
-                //TODO 여기 왜 주석?
                 //writeStoryComment_Server();
                 break;
         }

@@ -1,43 +1,25 @@
 package com.example.user.travel360.Review;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.user.travel360.CustomList.CustomAdapter;
-import com.example.user.travel360.CustomList.ItemData;
-import com.example.user.travel360.Navigationdrawer.ApplicationController;
-import com.example.user.travel360.Navigationdrawer.LoginActivity;
 import com.example.user.travel360.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -79,7 +61,7 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener {
 
 
         init();
-        getTravleReview_Server();
+        getTravelReview_Server();
     }
 
     public void init() {
@@ -157,7 +139,7 @@ public class ReviewReadDialog extends Dialog implements View.OnClickListener {
 
     /*****************  review 1개 데이터  **********************/
 
-    void getTravleReview_Server() {
+    void getTravelReview_Server() {
 
         RequestParams params = new RequestParams();
         // 보내는 data는 reviewSeq 만 있으면 됩니다.
