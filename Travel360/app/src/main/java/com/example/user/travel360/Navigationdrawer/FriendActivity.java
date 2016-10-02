@@ -57,9 +57,8 @@ public class FriendActivity extends AppCompatActivity {
         }catch (Exception e){
             Log.d("SUN", "userSeq is null");
             // 임시 (로그인 안했을 때)
-            userSeq = 1;
+            userSeq = -1;
         }
-
 
         getFriendsList_Server();
         adapter.clear();
