@@ -35,11 +35,6 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-//import retrofit.Call;
-//import retrofit.Callback;
-//import retrofit.Response;
-//import retrofit.Retrofit;
-
 public class JoinActivity extends Activity {
 
     ArrayList<Integer> contentsSequence;
@@ -140,16 +135,6 @@ public class JoinActivity extends Activity {
         RadioButton radioBtn = (RadioButton) findViewById(id);
 
         return radioBtn.getText().toString();
-        /*
-        switch (id) {
-            case R.id.radioBtnMale:
-                return radioBtn.getText().toString();
-                break;
-            case R.id.radioBtnFemail:
-                return radioBtn.getText().toString();
-                break;
-        }
-        */
     }
 
     private void initSharedPre() {

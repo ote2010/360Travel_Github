@@ -20,13 +20,6 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-
-//
-//import retrofit.Call;
-//import retrofit.Callback;
-//import retrofit.Response;
-//import retrofit.Retrofit;
-
 public class LoginActivity extends Activity {
     Button BtnJoin, BtnLogin;
     EditText EditEmail, EditPW;
@@ -34,7 +27,6 @@ public class LoginActivity extends Activity {
 
     SharedPreferences pref;
     SharedPreferences.Editor edit;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

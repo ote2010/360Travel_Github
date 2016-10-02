@@ -14,21 +14,8 @@
         android:layout_alignParentStart="true"
         android:textColor="#ffffff"
         android:textIsSelectable="false"
-        android:textSize="30dp"
-        android:layout_marginLeft="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="&lt;별표이미지>"
-        android:id="@+id/textView5"
-        android:textColor="#ffffff"
-        android:textIsSelectable="false"
-        android:textSize="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/PlaceTextView"
-        android:layout_marginStart="35dp"/>
+        android:textSize="25dp"
+        android:layout_marginLeft="25dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,8 +24,8 @@
         android:id="@+id/EvaluationTextView"
         android:textColor="#ffffff"
         android:textIsSelectable="false"
-        android:textSize="30dp"
+        android:textSize="25dp"
         android:layout_alignTop="@+id/PlaceTextView"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="15dp"/>
+        android:layout_marginRight="25dp"/>
 </RelativeLayout>

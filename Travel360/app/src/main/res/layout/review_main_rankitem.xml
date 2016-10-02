@@ -17,7 +17,7 @@
             android:layout_height="fill_parent"
             android:id="@+id/reviewMainImage"
             android:layout_gravity="center"
-            android:src="@drawable/hwiin"
+            android:src="@drawable/defaultimg"
             android:scaleType="centerCrop"
             android:adjustViewBounds="false"/>
 
@@ -40,11 +40,10 @@
                 android:text="1. Paris"
                 android:id="@+id/rankPlaceTextview"
                 android:textColor="#ffffff"
-                android:textSize="30dp"
-                android:textStyle="italic"
-                android:layout_marginLeft="15dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"/>
+                android:textSize="25dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="25dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -52,22 +51,10 @@
                 android:text="4.8"
                 android:id="@+id/rankEvaluationTextview"
                 android:textColor="#ffffff"
-                android:textSize="20dp"
-                android:layout_alignTop="@+id/rankPlaceTextview"
+                android:textSize="25dp"
+                android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginRight="60dp"
-                android:layout_marginTop="3dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="&lt;별표이미지>"
-                android:id="@+id/textView14"
-                android:textColor="#ffffff"
-                android:textSize="20dp"
-                android:layout_marginRight="60dp"
-                android:layout_alignTop="@+id/rankPlaceTextview"
-                android:layout_centerHorizontal="true"/>
+                android:layout_marginRight="25dp"/>
 
         </RelativeLayout>
     </FrameLayout>

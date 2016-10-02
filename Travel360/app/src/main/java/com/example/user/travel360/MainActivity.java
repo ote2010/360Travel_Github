@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -24,9 +23,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -58,8 +54,8 @@ public class MainActivity extends AppCompatActivity
     LinearLayout LayoutNoLogin;
     ImageView UserProfileImg;
     NavigationView navigationView;
-    TextView UserNameTextView, UserIDTextView;
-    Button Logoutbtn;
+    TextView UserNameTextView;//, UserIDTextView;
+    //Button Logoutbtn;
     FragmentManager manager; // 프레그먼트를 관리하는 클래스의 참조변수
     FragmentTransaction tran; // 프레그먼트를 추가/삭제/재배치 하는 클래스의 참조변수
     Fragment timeLabelFragment; // 프래그먼트 참조 변수
@@ -83,9 +79,6 @@ public class MainActivity extends AppCompatActivity
        //setTheme(android.R.style.Theme_Holo_Light_NoActionBar_TranslucentDecor);
 
         setContentView(R.layout.activity_main);
-
-
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // 툴바
         setSupportActionBar(toolbar);
@@ -166,8 +159,8 @@ public class MainActivity extends AppCompatActivity
         LayoutNoLogin = (LinearLayout) findViewById(R.id.LayoutNoLogin);
         UserProfileImg = (ImageView) findViewById(R.id.UserProfileImageView);
         UserNameTextView = (TextView) findViewById(R.id.UserNameTextView);
-        UserIDTextView = (TextView) findViewById(R.id.UserIDTextView);
-        Logoutbtn = (Button) findViewById(R.id.Logoutbtn);
+        //UserIDTextView = (TextView) findViewById(R.id.UserIDTextView);
+        //Logoutbtn = (Button) findViewById(R.id.Logoutbtn);
     }
 
     @Override
@@ -199,14 +192,14 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        Logoutbtn.setOnClickListener(new View.OnClickListener() {
+        /*Logoutbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LayoutNoLogin.setVisibility(View.VISIBLE);
                 LayoutLogin.setVisibility(View.INVISIBLE);
                 ApplicationController.getInstance().setEmail(null);
             }
-        });
+        });*/
         UserProfileImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -222,7 +215,7 @@ public class MainActivity extends AppCompatActivity
                 } else
                 {
                     userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
-                    intent.putExtra("seq", userSeq);
+                    intent.putExtra("userSeq", userSeq);
                     startActivity(intent);
                 }
             }
@@ -238,7 +231,7 @@ public class MainActivity extends AppCompatActivity
             LayoutLogin.setVisibility(View.INVISIBLE);
             LayoutNoLogin.setVisibility(View.VISIBLE);
         } else {
-            UserIDTextView.setText(LoginFlag);
+            //UserIDTextView.setText(LoginFlag);
             LayoutNoLogin.setVisibility(View.INVISIBLE);
             LayoutLogin.setVisibility(View.VISIBLE);
             String user_seq = ApplicationController.getInstance().getSeq();
@@ -291,6 +284,11 @@ public class MainActivity extends AppCompatActivity
 
         }else if(id == R.id.vr){
 
+        }else if(id == R.id.logout)
+        {
+            LayoutNoLogin.setVisibility(View.VISIBLE);
+            LayoutLogin.setVisibility(View.INVISIBLE);
+            ApplicationController.getInstance().setEmail(null);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -425,6 +423,7 @@ public class MainActivity extends AppCompatActivity
                     String name = (String)obj.get("name");
                     String profile_image = (String)obj.get("profile_image");
                     getImage_Server(profile_image);
+                    UserNameTextView.setText(id+"\n("+name+")");
 
                     Log.d("FRAG_ACIT", "profile_image : "+profile_image);
 
@@ -461,27 +460,34 @@ public class MainActivity extends AppCompatActivity
         AsyncHttpClient client = new AsyncHttpClient();
 
         Log.d("SUN", "getImage_Server()");
-        client.get("http://kibox327.cafe24.com/Image.do", params, new AsyncHttpResponseHandler() {
+        client.get("http://kibox327.cafe24.com/Image.do", params, new AsyncHttpResponseHandler()
+        {
             @Override
-            public void onStart() {            }
+            public void onStart()
+            {
+            }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+            public void onSuccess(int statusCode, Header[] headers, byte[] response)
+            {
                 // byteArrayToBitmap 를 통해 reponse로 받은 이미지 데이터 bitmap으로 변환
                 Bitmap bitmap = byteArrayToBitmap(response);
                 UserProfileImg.setImageBitmap(bitmap);
 
-                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " + new String(response));
 
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error)
+            {
                 Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
             }
 
             @Override
-            public void onRetry(int retryNo) {    }
+            public void onRetry(int retryNo)
+            {
+            }
         });
     }
 

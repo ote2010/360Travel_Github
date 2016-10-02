@@ -59,6 +59,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
         Intent intent = getIntent();
         HERE_SEQ = intent.getExtras().getInt("userSeq", -1);
+        Log.d("HERE_SEQ", String.valueOf(HERE_SEQ));
 
         // 본인확인
         try{
@@ -73,8 +74,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         widgetInit();
-        getTravleRecordAll_Server();
-        getTravleReviewAll_Server();
+        getTravelRecordAll_Server();
+        getTravelReviewAll_Server();
         getUserInfo_Server(HERE_SEQ);
 
 
@@ -161,7 +162,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
 
     /*****************  story 전체 데이터  **********************/
-    void getTravleRecordAll_Server() {
+    void getTravelRecordAll_Server() {
         adapter_story.clear();
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -214,7 +215,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /*****************  review 전체 데이터  **********************/
-    void getTravleReviewAll_Server() {
+    void getTravelReviewAll_Server() {
         adapter_review.clear();
          RequestParams params = new RequestParams();
          params.put("location", "Paris");
@@ -293,7 +294,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     String name = (String)obj.get("name");
                     String profile_image = (String)obj.get("profile_image");
                     getImage_Server(profile_image);
-                    Log.d("SUN", "profile_image : "+profile_image);
+                    Log.d("SUN", "profile_image : "+ profile_image);
                     userIdTv.setText(id+" ("+name+")");
 
                 }catch (JSONException e){

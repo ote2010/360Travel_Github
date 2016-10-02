@@ -62,35 +62,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
 
-                        android:layout_marginTop="20dp"
-                        android:layout_weight="10"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:padding="20dp">
 
                         <TextView
                             android:id="@+id/UserNameTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="오탁은"
-                            android:textSize="20dp" />
+                            android:text="ID"
+                            android:textSize="20dp"
+                            android:layout_marginTop="10dp"
+                            android:textIsSelectable="false"/>
 
-                        <Button
-                            android:id="@+id/Logoutbtn"
-                            style="?android:attr/buttonStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:layout_marginLeft="20dp"
-                            android:text="logout"
-                            android:textSize="10sp" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/UserIDTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="90"
-                        android:text="ote2010@naver.com" />
                 </LinearLayout>
             </RelativeLayout>
 
