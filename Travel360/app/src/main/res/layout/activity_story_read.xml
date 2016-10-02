@@ -6,6 +6,10 @@
     android:orientation="vertical"
     tools:context=".Story.StoryReadActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.30">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -107,10 +111,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.30">
+
 
     </ScrollView>
 

@@ -9,12 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.user.travel360.Navigationdrawer.UserActivity;
 import com.example.user.travel360.R;
 import com.example.user.travel360.Review.ReviewMainReadActivity;
 import com.example.user.travel360.Story.StoryReadActivity;
-import com.example.user.travel360.Navigationdrawer.UserActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -35,7 +36,8 @@ public class Main_fragment extends Fragment {
     TextView Reco_story_text1, Reco_story_text2, Reco_traveler_text1, Reco_traveler_text2, Reco_place_text1, Reco_place_text2;
     ImageView Reco_traveler_img1, Reco_traveler_img2;
     //  Button Reco_story_btn1, Reco_story_btn2, Reco_place_btn1, Reco_place_btn2;
-    FrameLayout Reco_story_btn1, Reco_story_btn2, Reco_place_btn1, Reco_place_btn2;
+    FrameLayout Reco_story_btn1, Reco_story_btn2;
+    LinearLayout Reco_place_btn1, Reco_place_btn2;
 
     //오늘의 추천 여행기 본문 서버에서 받아서 저장할 배열
     String[] Today_Reco_Story_Text = new String[2];
@@ -75,8 +77,8 @@ public class Main_fragment extends Fragment {
         //button 선언
         Reco_story_btn1 = (FrameLayout) v.findViewById(R.id.reco_storybtn1);
         Reco_story_btn2 = (FrameLayout) v.findViewById(R.id.reco_storybtn2);
-        Reco_place_btn1 = (FrameLayout) v.findViewById(R.id.reco_placebtn1);
-        Reco_place_btn2 = (FrameLayout) v.findViewById(R.id.reco_placebtn2);
+        Reco_place_btn1 = (LinearLayout) v.findViewById(R.id.reco_placebtn1);
+        Reco_place_btn2 = (LinearLayout) v.findViewById(R.id.reco_placebtn2);
 
         //image 선언
         Reco_traveler_img1 = (ImageView) v.findViewById(R.id.reco_travelerImg1);
@@ -88,7 +90,7 @@ public class Main_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), StoryReadActivity.class);
-                intent.putExtra("seq", 1);
+                intent.putExtra("seq", 219);
                 startActivity(intent);
             }
         });
@@ -96,7 +98,7 @@ public class Main_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), StoryReadActivity.class);
-                intent.putExtra("seq", 2);
+                intent.putExtra("seq", 218);
                 startActivity(intent);
             }
         });
@@ -104,7 +106,7 @@ public class Main_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), UserActivity.class);
-                intent.putExtra("userSeq", 1);
+                intent.putExtra("userSeq", 931);
                 startActivity(intent);
             }
         });
@@ -112,7 +114,7 @@ public class Main_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), UserActivity.class);
-                intent.putExtra("userSeq", 3);
+                intent.putExtra("userSeq", 932);
                 startActivity(intent);
             }
         });
@@ -120,7 +122,8 @@ public class Main_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ReviewMainReadActivity.class);
-                intent.putExtra("seq", 1);
+                intent.putExtra("Location", "연세대");
+                intent.putExtra("Evaluation", (float)4.5);
                 startActivity(intent);
             }
         });
@@ -128,7 +131,8 @@ public class Main_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ReviewMainReadActivity.class);
-                intent.putExtra("seq", 2);
+                intent.putExtra("Location", "숭실대");
+                intent.putExtra("Evaluation", (float)4.49);
                 startActivity(intent);
             }
         });

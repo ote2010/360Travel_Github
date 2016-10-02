@@ -51,7 +51,15 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="left|top"
                         android:background="#fff"
-                        android:text="New Text" /><![CDATA[
+                        />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/imageView"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/seoul"/><![CDATA[
 
                     />
                 ]]>
@@ -71,7 +79,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="left|top"
-                        android:text="New Text" />
+                        />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/imageView2"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/tokyo"/>
                 </FrameLayout>
             </LinearLayout>
 
@@ -91,34 +107,41 @@
                     android:layout_height="30dp"
                     android:background="@drawable/today_traveler" />
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="2.5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginTop="2.5dp"
                     android:orientation="horizontal">
 
-                    <ImageView
+                    <com.example.user.travel360.CircleImageView.CircularImageView
 
                         android:id="@+id/reco_travelerImg1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:layout_gravity="left|center_vertical"
                         android:scaleType="fitStart"
-                        android:src="@drawable/profile_deco" />
+                        android:src="@drawable/byungman" />
 
                     <TextView
                         android:id="@+id/reco_travelertext1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal|top"
-                        android:text="New Text" />
-                </FrameLayout>
+                        />
 
-                <FrameLayout
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/imageView3"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/jungle"/>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -134,16 +157,23 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="New Text" />
+                        />
 
-                    <ImageView
+                    <com.example.user.travel360.CircleImageView.CircularImageView
                         android:id="@+id/reco_travelerImg2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:layout_gravity="left|center_vertical"
                         android:scaleType="fitStart"
-                        android:src="@drawable/profile_deco" />
-                </FrameLayout>
+                        android:src="@drawable/bear1" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/imageView4"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/bear"/>
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -166,7 +196,7 @@
                     android:text="추천 여행지"
                     android:textColor="#ffffff" />
 
-                <FrameLayout
+                <LinearLayout
                     android:id="@+id/reco_placebtn1"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
@@ -185,11 +215,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
-                        android:text="New Text" />
+                        />
 
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/imageView5"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/yonsei"
+                        android:layout_marginLeft="15dp"/>
 
-                <FrameLayout
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/reco_placebtn2"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
@@ -208,9 +246,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
-                        android:text="New Text" />
+                        />
 
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/imageView6"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/soongsil"
+                        android:layout_marginLeft="15dp"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 

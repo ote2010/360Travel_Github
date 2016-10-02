@@ -87,6 +87,7 @@ public class LoginActivity extends Activity {
                         //   Log.d("seq&&", JSONP(new String(response)));
                         Log.d("SUN@@", "success");
                         String seq = JSONP(new String(response));
+                        Log.d("SEQ", "login SEQ : " + String.valueOf(seq));
                         ApplicationController.getInstance().setSeq(seq);
                         //   Log.d("seq@@", ApplicationController.getInstance().getSeq());
                         ApplicationController.getInstance().setEmail(email);
