@@ -116,21 +116,26 @@
                     android:layout_marginTop="2.5dp"
                     android:orientation="horizontal">
 
-                    <com.example.user.travel360.CircleImageView.CircularImageView
-
-                        android:id="@+id/reco_travelerImg1"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                    <RelativeLayout
+                        android:layout_marginRight="10dp"
                         android:layout_gravity="left|center_vertical"
-                        android:scaleType="fitStart"
-                        android:src="@drawable/byungman" />
-
-                    <TextView
-                        android:id="@+id/reco_travelertext1"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|top"
-                        />
+                        android:layout_height="wrap_content">
+
+                        <com.example.user.travel360.CircleImageView.CircularImageView
+                            android:id="@+id/reco_travelerImg1"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:scaleType="fitStart"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/byungman" />
+
+                        <ImageView
+                            android:src="@drawable/profile_deco"
+                            android:layout_centerInParent="true"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp" />
+                    </RelativeLayout>
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -138,6 +143,13 @@
                         android:id="@+id/imageView3"
                         android:scaleType="centerCrop"
                         android:src="@drawable/jungle"/>
+
+                    <TextView
+                        android:id="@+id/reco_travelertext1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|top"
+                        />
 
                 </LinearLayout>
 
@@ -152,20 +164,34 @@
                     android:layout_weight="50"
                     android:orientation="horizontal">
 
+                    <RelativeLayout
+
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="left|center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <com.example.user.travel360.CircleImageView.CircularImageView
+                            android:id="@+id/reco_travelerImg2"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:scaleType="fitStart"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/bear1" />
+
+                        <ImageView
+                            android:src="@drawable/profile_deco"
+                            android:layout_centerInParent="true"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp" />
+                    </RelativeLayout>
+
                     <TextView
                         android:id="@+id/reco_travelertext2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         />
-
-                    <com.example.user.travel360.CircleImageView.CircularImageView
-                        android:id="@+id/reco_travelerImg2"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_gravity="left|center_vertical"
-                        android:scaleType="fitStart"
-                        android:src="@drawable/bear1" />
 
                     <ImageView
                         android:layout_width="match_parent"

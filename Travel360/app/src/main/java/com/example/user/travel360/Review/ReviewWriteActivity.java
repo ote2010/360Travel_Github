@@ -127,7 +127,7 @@ public class ReviewWriteActivity extends Dialog {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 Grade = grade.getItem(position) + "";
-                Toast.makeText(getContext(), Grade, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getContext(), Grade, Toast.LENGTH_SHORT).show();
                 starlayout.removeAllViews();
 
                 int mok = (int)(Double.parseDouble(Grade) / 1.0) ;
