@@ -59,7 +59,7 @@
                         android:id="@+id/imageView"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/seoul"/><![CDATA[
+                        android:src="@drawable/seoul3"/><![CDATA[
 
                     />
                 ]]>

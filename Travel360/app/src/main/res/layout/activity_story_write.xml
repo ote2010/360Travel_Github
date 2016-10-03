@@ -9,34 +9,55 @@
     tools:context=".Story.StoryWriteActivity">
 
     <LinearLayout
+        android:layout_marginTop="10dp"
+        android:weightSum="10"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:id="@+id/linearLayout">
-
+        <View
+            android:layout_width="40dp"
+            android:layout_height="0dp"
+            android:layout_weight="3.5"
+            />
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="동영상"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/video_icon"
+            android:scaleType="fitCenter"
             android:id="@+id/pickVideoButton"
             android:layout_weight="1"/>
-
+        <View
+            android:layout_width="90dp"
+            android:layout_height="0dp"
+            android:layout_weight="3.5"
+            />
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="사진"
+            android:scaleType="fitCenter"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/gallery_icon"
             android:id="@+id/pickphotoButton"
             android:layout_weight="1"/>
-
+        <View
+            android:layout_width="90dp"
+            android:layout_height="0dp"
+            android:layout_weight="3.5"
+            />
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="텍스트"
+            android:scaleType="fitCenter"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/text_icon"
             android:id="@+id/textinsertButton"
             android:layout_weight="1"/>
-
+        <View
+            android:layout_width="40dp"
+            android:layout_height="0dp"
+            android:layout_weight="3.5"
+            />
     </LinearLayout>
 
     <ScrollView android:layout_width="match_parent"
