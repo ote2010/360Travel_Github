@@ -3,65 +3,7 @@
 
     <!--그냥 기존에 있었던 id, icon 그대로 냅두고 item만 추가했습니다 !-->
     <group android:checkableBehavior="single">
-       <item
 
-
-           android:title=" "
-           />
-        <item
-
-
-            android:title=" "
-            />
-        <item
-
-
-            android:title=" "
-            />
-        <item
-            android:id="@+id/nav_search"
-            android:icon="@drawable/search_menu"
-            android:title="검색"/>
-        <item
-            android:id="@+id/nav_friend"
-            android:icon="@drawable/friends"
-            android:title="친구목록"/>
-        <item
-            android:id="@+id/message"
-            android:icon="@drawable/message"
-            android:title="메세지"/>
-        <item
-            android:id="@+id/scrap"
-            android:icon="@drawable/scrap"
-            android:title="스크랩"/>
-        <item
-            android:id="@+id/mytext"
-            android:icon="@drawable/mytext"
-            android:title="내가 쓴 글"/>
-        <item
-            android:id="@+id/myreply"
-            android:icon="@drawable/myreply"
-            android:title="내가 쓴 댓글"/>
-        <item
-            android:id="@+id/setting"
-            android:icon="@drawable/setting"
-            android:title="설정"/>
-        <item
-            android:id="@+id/notice"
-            android:icon="@drawable/notice"
-            android:title="공지사항"/>
-        <item
-            android:id="@+id/ask"
-            android:icon="@drawable/ask"
-            android:title="문의"/>
-        <item
-            android:id="@+id/vr"
-            android:icon="@drawable/vr"
-            android:title="VR 연결하기"/>
-        <item
-            android:id="@+id/logout"
-            android:icon="@drawable/logout"
-            android:title="로그아웃"/>
 
     </group>
 </menu>

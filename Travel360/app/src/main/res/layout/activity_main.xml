@@ -19,91 +19,344 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:menu="@menu/activity_main_drawer">
+        app:headerLayout="@layout/nav_header_main">
 
-        <FrameLayout
 
+
+        <LinearLayout
+            android:background="#ffffff"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/nav_header_height"
-            android:background="@drawable/action_bar1"
-            android:gravity="top"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark">
+            android:layout_height="match_parent"
+            android:layout_marginTop="160dp"
+            android:orientation="vertical"
+            android:weightSum="4.5">
+            <LinearLayout
 
-            <!--기존의 header_main을 수정했습니다. 수정한 사항은 간단하니 한번 읽어보시면 이해되실 것 같습니다.!-->
-
-
-            <RelativeLayout
-
-                android:id="@+id/LayoutLogin"
+                android:layout_marginTop="13dp"
+                android:id="@+id/nav_search"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="50dp"
-                android:paddingLeft="10dp"
-                android:visibility="invisible">
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:orientation="horizontal"
+                android:weightSum="6">
 
-                <com.example.user.travel360.CircleImageView.CircularImageView
-                    android:id="@+id/UserProfileImageView"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:src="@mipmap/ic_launcher" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-
+                <ImageView
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/navigation_search_button"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/UserProfileImageView"
-                    android:orientation="vertical"
-                    android:weightSum="100">
+                    />
+
+                <TextView
+                    android:textColor="#4d6a92"
+                    android:layout_weight="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="검색"
+                    android:textSize="8pt"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+            <LinearLayout
+
+                android:id="@+id/nav_friendList"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:orientation="horizontal"
+                android:weightSum="6">
 
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                <ImageView
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/friend_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
 
-                        android:orientation="vertical"
-                        android:padding="20dp">
+                <TextView
 
-                        <TextView
-                            android:id="@+id/UserNameTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ID"
-                            android:textSize="15dp"
-                            android:layout_marginTop="10dp"
-                            android:textIsSelectable="false"/>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-            </RelativeLayout>
+                    android:textColor="#4d6a92"
+                    android:layout_weight="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="친구목록"
+                    android:textSize="8pt"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/LayoutNoLogin"
+
+                android:id="@+id/message"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="50dp">
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:orientation="horizontal"
+                android:weightSum="6">
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:orientation="vertical"
-                    android:padding="20dp">
+                <ImageView
+                    android:layout_weight="1"
+                    android:src="@drawable/message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
 
-                    <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:text="로그인 해 주세요!"
-                        android:textSize="20dp" />
-
-
-                </LinearLayout>
+                <TextView
+                    android:textColor="#4d6a92"
+                    android:layout_weight="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="메세지"
+                    android:textSize="8pt"
+                    android:layout_gravity="center"
+                    />
             </LinearLayout>
-        </FrameLayout>
+
+
+            <LinearLayout
+                android:id="@+id/scrap"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+
+                <ImageView
+                    android:layout_weight="1"
+                    android:src="@drawable/scrap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:textColor="#4d6a92"
+                    android:layout_weight="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="스크랩"
+                    android:textSize="8pt"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/mytext"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+
+                <ImageView
+                    android:layout_weight="1"
+                    android:src="@drawable/mytext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:textColor="#4d6a92"
+                    android:layout_weight="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="내가 쓴 글"
+                    android:textSize="8pt"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/myreply"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+
+                <ImageView
+                    android:layout_weight="1"
+                    android:src="@drawable/myreply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:textColor="#4d6a92"
+                    android:layout_weight="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="내가 쓴 댓글"
+                    android:textSize="8pt"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/setting"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+
+                <ImageView
+                    android:layout_weight="1"
+                    android:src="@drawable/setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:textColor="#4d6a92"
+                    android:layout_weight="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="설정"
+                    android:textSize="8pt"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/notice"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+
+                <ImageView
+                    android:layout_weight="1"
+                    android:src="@drawable/notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:textColor="#4d6a92"
+                    android:layout_weight="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="공지사항"
+                    android:textSize="8pt"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/ask"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+
+                <ImageView
+                    android:layout_weight="1"
+                    android:src="@drawable/ask"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:textColor="#4d6a92"
+                    android:layout_weight="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="문의"
+                    android:textSize="8pt"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/vr"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+
+                <ImageView
+                    android:layout_weight="1"
+                    android:src="@drawable/vr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:textColor="#4d6a92"
+                    android:layout_weight="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="VR 연결하기"
+                    android:textSize="8pt"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/nav_logout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+
+                <ImageView
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/logout"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    />
+
+                <TextView
+                    android:textColor="#000000"
+                    android:layout_weight="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="로그아웃"
+                    android:textSize="8pt"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+
+
+
+
+
+
+        </LinearLayout>
 
 
     </android.support.design.widget.NavigationView>

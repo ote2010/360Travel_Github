@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity
 
     SharedPreferences pref;
     SharedPreferences.Editor edit;
-
+    LinearLayout Message, Scrap, MyText, MyReply, Setting, Notice, Ask, Vr, FriendList,Nav_Logout, Nav_Search;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     RelativeLayout LayoutLogin;
@@ -155,12 +155,23 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerview = navigationView.getHeaderView(0);
 
-        LayoutLogin = (RelativeLayout) findViewById(R.id.LayoutLogin);
-        LayoutNoLogin = (LinearLayout) findViewById(R.id.LayoutNoLogin);
-        UserProfileImg = (ImageView) findViewById(R.id.UserProfileImageView);
-        UserNameTextView = (TextView) findViewById(R.id.UserNameTextView);
+        LayoutLogin = (RelativeLayout)  headerview.findViewById(R.id.LayoutLogin);
+        LayoutNoLogin = (LinearLayout)  headerview.findViewById(R.id.LayoutNoLogin);
+        UserProfileImg = (ImageView) headerview. findViewById(R.id.UserProfileImageView);
+        UserNameTextView = (TextView) headerview. findViewById(R.id.UserNameTextView);
         //UserIDTextView = (TextView) findViewById(R.id.UserIDTextView);
         //Logoutbtn = (Button) findViewById(R.id.Logoutbtn);
+        Nav_Search = (LinearLayout)findViewById(R.id.nav_search);
+        Nav_Logout = (LinearLayout)findViewById(R.id.nav_logout);
+        Message = (LinearLayout) findViewById(R.id.message);
+        Scrap = (LinearLayout) findViewById(R.id.scrap);
+        MyText = (LinearLayout) findViewById(R.id.mytext);
+        MyReply = (LinearLayout) findViewById(R.id.myreply);
+        Setting = (LinearLayout) findViewById(R.id.setting);
+        Notice = (LinearLayout) findViewById(R.id.notice);
+        Ask = (LinearLayout) findViewById(R.id.ask);
+        Vr = (LinearLayout) findViewById(R.id.vr);
+        FriendList = (LinearLayout) findViewById(R.id.nav_friendList);
     }
 
     @Override
@@ -220,6 +231,84 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+        Nav_Search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Search_Activity.class);
+                startActivity(intent);
+            }
+        });
+        FriendList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, FriendActivity.class);
+                startActivity(intent);
+            }
+        });
+       Nav_Logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutNoLogin.setVisibility(View.VISIBLE);
+                LayoutLogin.setVisibility(View.INVISIBLE);
+                ApplicationController.getInstance().setEmail(null);
+            }
+        });
+        Message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        Scrap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        MyText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        MyReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        Setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        Notice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        Ask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        Vr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        FriendList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, FriendActivity.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
     public void isLoginned() {
@@ -264,32 +353,32 @@ public class MainActivity extends AppCompatActivity
     {
         int id = item.getItemId();
 
-        if (id == R.id.nav_search) {
-            Intent intent = new Intent(MainActivity.this, Search_Activity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_friend) {
-            Intent intent = new Intent(MainActivity.this, FriendActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.message) {
-
-        } else if (id == R.id.scrap) {
-
-        } else if (id == R.id.mytext) {
-
-        } else if (id == R.id.myreply) {
-
-        } else if (id == R.id.setting) {
-
-        }else if (id == R.id.notice) {
-
-        }else if(id == R.id.vr){
-
-        }else if(id == R.id.logout)
-        {
-            LayoutNoLogin.setVisibility(View.VISIBLE);
-            LayoutLogin.setVisibility(View.INVISIBLE);
-            ApplicationController.getInstance().setEmail(null);
-        }
+//        if (id == R.id.nav_search) {
+//            Intent intent = new Intent(MainActivity.this, Search_Activity.class);
+//            startActivity(intent);
+//        } else if (id == R.id.nav_friend) {
+//            Intent intent = new Intent(MainActivity.this, FriendActivity.class);
+//            startActivity(intent);
+//        } else if (id == R.id.message) {
+//
+//        } else if (id == R.id.scrap) {
+//
+//        } else if (id == R.id.mytext) {
+//
+//        } else if (id == R.id.myreply) {
+//
+//        } else if (id == R.id.setting) {
+//
+//        }else if (id == R.id.notice) {
+//
+//        }else if(id == R.id.vr){
+//
+//        }else if(id == R.id.logout)
+//        {
+//            LayoutNoLogin.setVisibility(View.VISIBLE);
+//            LayoutLogin.setVisibility(View.INVISIBLE);
+//            ApplicationController.getInstance().setEmail(null);
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

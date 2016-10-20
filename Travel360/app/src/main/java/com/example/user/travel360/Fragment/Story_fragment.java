@@ -20,6 +20,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.user.travel360.CircleImageView.CircularImageView;
 import com.example.user.travel360.Navigationdrawer.ApplicationController;
 import com.example.user.travel360.R;
 import com.example.user.travel360.Story.StoryReadActivity;
@@ -50,7 +51,7 @@ public class Story_fragment extends Fragment {
     static int j = 0; // 여행기 컨테이너 배열의 인덱스. item이 한번에 두개 들어감
     View[] storyItemView = new View[50];
     ImageView[] storyImageView = new ImageView[50]; // 여행기 대표 이미지
-    ImageView[] storyUserImage = new ImageView[50]; // 여행기 게시자 프로필 사진
+    CircularImageView[] storyUserImage = new CircularImageView[50]; // 여행기 게시자 프로필 사진
     TextView[] storyUserName = new TextView[50]; // 여행기 작성자
     TextView[] storyTitle = new TextView[50]; // 여행기 제목
     LinearLayout[] storyBackgroundLayout = new LinearLayout[50]; // 여행기 프로필과 작성자, 제목의 배경이 되는 레이아웃
@@ -202,7 +203,7 @@ public class Story_fragment extends Fragment {
                         // Id를 받아옵니다. 버튼으로 사용하는 것들 1)storyImageView 2)storyImageButton 3)storyUserImage
                         storyImageView[i] = (ImageView) storyItemView[i].findViewById(R.id.storyImageView); // 클릭시 여행기 본문
                         storyBackgroundLayout[i] = (LinearLayout) storyItemView[i].findViewById(R.id.storyBackgroundLayout);
-                        storyUserImage[i] = (ImageView) storyItemView[i].findViewById(R.id.storyUserImage); // 클릭시 트레블러 프로필
+                        storyUserImage[i] = (CircularImageView) storyItemView[i].findViewById(R.id.storyUserImage); // 클릭시 트레블러 프로필
                         storyUserNameTitleLayout[i] = (LinearLayout) storyItemView[i].findViewById(R.id.storyUserNameTitleLayout);
                         storyUserName[i] = (TextView) storyItemView[i].findViewById(R.id.storyUserName);
                         storyTitle[i] = (TextView) storyItemView[i].findViewById(R.id.storyTitle);
