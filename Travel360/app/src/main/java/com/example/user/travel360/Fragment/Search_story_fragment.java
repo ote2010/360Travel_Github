@@ -18,12 +18,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.user.travel360.Navigationdrawer.ApplicationController;
 import com.example.user.travel360.R;
 import com.example.user.travel360.Story.StoryReadActivity;
-import com.example.user.travel360.Story.StoryWriteActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -82,6 +79,7 @@ public class Search_story_fragment extends Fragment {
     final static int STORYLIST_ONECOUNT = 6;
     boolean data_flag = false;
 
+    long start_time = 0, finish_time = 0;
 
     static String cate="-1", cateDetail="-1" ,sDate="-1", eDate="-1";
 
@@ -112,16 +110,15 @@ public class Search_story_fragment extends Fragment {
                     getTravelRecordAll_Server(params);
                 } else if (cateDetail.equals("1"))// 기간
                 {
-
                     SimpleDateFormat df = new SimpleDateFormat("yyyy년 MM월 dd일");
-                    long start_time = 0,finish_time = 0;
+
                     Date start_date = null, finish_date =  null;
                     try{
                         start_date = df.parse(sDate);
                         start_time = start_date.getTime();
 
                         finish_date = df.parse(eDate);
-                    finish_time = finish_date.getTime();
+                        finish_time = finish_date.getTime();
                         Log.d("FRAG_ACIT", "기간 : " +  start_time + " , " + finish_time);
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -129,6 +126,8 @@ public class Search_story_fragment extends Fragment {
                     RequestParams params = new RequestParams();
                     params.put("start_date_client", start_time);
                     params.put("finish_date_client", finish_time);
+
+                    getTravelRecordAll_Server(params);
                 }
             }
     }
@@ -150,7 +149,7 @@ public class Search_story_fragment extends Fragment {
         mainStoryContainer = (LinearLayout) v.findViewById(R.id.mainStoryContainer);
         storyFragmentScrollView = (ScrollView) v.findViewById(R.id.storyFragmentScrollView);
 
-        //scrollViewBottomObserver();
+        scrollViewBottomObserver();
 
         //글쓰기 버튼 동작 코드
         FloatingActionButton writeButton = (FloatingActionButton) v.findViewById(R.id.writeButton);
@@ -159,7 +158,29 @@ public class Search_story_fragment extends Fragment {
         return v;
     }
 
+    public void scrollViewBottomObserver() {
+        storyFragmentScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener()
+        {
+            @Override
+            public void onScrollChanged()
+            {
+                int scrollViewPos = storyFragmentScrollView.getScrollY();
+                int TextView_lines = storyFragmentScrollView.getChildAt(0).getBottom() - storyFragmentScrollView.getHeight();
+                if (TextView_lines == scrollViewPos && TextView_lines != 0)
+                {
+                    if (!data_flag && !uploading_check)
+                    {
+                        Log.d("scrollBottomOb", "scrollViewBottomObserver check");
 
+                        RequestParams params = new RequestParams();
+                        params.put("start_date_client", start_time);
+                        params.put("finish_date_client", finish_time);
+                        getTravelRecordAll_Server(params);
+                    }
+                }
+            }
+        });
+    }
 
     /*****************
      * story 전체 데이터

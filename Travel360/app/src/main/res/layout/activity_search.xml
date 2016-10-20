@@ -50,7 +50,8 @@
                 android:gravity="center"
                 android:fontFamily="sans-serif"
                 android:textSize="23sp"
-                android:text="여행기" />
+                android:text="여행기"
+                android:checked="false"/>
 
             <CheckBox
                 android:id="@+id/reviewCheck"
@@ -120,7 +121,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:textSize="20sp"
                 android:hint="종료날짜" />
         </LinearLayout>
 

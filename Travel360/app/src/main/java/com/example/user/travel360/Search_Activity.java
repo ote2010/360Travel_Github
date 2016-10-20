@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -21,12 +19,7 @@ import android.widget.Toast;
 import com.example.user.travel360.CustomDialog.TFDatePickerDialog;
 import com.example.user.travel360.CustomList.GpsInfo;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 public class Search_Activity extends Activity implements View.OnClickListener , CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener{
-
-
 
     TFDatePickerDialog tfDatePickerDialog;
     int Year, Month, Day;
@@ -40,8 +33,6 @@ public class Search_Activity extends Activity implements View.OnClickListener , 
 
     GpsInfo gps;
 
-
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -53,11 +44,9 @@ public class Search_Activity extends Activity implements View.OnClickListener , 
         //적용
         getWindow().setAttributes(layoutParams);
 
-
         setContentView(R.layout.activity_search);
 
         init();
-
     }
 
     @Override
@@ -87,8 +76,6 @@ public class Search_Activity extends Activity implements View.OnClickListener , 
                 setResult(RESULT_CANCELED, intent);
                 finish();
                 break;
-
-
         }
     }
 
@@ -150,7 +137,6 @@ public class Search_Activity extends Activity implements View.OnClickListener , 
                 tfDatePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        //TODO >>시작 날짜 끝날짜 받아오는거 했음 이걸 가지고 서버에 연동해서 해야함!
                         String ToD = tfDatePickerDialog.getToDate();
                         String FromD = tfDatePickerDialog.getFromDate();
                         startDate.setText(FromD);
@@ -184,12 +170,7 @@ public class Search_Activity extends Activity implements View.OnClickListener , 
         radioGroup.setOnCheckedChangeListener(this);
         searchOkBtn.setOnClickListener(this);
 
-
         searchCancleBtn = (Button)findViewById(R.id.searchCancleBtn);
         searchCancleBtn.setOnClickListener(this);
-    }
-
-    void getGPS(){
-
     }
 }
