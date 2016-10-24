@@ -30,7 +30,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class Search_review_fragment extends Fragment {
     ViewGroup v;
-    int i=0;
+    int i = 0;
     LinearLayout mainReviewContainer; // 추가할 리뷰 프레그먼트 레이아웃
     ImageView[] reviewMainImage = new ImageView[10]; // 리뷰 순위권 메인 이미지 뷰 - 버튼 동작 설정해야함
     Button[] reviewImageButton = new Button[10]; // 리뷰의 간략화 정보 버튼 - 버튼 동작 설정해야함
@@ -38,6 +38,7 @@ public class Search_review_fragment extends Fragment {
     TextView[] rankPlaceTextView = new TextView[1000]; // 순위권 여행지 리뷰의 장소 텍스트뷰
     TextView[] rankEvaluationTextView = new TextView[1000]; // 순위권 장소의 별점 텍스트뷰
     View[] rankItem = new View[10]; // 순위권 여행지 리뷰의 뷰
+
 
     ListView listView; // 순위권 밖의 리스트 뷰
     //ReviewAdapter adapter; // 리스트 뷰를 위한 어댑터
@@ -48,6 +49,7 @@ public class Search_review_fragment extends Fragment {
     long[] start_date = new long[1000];
     // Float [] evaluation = new Float[10];
     float[] evaluation = new float[1000];
+    String[] Eval = {"4.1", "3.9", "3.4", "3.3", "2.8", "2.5"};
     String start[] = new String[1000];
 
     //  String [] ages = {"2.6", "1.9", "1.8", "1.7"};
@@ -77,7 +79,7 @@ public class Search_review_fragment extends Fragment {
     public void RankList() {
         LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
 
-        for (  i = 0; i < 1000; i++) {
+        for (i = 0; i < 1000; i++) {
             if ((ApplicationController.getInstance().getLocation(i) + "").equals(null + "")) {
                 Log.d("SUN_h", i + "번");
                 return;
@@ -96,30 +98,35 @@ public class Search_review_fragment extends Fragment {
                     // i가 0이면 1등, 1이면 2등, 2이면 3등
                     if (i == 0) {
                         medalIcon[i].setImageResource(R.drawable.goldmedal);
+                        reviewMainImage[i].setImageResource(R.drawable.yonsei);
                     } else if (i == 1) {
                         medalIcon[i].setImageResource(R.drawable.silvermedal);
+                        reviewMainImage[i].setImageResource(R.drawable.soongsil);
                     } else if (i == 2) {
                         medalIcon[i].setImageResource(R.drawable.blonzemedal);
+                        reviewMainImage[i].setImageResource(R.drawable.paris3);
                     }
 
                     //***********이 부분에서 서버에서 받아와서 바꿔주면 된다!!!!!***********
-                    reviewMainImage[i].setImageResource(R.drawable.testimg1);
+
+                    //    reviewMainImage[i].setImageResource(R.drawable.testimg1);
+
                     Log.d("SUN_h", "00000000000000");
                     final String Intent_Start = ApplicationController.getInstance().getStartDate(i);
-                    final String Intent_location  = ApplicationController.getInstance().getLocation(i);
+                    final String Intent_location = ApplicationController.getInstance().getLocation(i);
                     final float Intent_evaluation = ApplicationController.getInstance().getEvalucation(i);
                     rankPlaceTextView[i].setText(ApplicationController.getInstance().getLocation(i) + "");
-                    rankEvaluationTextView[i].setText(ApplicationController.getInstance().getEvalucation(i) + "");
+                    rankEvaluationTextView[i].setText(Eval[i]);
 
                     reviewMainImage[i].setOnClickListener(new ImageView.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             // ***이 부분에서 서버에게 정보를 요청하는 코드가 필요함***
                             Intent intent = new Intent(getActivity(), ReviewMainReadActivity.class);
-                            intent.putExtra("Location",Intent_location);
+                            intent.putExtra("Location", Intent_location);
                             ApplicationController.getInstance().setLocation(Intent_location);
                             intent.putExtra("Evaluation", Intent_evaluation);
-                            intent.putExtra("Start",Intent_Start);
+                            intent.putExtra("Start", Intent_Start);
                             startActivity(intent);
                         }
                     });
@@ -133,19 +140,19 @@ public class Search_review_fragment extends Fragment {
                     rankPlaceTextView[i] = (TextView) rankItem[i].findViewById(R.id.PlaceTextView);
                     rankEvaluationTextView[i] = (TextView) rankItem[i].findViewById(R.id.EvaluationTextView);
                     final String Intent_Start = ApplicationController.getInstance().getStartDate(i);
-                    final String Intent_location  = ApplicationController.getInstance().getLocation(i);
-                    final float Intent_evaluation = ApplicationController.getInstance().getEvalucation(i);
+                    final String Intent_location = ApplicationController.getInstance().getLocation(i);
+                    final String Intent_evaluation = Eval[i];
                     rankPlaceTextView[i].setText(ApplicationController.getInstance().getLocation(i) + "");
-                    rankEvaluationTextView[i].setText(ApplicationController.getInstance().getEvalucation(i) + "");
+                    rankEvaluationTextView[i].setText(Eval[i]);
                     //  final int finalI = i;
                     rankItem[i].setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(getActivity(), ReviewMainReadActivity.class);
 
-                            intent.putExtra("Location",Intent_location);
+                            intent.putExtra("Location", Intent_location);
                             intent.putExtra("Evaluation", Intent_evaluation);
-                            intent.putExtra("Start",Intent_Start);
+                            intent.putExtra("Start", Intent_Start);
                             // ApplicationController.getInstance().getTravelReviewAll_Server(Intent_location);
                             startActivity(intent);
                         }
@@ -160,7 +167,7 @@ public class Search_review_fragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
 
-       // RankList();
+        RankList();
         for (int i = 0; i < 10; i++) {
             Log.d("SUN_h", location[i] + "s");
         }

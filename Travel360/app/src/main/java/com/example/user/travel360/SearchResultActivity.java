@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 public class SearchResultActivity extends AppCompatActivity {
 
@@ -32,7 +33,7 @@ public class SearchResultActivity extends AppCompatActivity {
         sDate = intent.getStringExtra("searchStartDate");
         eDate = intent.getStringExtra("searchEndDate");
         Log.d("FRAG_ACIT", "result : " + this.cate + " , " +   this.cateDetail + " , " + this.sDate + " , " + this.eDate );
-
+        Toast.makeText(getApplicationContext(),"result : " + this.cate + " \n " +   this.cateDetail + " \n " + this.sDate + " \n " + this.eDate ,Toast.LENGTH_SHORT).show();
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         // Set up the ViewPager with the sections adapter.

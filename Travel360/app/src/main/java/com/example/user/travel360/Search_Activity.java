@@ -59,12 +59,20 @@ public class Search_Activity extends Activity implements View.OnClickListener , 
         {
             case R.id.searchOkBtn: // 검색 버튼
                 if(Integer.parseInt(cate)>-1  &&  Integer.parseInt(cateDetail)>-1) {
-                    intent.putExtra("searchCate", cate);
-                    intent.putExtra("searchCateDetail", cateDetail);
-                    intent.putExtra("searchStartDate", sDate);
-                    intent.putExtra("searchEndDate", eDate);
-                    setResult(RESULT_OK, intent);
-                    finish();
+                    if( sDate == null || eDate == null){
+                        Toast.makeText(getApplicationContext(),"기간을 확인해 주세요 ",Toast.LENGTH_SHORT).show();
+                    }
+                    else if(sDate.equals("-1") && eDate.equals("-1")){
+                        Toast.makeText(getApplicationContext(),"정확한 위치를 위해 다시한번 선택해주세요 ",Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        intent.putExtra("searchCate", cate);
+                        intent.putExtra("searchCateDetail", cateDetail);
+                        intent.putExtra("searchStartDate", sDate);
+                        intent.putExtra("searchEndDate", eDate);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
                 }
                 else
                     Toast.makeText(getApplicationContext(),"조건을 선택해주세요",Toast.LENGTH_SHORT).show();
