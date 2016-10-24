@@ -13,13 +13,14 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.user.travel360.CustomDialog.TFDatePickerDialog;
 import com.example.user.travel360.CustomList.GpsInfo;
 
-public class Search_Activity extends Activity implements View.OnClickListener , CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener{
+public class Search_Activity extends Activity implements View.OnClickListener , CompoundButton.OnCheckedChangeListener{
 
     TFDatePickerDialog tfDatePickerDialog;
     int Year, Month, Day;
@@ -27,6 +28,7 @@ public class Search_Activity extends Activity implements View.OnClickListener , 
     CheckBox storyCheck, reviewCheck;
     LinearLayout cateLayout, dateLayout;
     RadioGroup radioGroup;
+    RadioButton radioNear,radioDate;
     EditText startDate, endDate;
     String cate="-1", cateDetail="-1" ,sDate="-1", eDate="-1";
     Button searchOkBtn, searchCancleBtn;
@@ -76,6 +78,53 @@ public class Search_Activity extends Activity implements View.OnClickListener , 
                 setResult(RESULT_CANCELED, intent);
                 finish();
                 break;
+
+            case R.id.radioNear:
+                cateDetail = "0";
+                dateLayout.setVisibility(View.GONE);
+                gps = new GpsInfo(this);
+                if (gps.isGetLocation()) {
+
+                    double latitude = gps.getLatitude();
+                    double longitude = gps.getLongitude();
+
+                    if(latitude == 0.0 | longitude == 0.0){
+                        Toast.makeText(getApplicationContext(), "정확한 위치를 위해 다시 눌러주세요.", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        sDate = String.valueOf(latitude);
+                        eDate = String.valueOf(longitude);
+
+                        Toast.makeText(
+                                getApplicationContext(),
+                                "위도: " + latitude + "\n경도: " + longitude,
+                                Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    // GPS 를 사용할수 없으므로
+                    gps.showSettingsAlert();
+                }
+                break;
+
+            case R.id.radioDate:
+                cateDetail = "1";
+                dateLayout.setVisibility(View.VISIBLE);
+                tfDatePickerDialog = new TFDatePickerDialog(this);
+                tfDatePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        String ToD = tfDatePickerDialog.getToDate();
+                        String FromD = tfDatePickerDialog.getFromDate();
+                        startDate.setText(FromD);
+                        endDate.setText(ToD);
+                        sDate = FromD;
+                        eDate = ToD;
+                        //Toast.makeText(getApplicationContext(), FromD + "\n" + ToD, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                tfDatePickerDialog.show();
+
+                break;
         }
     }
 
@@ -105,52 +154,6 @@ public class Search_Activity extends Activity implements View.OnClickListener , 
         }
     }
 
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId){
-            case R.id.radioNear:
-                cateDetail = "0";
-                dateLayout.setVisibility(View.GONE);
-                gps = new GpsInfo(this);
-                if (gps.isGetLocation()) {
-
-                    double latitude = gps.getLatitude();
-                    double longitude = gps.getLongitude();
-
-                    sDate = String.valueOf(latitude);
-                    eDate = String.valueOf(longitude);
-
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "위도: " + latitude + "\n경도: " + longitude,
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    // GPS 를 사용할수 없으므로
-                    gps.showSettingsAlert();
-                }
-                break;
-
-            case R.id.radioDate:
-                cateDetail = "1";
-                dateLayout.setVisibility(View.VISIBLE);
-                tfDatePickerDialog = new TFDatePickerDialog(this);
-                tfDatePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        String ToD = tfDatePickerDialog.getToDate();
-                        String FromD = tfDatePickerDialog.getFromDate();
-                        startDate.setText(FromD);
-                        endDate.setText(ToD);
-                        sDate = FromD;
-                        eDate = ToD;
-                        //Toast.makeText(getApplicationContext(), FromD + "\n" + ToD, Toast.LENGTH_SHORT).show();
-                    }
-                });
-                tfDatePickerDialog.show();
-
-                break;
-        }
-    }
 
     public void init() {
         cateLayout = (LinearLayout)findViewById(R.id.cateLayout);
@@ -158,6 +161,8 @@ public class Search_Activity extends Activity implements View.OnClickListener , 
 
         storyCheck = (CheckBox)findViewById(R.id.storyCheck);
         reviewCheck = (CheckBox)findViewById(R.id.reviewCheck);
+        radioNear = (RadioButton)findViewById(R.id.radioNear);
+        radioDate = (RadioButton)findViewById(R.id.radioDate);
 
         radioGroup = (RadioGroup)findViewById(R.id.radioGroup);
         startDate = (EditText)findViewById(R.id.startDate);
@@ -166,8 +171,13 @@ public class Search_Activity extends Activity implements View.OnClickListener , 
         searchOkBtn = (Button)findViewById(R.id.searchOkBtn);
 
         storyCheck.setOnCheckedChangeListener(this);
+
         reviewCheck.setOnCheckedChangeListener(this);
-        radioGroup.setOnCheckedChangeListener(this);
+       // radioGroup.setOnCheckedChangeListener(this);
+
+        radioNear.setOnClickListener(this);
+        radioDate.setOnClickListener(this);
+
         searchOkBtn.setOnClickListener(this);
 
         searchCancleBtn = (Button)findViewById(R.id.searchCancleBtn);

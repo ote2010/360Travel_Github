@@ -1,6 +1,8 @@
 package com.example.user.travel360;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -20,15 +22,19 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.user.travel360.CustomList.GpsInfo;
 import com.example.user.travel360.Navigationdrawer.ApplicationController;
 import com.example.user.travel360.Navigationdrawer.FriendActivity;
 import com.example.user.travel360.Navigationdrawer.LoginActivity;
@@ -69,6 +75,9 @@ public class MainActivity extends AppCompatActivity
     public  String searchCate="-1", searchCateDetail="-1",searchStartDate="-1", searchEndDate="-1";
     final static int REQUEST_SEARCH = 1000;
 
+    Context mContext;
+
+    GpsInfo gps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +88,7 @@ public class MainActivity extends AppCompatActivity
        //setTheme(android.R.style.Theme_Holo_Light_NoActionBar_TranslucentDecor);
 
         setContentView(R.layout.activity_main);
-
+        mContext = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // 툴바
         setSupportActionBar(toolbar);
 
@@ -327,7 +336,7 @@ public class MainActivity extends AppCompatActivity
             getUserInfo_Server(user_seq);
         }
     }
-
+    double latitude,longitude;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -340,8 +349,55 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(), Search_Activity.class);
             startActivityForResult(intent,REQUEST_SEARCH);
             //startActivity(intent);
-
             // Toast.makeText(getApplicationContext(),"search click", Toast.LENGTH_SHORT).show();
+        }
+        else if(id == R.id.visit){
+
+            gps = new GpsInfo(this);
+            if (gps.isGetLocation()) {
+
+                 latitude = gps.getLatitude();
+                 longitude = gps.getLongitude();
+
+                if(latitude == 0.0 | longitude == 0.0){
+                    Toast.makeText(getApplicationContext(), "정확한 위치를 위해 다시 실행해주세요.", Toast.LENGTH_LONG).show();
+                }
+                else {
+
+                    LayoutInflater inflate = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View layout = inflate.inflate(R.layout.dialog_visit, null);
+
+                    final EditText visitEt = (EditText) layout.findViewById(R.id.visitEt);
+                    Button visitBtn = (Button) layout.findViewById(R.id.visitBtn);
+
+                    AlertDialog.Builder aDialog = new AlertDialog.Builder(mContext);
+                    aDialog.setView(layout);
+
+                    final AlertDialog ad = aDialog.create();
+
+                    visitBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(visitEt.getText().toString().equals(""))
+                                Toast.makeText(getApplicationContext(), "내용을 입력해 주세요", Toast.LENGTH_LONG).show();
+                            else {
+                                Toast.makeText(getApplicationContext(), "위도: " + latitude + "\n경도: " + longitude + "\n " + visitEt.getText().toString(), Toast.LENGTH_LONG).show();
+
+                            }
+
+                            ad.cancel();
+                        }
+                    });
+
+                    ad.show();
+                }
+
+            } else {
+                // GPS 를 사용할수 없으므로
+                gps.showSettingsAlert();
+            }
+
+
         }
 
         return super.onOptionsItemSelected(item);
