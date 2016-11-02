@@ -380,9 +380,15 @@ public class MainActivity extends AppCompatActivity
                         public void onClick(View v) {
                             if(visitEt.getText().toString().equals(""))
                                 Toast.makeText(getApplicationContext(), "내용을 입력해 주세요", Toast.LENGTH_LONG).show();
+                            else if(ApplicationController.getInstance().getSeq() == null)
+                            {
+                                Toast.makeText(getApplicationContext(), "로그인 하셔야 사용 가능합니다.", Toast.LENGTH_LONG).show();
+                            }
                             else {
+                                userSeq = Integer.valueOf(ApplicationController.getInstance().getSeq());
+                                Log.d("userSeq", String.valueOf(userSeq));
                                 Toast.makeText(getApplicationContext(), "위도: " + latitude + "\n경도: " + longitude + "\n " + visitEt.getText().toString(), Toast.LENGTH_LONG).show();
-
+                                writeVisit_Server(latitude,longitude , userSeq,visitEt.getText().toString());
                             }
 
                             ad.cancel();
@@ -621,6 +627,50 @@ public class MainActivity extends AppCompatActivity
 
                 Log.d("SUN", "statusCode : " + statusCode + " , response : " + new String(response));
 
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error)
+            {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo)
+            {
+            }
+        });
+    }
+
+    /* 방명록 */
+    void writeVisit_Server(double lat, double lon, int userSeq,String message) {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 imageName 만 있으면 됩니다.
+        params.put("lat", lat);
+        params.put("lon", lon);
+        params.put("userSeq", userSeq);
+        params.put("message", message);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getImage_Server()");
+        client.get("http://kibox327.cafe24.com/insertMessage.do", params, new AsyncHttpResponseHandler()
+        {
+            @Override
+            public void onStart()
+            {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response)
+            {
+                // byteArrayToBitmap 를 통해 reponse로 받은 이미지 데이터 bitmap으로 변환
+                Bitmap bitmap = byteArrayToBitmap(response);
+                UserProfileImg.setImageBitmap(bitmap);
+
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " + new String(response));
+                Toast.makeText(getApplicationContext(), "방명록을 남겼습니다.", Toast.LENGTH_LONG).show();
             }
 
             @Override
