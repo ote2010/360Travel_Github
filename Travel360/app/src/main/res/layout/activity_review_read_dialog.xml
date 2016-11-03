@@ -35,8 +35,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
+                android:textStyle="normal|bold"
                 android:text="2016.07.12"
-                android:textStyle="normal|bold" />
+             />
         </LinearLayout>
 
 

@@ -1,12 +1,16 @@
 package com.example.user.travel360.Fragment;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,6 +22,7 @@ import com.example.user.travel360.R;
 import com.example.user.travel360.Review.ReviewMainReadActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,8 +53,8 @@ public class Review_fragment extends Fragment {
     int[] userseq = new int[1000];
     long[] start_date = new long[1000];
     // Float [] evaluation = new Float[10];
-    float[] evaluation = new float[1000];
-    String[] Eval = {"4.5", "4.1", "3.9", "3.4", "3.3", "2.8", "2.5"};
+    String[] evaluation = new String[1000];
+    // String[] Eval = {"4.1", "3.9", "3.4", "3.3", "2.8", "2.5"};
     String start[] = new String[1000];
 
     //  String [] ages = {"2.6", "1.9", "1.8", "1.7"};
@@ -72,20 +77,21 @@ public class Review_fragment extends Fragment {
         v = (ViewGroup) inflater.inflate(R.layout.fragment_review_fragment, container, false);
         mainReviewContainer = (LinearLayout) v.findViewById(R.id.mainReviewContainer);
         //   showReviewRanking_Server();
-
+        //    RankList();
         return v;
     }
 
     public void RankList() {
+        Log.d("Server", "RankList");
         LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
 
         for (i = 0; i < 1000; i++) {
-            if ((ApplicationController.getInstance().getLocation(i) + "").equals(null + "")) {
-                Log.d("SUN_h", i + "번");
+            if ((location[i] + "").equals(null + "")) {
+                Log.d("Server", i + "번");
                 return;
             } else {
                 if (i < 3) {
-                    Log.d("SUN_h", i + "번");
+                    Log.d("Server", i + "번");
                     rankItem[i] = inflater.inflate(R.layout.review_main_rankitem, v, false); // 추가할 순위권 여행지 뷰 inflate
 
                     // 메달 아이콘, 여행지 장소 텍스트, 여행지 별점 ID 불러오기
@@ -109,14 +115,14 @@ public class Review_fragment extends Fragment {
 
                     //***********이 부분에서 서버에서 받아와서 바꿔주면 된다!!!!!***********
 
-                //    reviewMainImage[i].setImageResource(R.drawable.testimg1);
+                    //    reviewMainImage[i].setImageResource(R.drawable.testimg1);
 
                     Log.d("SUN_h", "00000000000000");
-                    final String Intent_Start = ApplicationController.getInstance().getStartDate(i);
-                    final String Intent_location = ApplicationController.getInstance().getLocation(i);
-                    final float Intent_evaluation = ApplicationController.getInstance().getEvalucation(i);
-                    rankPlaceTextView[i].setText(ApplicationController.getInstance().getLocation(i) + "");
-                    rankEvaluationTextView[i].setText(Eval[i]);
+                    final String Intent_Start = start[i];
+                    final String Intent_location = location[i];
+                    final String Intent_evaluation = evaluation[i];
+                    rankPlaceTextView[i].setText(location[i] + "");
+                    rankEvaluationTextView[i].setText(evaluation[i]);
 
                     reviewMainImage[i].setOnClickListener(new ImageView.OnClickListener() {
                         @Override
@@ -139,11 +145,11 @@ public class Review_fragment extends Fragment {
 
                     rankPlaceTextView[i] = (TextView) rankItem[i].findViewById(R.id.PlaceTextView);
                     rankEvaluationTextView[i] = (TextView) rankItem[i].findViewById(R.id.EvaluationTextView);
-                    final String Intent_Start = ApplicationController.getInstance().getStartDate(i);
-                    final String Intent_location = ApplicationController.getInstance().getLocation(i);
-                    final String Intent_evaluation = Eval[i];
-                    rankPlaceTextView[i].setText(ApplicationController.getInstance().getLocation(i) + "");
-                    rankEvaluationTextView[i].setText(Eval[i]);
+                    final String Intent_Start = start[i];
+                    final String Intent_location = location[i];
+                    final String Intent_evaluation = evaluation[i];
+                    rankPlaceTextView[i].setText(location[i]);
+                    rankEvaluationTextView[i].setText(evaluation[i]);
                     //  final int finalI = i;
                     rankItem[i].setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -166,8 +172,9 @@ public class Review_fragment extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        showReviewRanking_Server();
 
-        RankList();
+        //  RankList();
         for (int i = 0; i < 10; i++) {
             Log.d("SUN_h", location[i] + "s");
         }
@@ -210,11 +217,12 @@ public class Review_fragment extends Fragment {
     /************************
      * 리뷰 랭킹
      *********************/
+
     void showReviewRanking_Server() {
 
         AsyncHttpClient client = new AsyncHttpClient();
 
-        Log.d("SUN", "writeStory_Server()");
+        Log.d("Server", "writeStory_Server()");
         client.get("http://kibox327.cafe24.com/travelReviewRankingList.do", new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
@@ -223,7 +231,7 @@ public class Review_fragment extends Fragment {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                Log.d("SUN_h", "statusCode : " + statusCode + " , response : " + new String(response));
+                Log.d("Server", "statusCode : " + statusCode + " , response : " + new String(response));
                 String res = new String(response);
 
                 try {
@@ -232,11 +240,21 @@ public class Review_fragment extends Fragment {
                     JSONArray arr = new JSONArray(objStr);
                     for (int i = 0; i < arr.length(); i++) {
                         JSONObject obj = (JSONObject) arr.get(i);
-                        //     Float a   = (float)obj.get("evaluation");
-                        //   evaluation[i] = a;
+                        String a;
+
+                      //  Log.d("Server", "boolean check"+ obj.get("evaluation") instanceof Float);
+
+                            a = String.valueOf(obj.get("evaluation"));
+                            float a2 = Float.valueOf(a);
+                            a = String.format("%.2f", a2);
+                            Log.d("Server", "@false eval value  : "+a);
+                            evaluation[i] = a;
+
+
+                        Log.d("Server", "Evaluation" + a);
                         location[i] = (String) obj.get("location");
-                        String b = (String) obj.get("location");
-                        location[i] = b;
+                        //  String b = (String) obj.get("location");
+                        //  location[i] = b;
                         // String text  = (String)obj.get("text");
                         int c = (int) obj.get("seq");
                         userseq[i] = c;
@@ -246,7 +264,7 @@ public class Review_fragment extends Fragment {
                         SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
                         start[i] = df.format(d);
                         // String finish = df.format(finish_date);
-                        Log.d("SUN_h", "evaluation : " + evaluation[i] + " " + " , location : " + location[i] + " , text : " + " , userseq : " + userseq[i] + " , start : " + start[i]);
+                        Log.d("Server", "evaluation : " + evaluation[i] + " " + " , location : " + location[i] + " , text : " + " , userseq : " + userseq[i] + " , start : " + start[i]);
                         if (i < 3) {
 //                           rankPlaceTextView[i].setText(location[i] + "");
                             //                         rankEvaluationTextView[i].setText(evaluation[i] + "");
@@ -258,19 +276,22 @@ public class Review_fragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Log.d("SUN_h", "e : " + e.toString());
+                    Log.d("Server", "e : " + e.toString());
                 }
+                RankList();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.d("SUN_확인", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+                Log.d("Server", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
             }
 
             @Override
             public void onRetry(int retryNo) {
             }
         });
-        //  Log.d("SUN_h", "lenth" + location.length);
+        Log.d("Server", "server end");
+
+
     }
 }

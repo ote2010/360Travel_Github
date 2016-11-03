@@ -33,13 +33,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import cz.msebera.android.httpclient.Header;
 
 public class JoinActivity extends Activity {
 
     ArrayList<Integer> contentsSequence;
-
+    int path_png = 0;
     String gender, email, pw, name;
     TextView PWCH;
     Button BtnSumit;
@@ -47,10 +48,11 @@ public class JoinActivity extends Activity {
     RadioGroup radioGroup;
     SharedPreferences pref;
     SharedPreferences.Editor edit;
-    ImageButton   selectProfile;
+    ImageButton selectProfile;
     ImageView ProfileImg;
     Uri uri = null;
     String path;
+    int check = 0;
 
 
     @Override
@@ -96,6 +98,7 @@ public class JoinActivity extends Activity {
             public void onClick(View v) {
 
                 if (!checkEditBoxInput()) {
+                    //Log.d("SUN@@")
                     return;
                 }
 
@@ -117,9 +120,11 @@ public class JoinActivity extends Activity {
                 if (PW.equals(PWC)) {
                     PWCH.setText("비밀번호가 일치합니다.");
                     PWCH.setTextColor(Color.GREEN);
+                    check = 0;
                 } else {
                     PWCH.setText("비밀번호가 일치하지 않습니다.");
                     PWCH.setTextColor(Color.RED);
+                    check = 1;
                 }
 
             }
@@ -159,7 +164,11 @@ public class JoinActivity extends Activity {
         } else if (uri == null) {
             Toast.makeText(getApplicationContext(), "프로필 사진을 선택하세요.", Toast.LENGTH_SHORT).show();
             return false;
+        } else if (check == 1) {
+            Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+            return false;
         }
+
         return true;
     }
 
@@ -175,6 +184,7 @@ public class JoinActivity extends Activity {
                     //String name_Str = getImageNameToUri(data.getData());
                     uri = data.getData();
                     path = getPath(uri);
+
                     Log.d("@URI@", uri + "");
 
                     //이미지 데이터를 비트맵으로 받아온다.
@@ -195,14 +205,42 @@ public class JoinActivity extends Activity {
 
     }
 
+
     public String getPath(Uri uri) {
+
 
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = managedQuery(uri, projection, null, null, null);
         startManagingCursor(cursor);
         int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
-        return cursor.getString(columnIndex);
+        Log.d("Path : ", cursor.getString(columnIndex));
+        String path = cursor.getString(columnIndex);
+        StringTokenizer st = new StringTokenizer(path, ".");
+        Log.d("Path@", "11");
+        int check = 0;
+        String[] final_path = new String[3];
+        while (st.hasMoreTokens()) {
+
+            Log.d("Path@", "22");
+            //   path = st.nextToken();
+            final_path[check] = st.nextToken();
+
+
+            Log.d("Path@", "check : " + check);
+            check++;
+        }
+        if (check != 0) {
+          //  Toast.makeText(getApplicationContext(), "프로필 사진의 확장자를 jpg로 해주세요", Toast.LENGTH_SHORT).show();
+          //  return null;
+             return path;
+        } else {
+            path_png = 0;
+            Log.d("Path@", cursor.getString(columnIndex));
+            return cursor.getString(columnIndex);
+        }
+
+
     }
 
     void Join_Server() {
@@ -224,12 +262,9 @@ public class JoinActivity extends Activity {
         params.put("id", email1);
         params.put("name", name1);
         // params.put("permission", true);
-        try
-        {
+        try {
             params.put("image", myFile);
-        }
-        catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
 
         }
 
@@ -270,6 +305,8 @@ public class JoinActivity extends Activity {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Log.d("SUN@@", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+                Toast.makeText(getApplicationContext(), "프로필 사진의 확장자를 jpg로 해주세요", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override

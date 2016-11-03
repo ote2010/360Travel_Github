@@ -142,7 +142,7 @@ public class ApplicationController extends Application {
         ApplicationController.instance = this;
 
         this.initSharedPreference();
-        this.showReviewRanking_Server();
+      //  this.showReviewRanking_Server();
     }
 
     public String getLocation(int i) {
@@ -171,70 +171,70 @@ public class ApplicationController extends Application {
 
 
     }
-
-    void showReviewRanking_Server() {
-
-        AsyncHttpClient client = new AsyncHttpClient();
-
-        Log.d("SUN", "writeStory_Server()");
-        client.get("http://kibox327.cafe24.com/travelReviewRankingList.do", new AsyncHttpResponseHandler() {
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                Log.d("SUN_h", "statusCode : " + statusCode + " , response : " + new String(response));
-                String res = new String(response);
-
-                try {
-                    JSONObject object = new JSONObject(res);
-                    String objStr = object.get("reviews") + "";
-                    JSONArray arr = new JSONArray(objStr);
-                    for (int i = 0; i < arr.length(); i++) {
-                        JSONObject obj = (JSONObject) arr.get(i);
-                        //     Float a   = (float)obj.get("evaluation");
-                        //   evaluation[i] = a;
-                        location[i] = (String) obj.get("location");
-                        String b = (String) obj.get("location");
-                        location[i] = b;
-                        // String text  = (String)obj.get("text");
-                        int c = (int) obj.get("seq");
-                        userseq[i] = c;
-                        long d = (long) obj.get("write_date_client");
-                        //start_date[i]=d;
-                        // long finish_date = (long)obj.get("finish_date_client");
-                        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
-                        start[i] = df.format(d);
-                        // String finish = df.format(finish_date);
-                        Log.d("SUN_h", "evaluation : " + evaluation[i] + " " + " , location : " + location[i] + " , text : " + " , userseq : " + userseq[i] + " , start : " + start[i]);
-                        if (i < 3) {
-//                           rankPlaceTextView[i].setText(location[i] + "");
-                            //                         rankEvaluationTextView[i].setText(evaluation[i] + "");
-                        } else {
-                            //  view.setPlace(location[i]);
-                            //   view.setEvaluation(evaluation[i]+"");
-                        }
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.d("SUN_h", "e : " + e.toString());
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.d("SUN_확인", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
-            }
-
-            @Override
-            public void onRetry(int retryNo) {
-            }
-        });
-        //  Log.d("SUN_h", "lenth" + location.length);
-    }
+//
+//    void showReviewRanking_Server() {
+//
+//        AsyncHttpClient client = new AsyncHttpClient();
+//
+//        Log.d("SUN", "writeStory_Server()");
+//        client.get("http://kibox327.cafe24.com/travelReviewRankingList.do", new AsyncHttpResponseHandler() {
+//            @Override
+//            public void onStart() {
+//
+//            }
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+//                Log.d("SUN_h", "statusCode : " + statusCode + " , response : " + new String(response));
+//                String res = new String(response);
+//
+//                try {
+//                    JSONObject object = new JSONObject(res);
+//                    String objStr = object.get("reviews") + "";
+//                    JSONArray arr = new JSONArray(objStr);
+//                    for (int i = 0; i < arr.length(); i++) {
+//                        JSONObject obj = (JSONObject) arr.get(i);
+//                        //     Float a   = (float)obj.get("evaluation");
+//                        //   evaluation[i] = a;
+//                        location[i] = (String) obj.get("location");
+//                        String b = (String) obj.get("location");
+//                        location[i] = b;
+//                        // String text  = (String)obj.get("text");
+//                        int c = (int) obj.get("seq");
+//                        userseq[i] = c;
+//                        long d = (long) obj.get("write_date_client");
+//                        //start_date[i]=d;
+//                        // long finish_date = (long)obj.get("finish_date_client");
+//                        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
+//                        start[i] = df.format(d);
+//                        // String finish = df.format(finish_date);
+//                        Log.d("SUN_h", "evaluation : " + evaluation[i] + " " + " , location : " + location[i] + " , text : " + " , userseq : " + userseq[i] + " , start : " + start[i]);
+//                        if (i < 3) {
+////                           rankPlaceTextView[i].setText(location[i] + "");
+//                            //                         rankEvaluationTextView[i].setText(evaluation[i] + "");
+//                        } else {
+//                            //  view.setPlace(location[i]);
+//                            //   view.setEvaluation(evaluation[i]+"");
+//                        }
+//                    }
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                    Log.d("SUN_h", "e : " + e.toString());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+//                Log.d("SUN_확인", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+//            }
+//
+//            @Override
+//            public void onRetry(int retryNo) {
+//            }
+//        });
+//        //  Log.d("SUN_h", "lenth" + location.length);
+//    }
 
 
 
