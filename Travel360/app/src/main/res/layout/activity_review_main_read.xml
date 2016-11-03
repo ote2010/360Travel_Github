@@ -12,80 +12,90 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
-            android:id="@+id/read_review_scroll"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:fillViewport="true">
 
-            <LinearLayout
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="100">
+
+            <FrameLayout
+                android:id="@+id/place_info"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="150dp"
 
+
+                >
+
+                <ImageView
+                    android:id="@+id/place_img"
+                    android:layout_width="fill_parent"
+                    android:layout_height="150dp"
+
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/soongsil" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="60"
+                    android:background="#b5000000"
                     android:orientation="vertical"
                     android:weightSum="100">
 
-                    <FrameLayout
-                        android:id="@+id/place_info"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
+                    <TextView
+                        android:fontFamily="sans-serif"
+                        android:textStyle="normal|bold"
+                        android:id="@+id/place_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Paris"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="#ffffff"
+                        android:textSize="30pt" />
+
+                    <TextView
+                        android:fontFamily="sans-serif"
+                        android:textStyle="normal|bold"
+                        android:id="@+id/heart_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|bottom"
+                        android:layout_weight="25"
+                        android:text="3,4567"
+                        android:textColor="#ffffff"
+                        android:textSize="10pt" />
+
+                    <TextView
+                        android:fontFamily="sans-serif"
+                        android:textStyle="normal|bold"
+                        android:id="@+id/star_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|bottom"
+                        android:layout_weight="25"
+                        android:text="4.9"
+                        android:textColor="#ffffff"
+                        android:textSize="10pt" />
+                </LinearLayout>
+            </FrameLayout>
 
 
-                        >
+            <ScrollView
+                android:id="@+id/read_review_scroll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
 
-                        <ImageView
-                            android:id="@+id/place_img"
-                            android:layout_width="fill_parent"
-                            android:layout_height="150dp"
+                >
 
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/soongsil" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="60"
-                            android:background="#b5000000"
-                            android:orientation="vertical"
-                            android:weightSum="100">
-
-                            <TextView
-                                android:id="@+id/place_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:text="Paris"
-                                android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:textColor="#ffffff"
-                                android:textSize="30pt" />
-
-                            <TextView
-                                android:id="@+id/heart_num"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center|bottom"
-                                android:layout_weight="25"
-                                android:text="3,4567"
-                                android:textColor="#ffffff"
-                                android:textSize="10pt" />
-
-                            <TextView
-                                android:id="@+id/star_num"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center|bottom"
-                                android:layout_weight="25"
-                                android:text="4.9"
-                                android:textColor="#ffffff"
-                                android:textSize="10pt" />
-                        </LinearLayout>
-                    </FrameLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -97,17 +107,15 @@
 
                         android:textColor="#ffffff" />
 
-
                     <LinearLayout
                         android:id="@+id/best_review"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="45"
+                        android:layout_height="wrap_content"
+
                         android:orientation="vertical">
 
 
                     </LinearLayout>
-
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -119,23 +127,23 @@
 
                         android:textColor="#ffffff" />
 
-
                     <LinearLayout
                         android:id="@+id/normal_review"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="45"
+                        android:layout_height="wrap_content"
+
 
                         android:orientation="vertical">
 
                     </LinearLayout>
 
 
+
                 </LinearLayout>
+            </ScrollView>
 
+        </LinearLayout>
 
-            </LinearLayout>
-        </ScrollView>
 
         <ImageButton
             android:id="@+id/write_review_btn"

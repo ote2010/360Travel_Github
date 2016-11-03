@@ -13,13 +13,13 @@
         android:fillViewport="true"
         android:layout_weight="1"
         android:id="@+id/ReviewScrollView">
-    <LinearLayout
-        android:background="#e6e6e6"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/mainReviewContainer">
-    </LinearLayout>
+        <LinearLayout
+            android:background="#e6e6e6"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/mainReviewContainer">
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>

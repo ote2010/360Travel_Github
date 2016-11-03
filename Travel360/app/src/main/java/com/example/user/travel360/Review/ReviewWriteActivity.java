@@ -127,7 +127,7 @@ public class ReviewWriteActivity extends Dialog {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 Grade = grade.getItem(position) + "";
-               // Toast.makeText(getContext(), Grade, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), Grade, Toast.LENGTH_SHORT).show();
                 starlayout.removeAllViews();
 
                 int mok = (int)(Double.parseDouble(Grade) / 1.0) ;
@@ -166,8 +166,13 @@ public class ReviewWriteActivity extends Dialog {
         // 기본 데이터
         String WriteText = ReviewWrite.getText().toString();
         String seq = ApplicationController.getInstance().getSeq();
+        Log.d("CHECK_SEQ", "리뷰 쓰기SEQ : "+seq);
         String text1 = ReviewWrite.getText().toString();
-        String Location = ApplicationController.getInstance().getLocation1();
+
+        Location = ApplicationController.getInstance().getLocation1();
+
+        Log.d("Server_Write", "Location : "+Location);
+        //  String Location = ApplicationController.getInstance().getLocation1();
         params.put("userSeq", seq);
         params.put("text", text1);
         params.put("write_date_client", todaydate);
@@ -175,7 +180,7 @@ public class ReviewWriteActivity extends Dialog {
 
         AsyncHttpClient client = new AsyncHttpClient();
 
-        Log.d("SUN", "writeStory_Server()");
+        Log.d("Server_Write", "writeStory_Server()");
         client.post("http://kibox327.cafe24.com/writeTravelReview.do", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
@@ -184,13 +189,13 @@ public class ReviewWriteActivity extends Dialog {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                Log.d("SUN_확인", "Success // statusCode : " + statusCode + " , response : " + new String(response));
+                Log.d("Server_Write", "Success // statusCode : " + statusCode + " , response : " + new String(response));
                 String res = new String(response);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.d("SUN@@", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+                Log.d("Server_Write", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
             }
 
             @Override
