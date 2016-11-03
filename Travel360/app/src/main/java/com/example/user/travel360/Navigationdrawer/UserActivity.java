@@ -285,7 +285,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                 Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
                 String res = new String(response);
-                try{
+                try
+                {
                     JSONObject object = new JSONObject(res);
                     String objStr =  object.get("userDto") + "";
                     JSONObject obj = new JSONObject(objStr);
@@ -296,8 +297,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     getImage_Server(profile_image);
                     Log.d("SUN", "profile_image : "+ profile_image);
                     userIdTv.setText(id+" ("+name+")");
-
-                }catch (JSONException e){
+                }
+                catch (JSONException e)
+                {
 
                 }
             }
@@ -338,8 +340,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 // byteArrayToBitmap 를 통해 reponse로 받은 이미지 데이터 bitmap으로 변환
                 Bitmap bitmap = byteArrayToBitmap(response);
                 userProfileImg.setImageBitmap(bitmap);
-
-
             }
 
             @Override

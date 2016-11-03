@@ -65,7 +65,6 @@ public class Story_fragment extends Fragment {
     //****서버 코드 *****/
     final static int REQUEST_PRESENTATION_IMAGE = 1111, REQUEST_USER_IMAGE = 2222;
     int seq;
-    int user_info_seq;
     String presentation_image;
     String title;
     String name;
@@ -96,7 +95,8 @@ public class Story_fragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)
+    {
         context = getContext();
 
         v = (ViewGroup) inflater.inflate(R.layout.fragment_story_fragment, container, false);
@@ -117,7 +117,8 @@ public class Story_fragment extends Fragment {
                 if (check)
                 {
                     Toast.makeText(getContext(), "로그인 후 이용해주세요.", Toast.LENGTH_SHORT).show();
-                } else
+                }
+                else
                 {
                     startActivity(new Intent(getActivity(), StoryWriteActivity.class));
                 }
@@ -168,7 +169,8 @@ public class Story_fragment extends Fragment {
                 presentation_img_List.clear();
                 profile_img_List.clear();
                 uploading_check = true;
-                try {
+                try
+                {
                     JSONObject object = new JSONObject(res);
                     String objStr = object.get("travels") + "";
                     JSONArray arr = new JSONArray(objStr);

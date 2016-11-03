@@ -1,6 +1,5 @@
 package com.example.user.travel360.Fragment;
 
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,8 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,7 +18,6 @@ import com.example.user.travel360.R;
 import com.example.user.travel360.Review.ReviewMainReadActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +49,7 @@ public class Review_fragment extends Fragment {
     long[] start_date = new long[1000];
     // Float [] evaluation = new Float[10];
     float[] evaluation = new float[1000];
-    String[] Eval = {"4.1", "3.9", "3.4", "3.3", "2.8", "2.5"};
+    String[] Eval = {"4.5", "4.1", "3.9", "3.4", "3.3", "2.8", "2.5"};
     String start[] = new String[1000];
 
     //  String [] ages = {"2.6", "1.9", "1.8", "1.7"};
