@@ -59,23 +59,10 @@
                         android:text="오탁은"
                         android:textSize="20dp" />
 
-                    <Button
-                        android:layout_marginLeft="65dp"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="logout"
-                        android:textSize="5pt"
-                        android:id="@+id/Logoutbtn"
-                        android:layout_gravity="right" />
+
                 </LinearLayout>
 
-                <TextView
-                    android:layout_weight="90"
-                    android:id="@+id/UserIDTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ote2010@naver.com" />
+
             </LinearLayout>
         </RelativeLayout>
 

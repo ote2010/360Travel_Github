@@ -333,6 +333,7 @@ public class MainActivity extends AppCompatActivity
             LayoutNoLogin.setVisibility(View.INVISIBLE);
             LayoutLogin.setVisibility(View.VISIBLE);
             String user_seq = ApplicationController.getInstance().getSeq();
+            Log.d("CHECK_SEQ", "SEQ : "+user_seq);
             getUserInfo_Server(user_seq);
         }
     }

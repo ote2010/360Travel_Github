@@ -29,6 +29,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 
@@ -44,6 +45,7 @@ public class ReviewMainReadActivity extends AppCompatActivity {
     ScrollView mScroll;
     TextView place_name;
     TextView star_num1;
+    TextView heart_num;
 
     ViewGroup v;
     LinearLayout BestReview, NormalReview;
@@ -65,8 +67,12 @@ public class ReviewMainReadActivity extends AppCompatActivity {
     String[] Best_Date = new String[10];
     String[] Best_StarNum = new String[10];
     String[] Best_Ster = new String[10];
+    int[] seq = new int[100];
+    int[] user_info_seq = new int[100];
+    int user_info_seq2 = 0;
     String as;
 
+    int Count_Review = 0;
     // 일반 여행자 리뷰
     ImageView[] NUser_profile = new ImageView[10]; // 사용자 프로필 사진
     TextView[] NUser_name = new TextView[10]; // 사용자 이름
@@ -118,22 +124,27 @@ public class ReviewMainReadActivity extends AppCompatActivity {
         Place_Img = (ImageView) findViewById(R.id.place_img);
 
         star_num1 = (TextView) findViewById(R.id.star_num);
-        if (Location.equals("연세대")) {
-            star_num1.setText("4.1");
-            Place_Img.setImageDrawable(getResources().getDrawable(R.drawable.yonsei));
-        } else if (Location.equals("숭실대")) {
-            star_num1.setText("3.9");
-            Place_Img.setImageDrawable(getResources().getDrawable(R.drawable.soongsil));
-        } else if (Location.equals("Paris")) {
-            star_num1.setText("3.4");
-            Place_Img.setImageDrawable(getResources().getDrawable(R.drawable.paris3));
-        } else if (Location.equals("서울")) {
-            star_num1.setText("3.3");
-            Place_Img.setImageDrawable(getResources().getDrawable(R.drawable.seoul3));
-        } else {
-            star_num1.setText("2.8");
-            Place_Img.setImageDrawable(getResources().getDrawable(R.drawable.london3));
-        }
+        star_num1.setText(Evaluation);
+
+        heart_num = (TextView) findViewById(R.id.heart_num);
+
+//        star_num1 = (TextView) findViewById(R.id.star_num);
+//        if (Location.equals("연세대")) {
+//            star_num1.setText("4.1");
+//            Place_Img.setImageDrawable(getResources().getDrawable(R.drawable.yonsei));
+//        } else if (Location.equals("숭실대")) {
+//            star_num1.setText("3.9");
+//            Place_Img.setImageDrawable(getResources().getDrawable(R.drawable.soongsil));
+//        } else if (Location.equals("Paris")) {
+//            star_num1.setText("3.4");
+//            Place_Img.setImageDrawable(getResources().getDrawable(R.drawable.paris3));
+//        } else if (Location.equals("서울")) {
+//            star_num1.setText("3.3");
+//            Place_Img.setImageDrawable(getResources().getDrawable(R.drawable.seoul3));
+//        } else {
+//            star_num1.setText("2.8");
+//            Place_Img.setImageDrawable(getResources().getDrawable(R.drawable.london3));
+//        }
 
 
         BestReview = (LinearLayout) findViewById(R.id.best_review);
@@ -176,9 +187,18 @@ public class ReviewMainReadActivity extends AppCompatActivity {
 
                     alert.show();
                 } else {
-
+                    ApplicationController.getInstance().setLocation(Location);
                     ReviewWriteActivity reviewWriteActivity = new ReviewWriteActivity(ReviewMainReadActivity.this);
                     reviewWriteActivity.requestWindowFeature(getWindow().FEATURE_NO_TITLE);
+                    reviewWriteActivity.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            BestReview.removeAllViews();
+                            NormalReview.removeAllViews();
+                            getTravelReviewAll_Server();
+
+                        }
+                    });
                     reviewWriteActivity.show();
 
                 }
@@ -197,87 +217,6 @@ public class ReviewMainReadActivity extends AppCompatActivity {
 
     }
 
-    public void Bestinit() {
-
-        LayoutInflater inflater = LayoutInflater.from(getApplication().getApplicationContext());
-        for (int i = 0; i < ApplicationController.getInstance().getArr_len(); i++) {
-            BestReviewITem[i] = inflater.inflate(R.layout.review_read_listitem_view, v, false); // 추가할 순위권 여행지 뷰 inflate
-
-            // 메달 아이콘, 여행지 장소 텍스트, 여행지 별점 ID 불러오기
-            BUser_profile[i] = (ImageView) BestReviewITem[i].findViewById(R.id.Review_read_user_img);
-            BStar[i] = (ImageView) BestReviewITem[i].findViewById(R.id.Review_read_star);
-            BUser_name[i] = (TextView) BestReviewITem[i].findViewById(R.id.Review_read_user_name);
-            BText1[i] = (TextView) BestReviewITem[i].findViewById(R.id.Review_read_text);
-            BDate[i] = (TextView) BestReviewITem[i].findViewById(R.id.Review_read_date);
-            BStarNum[i] = (TextView) BestReviewITem[i].findViewById(R.id.Review_read_starnum);
-
-
-            //***********이 부분에서 서버에서 받아와서 바꿔주면 된다!!!!!***********
-            BUser_profile[i].setImageResource(R.drawable.profile_sample);
-            BStar[i].setImageResource(R.drawable.star);
-            BUser_name[i].setText("오탁은");
-            BStarNum[i].setText("4.8");
-
-            BText1[i].setText(ApplicationController.getInstance().getText_bump(i));
-            Log.d("SUN_SUN", ApplicationController.getInstance().getText_bump(i));
-            BDate[i].setText("2016.08.23");
-
-            BestReviewITem[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ReviewReadDialog reviewReadDialog = new ReviewReadDialog(ReviewMainReadActivity.this);
-
-                    reviewReadDialog.requestWindowFeature(getWindow().FEATURE_NO_TITLE);
-                    reviewReadDialog.show();
-                }
-            });
-            //*******************************************************************
-
-            BestReview.addView(BestReviewITem[i]); // 추가해주기
-        }
-
-    }
-
-    public void Normalinit() {
-
-        LayoutInflater inflater = LayoutInflater.from(getApplication().getApplicationContext());
-        for (int i = 0; i < NORMAL_REVIEW_NUM; i++) {
-            NormalReviewITem[i] = inflater.inflate(R.layout.review_read_listitem_view, v, false); // 추가할 순위권 여행지 뷰 inflate
-
-            // 메달 아이콘, 여행지 장소 텍스트, 여행지 별점 ID 불러오기
-            NUser_profile[i] = (ImageView) NormalReviewITem[i].findViewById(R.id.Review_read_user_img);
-            NStar[i] = (ImageView) NormalReviewITem[i].findViewById(R.id.Review_read_star);
-            NUser_name[i] = (TextView) NormalReviewITem[i].findViewById(R.id.Review_read_user_name);
-            NText1[i] = (TextView) NormalReviewITem[i].findViewById(R.id.Review_read_text);
-            NDate[i] = (TextView) NormalReviewITem[i].findViewById(R.id.Review_read_date);
-            NStarNum[i] = (TextView) NormalReviewITem[i].findViewById(R.id.Review_read_starnum);
-
-
-            //***********이 부분에서 서버에서 받아와서 바꿔주면 된다!!!!!***********
-            BUser_profile[i].setImageResource(R.drawable.profile_sample);
-            NStar[i].setImageResource(R.drawable.star);
-            NUser_name[i].setText("오탁은");
-            NStarNum[i].setText("4.8");
-
-            NText1[i].setText(text1);
-            NDate[i].setText("2016.08.23");
-
-
-            NormalReviewITem[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ReviewReadDialog reviewReadDialog = new ReviewReadDialog(ReviewMainReadActivity.this);
-
-                    reviewReadDialog.requestWindowFeature(getWindow().FEATURE_NO_TITLE);
-                    reviewReadDialog.show();
-                }
-            });
-            //*******************************************************************
-
-            NormalReview.addView(NormalReviewITem[i]); // 추가해주기
-        }
-
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -351,8 +290,9 @@ public class ReviewMainReadActivity extends AppCompatActivity {
                         Log.d("SUN_a", "efwefwfefwfef");
                         JSONObject obj = (JSONObject) arr.get(i);
 
-                        int seq = (Integer) obj.get("seq");
-                        final int user_info_seq = (Integer) obj.get("user_info_seq");
+                        seq[i] = (Integer) obj.get("seq");
+                        user_info_seq[i] = (Integer) obj.get("user_info_seq");
+                        user_info_seq2 = (Integer) obj.get("user_info_seq");
                         // evaluation
                         long write_date_client = (long) obj.get("write_date_client");
                         SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
@@ -372,21 +312,25 @@ public class ReviewMainReadActivity extends AppCompatActivity {
 
 
                         //***********이 부분에서 서버에서 받아와서 바꿔주면 된다!!!!!***********
-                        BUser_profile[i].setImageResource(R.drawable.profile_sample);
+                        BUser_profile[i].setImageResource(R.drawable.empty_profile);
                         BStar[i].setImageResource(R.drawable.star);
-                        BUser_name[i].setText("오탁은");
-                        BStarNum[i].setText("4.8");
+                        //    BUser_name[i].setText("오탁은");
+                        // BStarNum[i].setText("4.8");
+                        getUserInfo_Server(user_info_seq[i], i);
+                        Log.d("CHECK_SEQ", "리뷰메인 SEQ : " + user_info_seq[i]);
 
                         BText1[i].setText(Text_bump[i]);
                         Log.d("SUN_1", Text_bump[i] + "Location : " + Location);
                         BDate[i].setText("2016.08.23");
-
+                        heart_num.setText("총 리뷰 :"+(i+1) );
                         BestReviewITem[i].setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 //int user_info_seq, String write_date, String text
-                                ReviewReadDialog reviewReadDialog = new ReviewReadDialog(ReviewMainReadActivity.this, user_info_seq, write_date, text, 3.5); // 사용자 seq, 작성날짜, 작성내용, 별점
+                                ReviewReadDialog reviewReadDialog = new ReviewReadDialog(ReviewMainReadActivity.this, user_info_seq2, write_date, text, 3.5); // 사용자 seq, 작성날짜, 작성내용, 별점
                                 reviewReadDialog.requestWindowFeature(getWindow().FEATURE_NO_TITLE);
+
+
                                 reviewReadDialog.show();
                             }
                         });
@@ -415,4 +359,57 @@ public class ReviewMainReadActivity extends AppCompatActivity {
         });
     }
 
+    void getUserInfo_Server(int seq, final int i) {
+
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 seq 만 있으면 됩니다.
+        params.put("seq", seq);    //바꿔주기
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getUserInfo_Server()");
+        client.get("http://kibox327.cafe24.com/getUserInfo.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("SUN", "statusCode : " + statusCode + " , response : " + new String(response));
+                String res = new String(response);
+                try {
+                    JSONObject object = new JSONObject(res);
+                    String objStr = object.get("userDto") + "";
+                    JSONObject obj = new JSONObject(objStr);
+
+                    String id = (String) obj.get("id");
+                    String name = (String) obj.get("name");
+                    String profile_image = (String) obj.get("profile_image");
+                    Log.d("SUN", "profile_image : " + profile_image);
+//받아온걸로 입히기
+                    BUser_name[i].setText(name);
+                    //   BUser_profile[i].setImageResource(R.drawable.profile_sample);
+
+                  /*  review_dateTV.setText(wrteDate);
+                    user_nameTV.setText(name);
+                    review_evTV .setText(writeEvl+"");
+                    review_contextTV .setText(writeText);
+*/
+
+                } catch (JSONException e) {
+
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {
+            }
+        });
+    }
 }

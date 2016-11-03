@@ -12,17 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
-            android:id="@+id/read_review_scroll"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:fillViewport="true">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
 
 
                 <LinearLayout
@@ -56,6 +46,8 @@
                             android:weightSum="100">
 
                             <TextView
+                                android:fontFamily="sans-serif"
+                                android:textStyle="normal|bold"
                                 android:id="@+id/place_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -66,6 +58,8 @@
                                 android:textSize="30pt" />
 
                             <TextView
+                                android:fontFamily="sans-serif"
+                                android:textStyle="normal|bold"
                                 android:id="@+id/heart_num"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -76,6 +70,8 @@
                                 android:textSize="10pt" />
 
                             <TextView
+                                android:fontFamily="sans-serif"
+                                android:textStyle="normal|bold"
                                 android:id="@+id/star_num"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -87,55 +83,67 @@
                         </LinearLayout>
                     </FrameLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2.5dp"
-                        android:layout_marginTop="2.5dp"
 
-                        android:background="@drawable/effective_traveler"
-
-                        android:textColor="#ffffff" />
-
-
-                    <LinearLayout
-                        android:id="@+id/best_review"
+                    <ScrollView
+                        android:id="@+id/read_review_scroll"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="45"
-                        android:orientation="vertical">
+                        android:fillViewport="true"
 
-
-                    </LinearLayout>
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2.5dp"
-                        android:layout_marginTop="2.5dp"
-
-                        android:background="@drawable/normal_traveler"
-
-                        android:textColor="#ffffff" />
-
+                        >
 
                     <LinearLayout
-                        android:id="@+id/normal_review"
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="45"
+                        android:layout_height="match_parent">
 
-                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2.5dp"
+                            android:layout_marginTop="2.5dp"
 
-                    </LinearLayout>
+                            android:background="@drawable/effective_traveler"
+
+                            android:textColor="#ffffff" />
+
+                        <LinearLayout
+                            android:id="@+id/best_review"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:orientation="vertical">
+
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2.5dp"
+                            android:layout_marginTop="2.5dp"
+
+                            android:background="@drawable/normal_traveler"
+
+                            android:textColor="#ffffff" />
+
+                        <LinearLayout
+                            android:id="@+id/normal_review"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+
 
 
                 </LinearLayout>
-
+                    </ScrollView>
 
             </LinearLayout>
-        </ScrollView>
+
 
         <ImageButton
             android:id="@+id/write_review_btn"
