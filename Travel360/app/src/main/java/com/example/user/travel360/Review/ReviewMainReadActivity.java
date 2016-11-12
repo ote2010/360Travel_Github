@@ -3,6 +3,8 @@ package com.example.user.travel360.Review;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -99,7 +101,8 @@ public class ReviewMainReadActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Location = intent.getStringExtra("Location");
 
-
+        String img = Location + ".jpg";
+        getImage_Server(img);
         Evaluation = intent.getStringExtra("Evaluation");
         Start = intent.getStringExtra("Start");
         Log.d("SUN_h", Location + "location" + "/" + Evaluation + "/" + Start);
@@ -119,6 +122,8 @@ public class ReviewMainReadActivity extends AppCompatActivity {
     }
 
     public void init() {
+
+
         place_name = (TextView) findViewById(R.id.place_name);
         place_name.setText(Location);
         Place_Img = (ImageView) findViewById(R.id.place_img);
@@ -322,7 +327,7 @@ public class ReviewMainReadActivity extends AppCompatActivity {
                         BText1[i].setText(Text_bump[i]);
                         Log.d("SUN_1", Text_bump[i] + "Location : " + Location);
                         BDate[i].setText("2016.08.23");
-                        heart_num.setText("총 리뷰 :"+(i+1) );
+                        heart_num.setText("총 리뷰 :" + (i + 1));
                         BestReviewITem[i].setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -412,4 +417,46 @@ public class ReviewMainReadActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    void getImage_Server(String imageName) {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 imageName 만 있으면 됩니다.
+        params.put("imageName", imageName);
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getImage_Server()");
+        client.get("http://kibox327.cafe24.com/Image.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                // byteArrayToBitmap 를 통해 reponse로 받은 이미지 데이터 bitmap으로 변환
+                Log.d("Image", "SUN : " );
+                Bitmap bitmap = byteArrayToBitmap(response);
+                // userProfileImg.setImageBitmap(bitmap);
+                Place_Img.setImageBitmap(bitmap);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("Image", "Fail : " );
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {
+            }
+        });
+    }
+
+    public Bitmap byteArrayToBitmap(byte[] byteArray) {  // byte -> bitmap 변환 및 반환
+        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        return bitmap;
+    }
+
+
 }
