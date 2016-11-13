@@ -7,13 +7,18 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.example.user.travel360.R;
 
+import java.util.Calendar;
+
 public class TFDatePickerDialog extends Dialog {
     DatePicker ToDate, FromDate;
-    String ToDateS, FromDateS;
+    String ToDateS="empty";
+    String FromDateS="empty";
     Button DateSetBtn;
+   // Calendar calendar;
 
     public TFDatePickerDialog(Context context) {
         super(context);
@@ -33,6 +38,13 @@ public class TFDatePickerDialog extends Dialog {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_date_picker_dialog);
+/*
+        Calendar calendar = Calendar.getInstance();
+        Toast.makeText(getApplicationContext(),
+                calendar.get(Calendar.YEAR)+"년 "+calendar.get(Calendar.MONTH)+"월 "+calendar.get(Calendar.DAY_OF_MONTH)+"일",
+                Toast.LENGTH_LONG ).show();
+*/
+    //    calendar = Calendar.getInstance();
         FromDate = (DatePicker) findViewById(R.id.FromDate);
         ToDate = (DatePicker) findViewById(R.id.ToDate);
         DateSetBtn = (Button) findViewById(R.id.DateSetBtn);
@@ -55,6 +67,8 @@ public class TFDatePickerDialog extends Dialog {
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         String month, day;
+
+
                         if(monthOfYear+1 < 10)
                         {
                             month = "0" + (monthOfYear+1);
@@ -73,6 +87,7 @@ public class TFDatePickerDialog extends Dialog {
 
     }
 
+
     public void initFromDate() {
         FromDate.init(FromDate.getYear(), FromDate.getMonth(), FromDate.getDayOfMonth(),
                 new DatePicker.OnDateChangedListener() {
@@ -80,6 +95,7 @@ public class TFDatePickerDialog extends Dialog {
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         String month, day;
+
                         if(monthOfYear+1 < 10)
                         {
                             month = "0" + (monthOfYear+1);
@@ -92,7 +108,7 @@ public class TFDatePickerDialog extends Dialog {
                         }
                         else
                             day = "" + dayOfMonth;
-                        FromDateS = year + "년 " + month + "월 " + day + "일";
+                        ToDateS = year + "년 " + month + "월 " + day + "일";
                     }
                 });
 

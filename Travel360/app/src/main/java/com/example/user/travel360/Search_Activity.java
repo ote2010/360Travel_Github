@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -20,8 +21,11 @@ import android.widget.Toast;
 import com.example.user.travel360.CustomDialog.TFDatePickerDialog;
 import com.example.user.travel360.CustomList.GpsInfo;
 
+import java.util.Calendar;
+
 public class Search_Activity extends Activity implements View.OnClickListener , CompoundButton.OnCheckedChangeListener{
 
+    Calendar calendar;
     TFDatePickerDialog tfDatePickerDialog;
     int Year, Month, Day;
     final int RESULT_SEARCH = 1000;
@@ -121,8 +125,17 @@ public class Search_Activity extends Activity implements View.OnClickListener , 
                 tfDatePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
+                        calendar = Calendar.getInstance();
                         String ToD = tfDatePickerDialog.getToDate();
                         String FromD = tfDatePickerDialog.getFromDate();
+                        Log.d("DATE@@", "To : "+ToD+"From : "+FromD);
+                        if(ToD.equals("empty")){
+                            ToD = calendar.get(Calendar.YEAR)+"년 "+(calendar.get(Calendar.MONTH)+1)+"월 "+calendar.get(Calendar.DAY_OF_MONTH)+"일";
+
+                        }
+                        if(FromD.equals("empty")){
+                            FromD = calendar.get(Calendar.YEAR)+"년 "+(calendar.get(Calendar.MONTH)+1)+"월 "+calendar.get(Calendar.DAY_OF_MONTH)+"일";
+                        }
                         startDate.setText(FromD);
                         endDate.setText(ToD);
                         sDate = FromD;

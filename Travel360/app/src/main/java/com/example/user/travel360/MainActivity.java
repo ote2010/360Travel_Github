@@ -46,6 +46,10 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity
@@ -87,7 +91,11 @@ public class MainActivity extends AppCompatActivity
        // getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
        //setTheme(android.R.style.Theme_Holo_Light_NoActionBar_TranslucentDecor);
 
-        setContentView(R.layout.activity_main);
+
+
+
+
+       setContentView(R.layout.activity_main);
         mContext = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // 툴바
         setSupportActionBar(toolbar);
