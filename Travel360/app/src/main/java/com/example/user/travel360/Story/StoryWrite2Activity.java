@@ -30,6 +30,7 @@ import com.loopj.android.http.RequestParams;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
@@ -64,6 +65,8 @@ public class StoryWrite2Activity extends AppCompatActivity
     // ****서버에 보낼때 필요한 변수 ****
     static int selectedMainImgSeq = -1;
     static int userSeq = -1;
+
+    Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -127,10 +130,18 @@ public class StoryWrite2Activity extends AppCompatActivity
                     @Override
                     public void onDismiss(DialogInterface dialog)
                     {
+                        calendar = Calendar.getInstance();
                         travelToD = tfDatePickerDialog.getToDate();
                         travelFromD = tfDatePickerDialog.getFromDate();
                         travelDayLayout.removeView(travelDayAddButton);
-
+                        if(travelToD.equals("empty"))
+                        {
+                            travelToD = calendar.get(Calendar.YEAR)+"년 "+(calendar.get(Calendar.MONTH)+1)+"월 "+calendar.get(Calendar.DAY_OF_MONTH)+"일";
+                        }
+                        if(travelFromD.equals("empty"))
+                        {
+                            travelFromD = calendar.get(Calendar.YEAR)+"년 "+(calendar.get(Calendar.MONTH)+1)+"월 "+calendar.get(Calendar.DAY_OF_MONTH)+"일";
+                        }
                         TextView travelDayText = new TextView(StoryWrite2Activity.this);
                         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         params.setMargins(15,15,15,15);
