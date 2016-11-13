@@ -23,6 +23,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+
 import cz.msebera.android.httpclient.Header;
 
 public class Main_fragment extends Fragment {
@@ -255,4 +257,47 @@ public class Main_fragment extends Fragment {
         });
     }
 
+    void showReviewRanking_Server() {
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("Server", "writeStory_Server()");
+        client.get("http://kibox327.cafe24.com/travelReviewRankingList.do", new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("Server", "statusCode : " + statusCode + " , response : " + new String(response));
+                String res = new String(response);
+
+                try {
+                    JSONObject object = new JSONObject(res);
+                    String objStr = object.get("reviews") + "";
+                    JSONArray arr = new JSONArray(objStr);
+                    for (int i = 0; i < 2; i++) {
+                        JSONObject obj = (JSONObject) arr.get(i);
+                        String location;
+                        /****************************************************
+                        location = (String) obj.get("location"); // location
+                         ****************************************************/
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("Server", "e : " + e.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("Server", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {
+            }
+        });
 }
