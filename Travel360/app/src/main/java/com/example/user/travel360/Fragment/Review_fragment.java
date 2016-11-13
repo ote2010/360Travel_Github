@@ -20,6 +20,7 @@ import com.example.user.travel360.R;
 import com.example.user.travel360.Review.ReviewMainReadActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -291,7 +292,7 @@ public class Review_fragment extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.d("Image", "Fail : "+i);
+                Log.d("Image", "Fail : " + i);
                 Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
             }
 
