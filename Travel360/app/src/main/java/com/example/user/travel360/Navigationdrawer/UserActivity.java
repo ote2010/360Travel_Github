@@ -283,7 +283,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                Log.d("SUN", "statusCode : " + statusCode + " , response : " +  new String(response));
+                Log.d("Profile", "statusCode : " + statusCode + " , response : " +  new String(response));
                 String res = new String(response);
                 try
                 {

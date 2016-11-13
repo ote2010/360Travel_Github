@@ -1,6 +1,8 @@
 package com.example.user.travel360.Fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -99,13 +101,22 @@ public class Review_fragment extends Fragment {
                     // i가 0이면 1등, 1이면 2등, 2이면 3등
                     if (i == 0) {
                         medalIcon[i].setImageResource(R.drawable.goldmedal);
-                        reviewMainImage[i].setImageResource(R.drawable.yonsei);
+                        String img = location[i]+".jpg";
+                        Log.d("Image", "Location : "+img+" i : "+i);
+                        getImage_Server(img, i);
+
+
+                      //  reviewMainImage[i].setImage;
                     } else if (i == 1) {
                         medalIcon[i].setImageResource(R.drawable.silvermedal);
-                        reviewMainImage[i].setImageResource(R.drawable.soongsil);
+                        String img = location[i]+".jpg";
+                        Log.d("Image", "Location : "+img+" i : "+i);
+                        getImage_Server(img, i);
                     } else if (i == 2) {
                         medalIcon[i].setImageResource(R.drawable.blonzemedal);
-                        reviewMainImage[i].setImageResource(R.drawable.paris3);
+                        String img = location[i]+".jpg";
+                        Log.d("Image", "Location : "+img+" i : "+i);
+                        getImage_Server(img, i);
                     }
 
                     //***********이 부분에서 서버에서 받아와서 바꿔주면 된다!!!!!***********
@@ -176,39 +187,6 @@ public class Review_fragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-//    // 리스트 뷰에 적용되는 어댑터 클래스. 이부분에서 리스트 아이템을 적용해준다.
-//    class ReviewAdapter extends BaseAdapter {
-//        @Override
-//        public int getCount() // 리스트뷰 아이템 개수 가져오기
-//        {
-//            return 4;
-//        }
-//
-//        @Override
-//        public Object getItem(int position) // 아이템 가져오기
-//        {
-//            return location[position];
-//        }
-//
-//        @Override
-//        public long getItemId(int position) // 아이템 ID 가져오기
-//        {
-//            return position;
-//        }
-//
-//        @Override
-//        public View getView(int position, View convertView, ViewGroup parent) // 뷰 가져오기
-//        {
-//            ReviewListItemView view = new ReviewListItemView(getActivity().getApplicationContext());
-//            view.setPlace(location[position]);
-//            Log.d("SUN_h", location[position] + "view");
-//            view.setEvaluation(evaluation[position] + "");
-//            return view;
-//        }
-//
-//
-//    }
-
     /************************
      * 리뷰 랭킹
      *********************/
@@ -226,7 +204,7 @@ public class Review_fragment extends Fragment {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                Log.d("Server", "statusCode : " + statusCode + " , response : " + new String(response));
+                Log.d("Review_fragment", "statusCode : " + statusCode + " , response : " + new String(response));
                 String res = new String(response);
 
                 try {
@@ -289,4 +267,43 @@ public class Review_fragment extends Fragment {
 
 
     }
+
+    void getImage_Server(String imageName,final int i) {
+
+        RequestParams params = new RequestParams();
+        // 보내는 data는 imageName 만 있으면 됩니다.
+        params.put("imageName", imageName);
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Log.d("SUN", "getImage_Server()");
+        client.get("http://kibox327.cafe24.com/Image.do", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                // byteArrayToBitmap 를 통해 reponse로 받은 이미지 데이터 bitmap으로 변환
+                Log.d("Image", "SUN : "+i);
+                Bitmap bitmap = byteArrayToBitmap(response);
+               // userProfileImg.setImageBitmap(bitmap);
+                reviewMainImage[i].setImageBitmap(bitmap);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("Image", "Fail : "+i);
+                Log.d("SUN", "onFailure // statusCode : " + statusCode + " , headers : " + headers.toString() + " , error : " + error.toString());
+            }
+
+            @Override
+            public void onRetry(int retryNo) {    }
+        });
+    }
+    public Bitmap byteArrayToBitmap(byte[] byteArray ) {  // byte -> bitmap 변환 및 반환
+        Bitmap bitmap = BitmapFactory.decodeByteArray( byteArray, 0, byteArray.length ) ;
+        return bitmap ;
+    }
+
+
+
 }
