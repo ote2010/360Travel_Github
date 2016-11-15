@@ -37,7 +37,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
-        android:src="@drawable/write"
+        android:src="@drawable/travel_floating"
         />
 
 </RelativeLayout>

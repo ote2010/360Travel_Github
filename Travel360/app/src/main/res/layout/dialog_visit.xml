@@ -1,28 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="300dp"
+    android:layout_height="350dp"
+    android:background="@drawable/white"
     android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:padding="20dp">
+
+
+    <RelativeLayout
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/visit_addressTv"
+            android:gravity="center_vertical"
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="20dp"
+            android:paddingLeft="25dp"
+            android:textColor="#4D6A92"
+            android:text=""
+            android:textSize="10sp"
+            android:background="@drawable/address_box" />
+
+
+        <ImageView
+            android:layout_margin="8dp"
+            android:src="@drawable/place_mark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/circle">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/vitist_countEt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="10"
+                android:textColor="#333"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/editText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vitist_countEt"
+                android:layout_gravity="center"
+                android:text="방명록"
+                android:textColor="#333"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </RelativeLayout>
 
     <EditText
-        android:padding="20dp"
+        android:id="@+id/visitEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="방명록을 남겨주세요"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/bottom_line"
         android:ems="10"
-        android:text=""
-        android:id="@+id/visitEt"
-        android:layout_weight="1" />
-
+        android:inputType="textPersonName"
+        android:padding="5dp"
+        android:textColor="#333"
+        android:text="" />
 
 
     <Button
-        android:layout_gravity="center"
-        android:text="남기기"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/visitBtn"
-      />
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:background="@drawable/visit_button" />
 
 </LinearLayout>

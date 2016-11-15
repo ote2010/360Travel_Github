@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -45,10 +47,14 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -378,12 +384,12 @@ public class MainActivity extends AppCompatActivity
 
                     final EditText visitEt = (EditText) layout.findViewById(R.id.visitEt);
                     Button visitBtn = (Button) layout.findViewById(R.id.visitBtn);
-
+                    TextView visit_addressTv = (TextView) layout.findViewById(R.id.visit_addressTv);
                     AlertDialog.Builder aDialog = new AlertDialog.Builder(mContext);
                     aDialog.setView(layout);
 
                     final AlertDialog ad = aDialog.create();
-
+                    visit_addressTv.setText(getAddress(latitude,longitude));
                     visitBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -695,4 +701,23 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    public String getAddress(double lat, double lng){
+        String str = "주소를 찾지 못하였습니다.";
+        Geocoder geocoder = new Geocoder(this, Locale.KOREA);
+
+        List<Address> address;
+        try {
+            if (geocoder != null) {
+                address = geocoder.getFromLocation(lat, lng, 1);
+                if (address != null && address.size() > 0) {
+                    str = address.get(0).getAddressLine(0).toString();
+                }
+            }
+        } catch (IOException e) {
+            Log.e("MainActivity", "주소를 찾지 못하였습니다.");
+            e.printStackTrace();
+        }
+
+        return str;
+    }
 }

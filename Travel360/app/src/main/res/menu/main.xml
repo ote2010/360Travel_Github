@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/visit"
-        android:icon="@drawable/__picker_ic_delete_n"
+        android:icon="@drawable/visit"
         android:title="search"
         app:showAsAction="always"
         />
