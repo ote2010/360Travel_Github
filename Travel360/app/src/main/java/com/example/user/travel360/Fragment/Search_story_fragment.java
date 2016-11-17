@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -152,7 +153,7 @@ public class Search_story_fragment extends Fragment {
         scrollViewBottomObserver();
 
         //글쓰기 버튼 동작 코드
-        FloatingActionButton writeButton = (FloatingActionButton) v.findViewById(R.id.writeButton);
+        ImageButton writeButton = (ImageButton) v.findViewById(R.id.writeButton);
         writeButton.setVisibility(View.INVISIBLE);
 
         return v;
